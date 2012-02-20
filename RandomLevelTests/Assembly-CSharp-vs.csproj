@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\Control\CharacterControl.cs" />
      <Compile Include="Assets\Scripts\Control\PhysControl.cs" />
      <Compile Include="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" />
+     <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />
      <Compile Include="Assets\Scripts\LevelStart\CubeGen.cs" />
      <None Include="Assets\Resources\TestLevelBig.txt" />
      <None Include="Assets\Resources\TestLevel1.txt" />

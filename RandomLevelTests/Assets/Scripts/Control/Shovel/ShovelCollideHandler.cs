@@ -15,10 +15,15 @@ public class ShovelCollideHandler : MonoBehaviour {
 	
 	void OnCollisionEnter (Collision collision){
 		
+		print ("A COLLISION HAPPENS!");
+		
 		print(collision.collider.gameObject.name);
 	}
 	
 	void OnTriggerEnter (Collider other){
+		
+		print ("A TRIGGER ENTERS!");
+		
 		print(other.gameObject.name);
 	}
 }

@@ -156,5 +156,10 @@ public class CharacterControl : MonoBehaviour {
 			wallJumpOK = false;
 		}
 		
+		//print(hit.gameObject.name);
+	}
+	
+	void OnCollisionEnter (Collision collision){
+		print(collision.gameObject.name);
 	}
 }
