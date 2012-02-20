@@ -49,9 +49,12 @@ public class CharacterControl : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		
+		animation["Walking"].layer = 0;
 		animation["Walking"].enabled = true;
 		animation["Walking"].wrapMode = walkingWrapMode;
 		
+		animation["Whacking"].layer = 1;
 		animation["Whacking"].enabled = true;
 		animation["Whacking"].wrapMode = whackingWrapMode;
 	}

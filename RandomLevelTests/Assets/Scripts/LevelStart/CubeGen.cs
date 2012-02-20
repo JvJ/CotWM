@@ -42,6 +42,9 @@ public class CubeGen : MonoBehaviour {
 					pos = BottomLeft + new Vector2((x+0.5f)*cubeSize, (y+0.5f)*cubeSize);
 					trans.position = new Vector3(pos.x, pos.y, 0f);
 					
+					//cube.tag = "SNOW";
+					cube.name = "SNOW";
+					
 					// Get the material component!
 					mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
 					mRend.material.color = new Color(1.0f, 1.0f, 1.0f);
@@ -52,6 +55,9 @@ public class CubeGen : MonoBehaviour {
 					trans = cube.transform;
 					pos = BottomLeft + new Vector2((x+0.5f)*cubeSize, (y+0.5f)*cubeSize);
 					trans.position = new Vector3(pos.x, pos.y, 0f);
+					
+					//cube.tag = "ROCK";
+					cube.name = "ROCK";
 					
 					// Get the material component!
 					mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
