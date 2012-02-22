@@ -152,6 +152,9 @@ public class CharacterControl : MonoBehaviour {
 			jumpNormal = hit.normal;
 			wallJumpOK = true;
 		}
+		else if (hit.normal.y < 0f){
+			vSpeed = 0f;
+		}
 		else if (controller.isGrounded){
 			wallJumpOK = false;
 		}
@@ -162,4 +165,12 @@ public class CharacterControl : MonoBehaviour {
 	void OnCollisionEnter (Collision collision){
 		print(collision.gameObject.name);
 	}
+	
+	#region External Interface
+	
+	public bool IsAttacking(){
+		return animation.IsPlaying("Whacking");
+	}
+	
+	#endregion
 }
