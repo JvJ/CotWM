@@ -19,6 +19,7 @@ Version Number & Edited By & Date & Comments \\ \hline
 
 %Content
 0-1 & Kaylen & 21/02/2012 & Created document\\ \hline
+0-2 & Kaylen & 24/02/2012 & Started Game Overview and Game Objects and Logic sections\\ \hline
 
 \end{tabular}
 
@@ -27,8 +28,12 @@ Version Number & Edited By & Date & Comments \\ \hline
 \section{Game Overview}
 
 \subsection{Game Summary}
+Play as the greatest black metal fanboy that has ever lived!  Dig your way to the bottom of the cursed glacier to obtain the Blackblood Axe, the most brutal instrument of terror ever created, to begin your worldwide reign of darkness and evil.  What evils await within, and will you be evil enough to overcome them?
 
 \subsection{Platform}
+The primary target platform will be the PC.  Development for the PC has few barriesr compared to other platforms.  Additionally, the game will be developed with relatively low technical requirements in mind, and this will open up the market to a greater number of devices.  many people own PC's, and developing for this platform will make the game very widely available.
+
+Because this game is built with the Unity engine, further platforms, such as Xbox Live Arcade or Playstation Network may be considered at a later date, as the engine allows games to be easily ported to many platforms.
 
 \section{Development Overview}
 
@@ -59,6 +64,101 @@ Version Number & Edited By & Date & Comments \\ \hline
 \subsection{Physics}
 
 \subsection{Game Objects and Logic}
+
+\subsubsection{Gameplay Overview}
+
+%Todo: Add section reference for abilities...?
+Gameplay is restricted along the 2-dimensional XY plane, although the graphics are rendered in 3D.  The basic actions can be classified as moving, attacking, and jumping.  There are several extensions of these actions that will be further elaborated upon in the Abilities section.
+
+Levels will be randomly generated, and will consist of a 2-dimensional grid of cubes, some of which may be empty.  The non-empty cubes will consist of a variety of different materials (i.e. snow, ice, rock, etc.).  At the beginning of the game, attacking cubes made of snow will destroy them.  Throughout the game, the player will gain the ability to destroy and affect different types of terrain.
+
+This game is a "Metroidvania" style game.  This means that the levels are not arranged in a linear sequence.  Rather, free exploration of the game world is encouraged.  However, exploration of the game world is not completely unrestricted.  Access to new areas is controlled by the acquisition of abilities that allow the player to progress.
+
+Certain abilities are necessary to advance to new areas, and these abilities will all be required to reach the end of the game.  In addition to these abilities, there will  be a number of optional abilities that can be acquired through gaining experience and leveling-up.
+
+\subsubsection{Player and Enemy Attirbutes}
+
+%TODO: Section reference?
+Players and enemies share certain attributes that determine how they act in combat.  The specific rules of combat are detailed in the Battle Mechanics section.  (Player exclusive attirbutes are indicated by *.)
+
+\begin{description}
+
+\item[HP]
+Determines how much damage an entity can take before it is destroyed.  In the case of the player, HP is displayed in a number of discreet blocks.  Each consists of 100 HP.
+
+\item[MP*]
+Depleted when the player uses special abilities
+
+\item[Attack]
+The amount of damage dealt by an attack.
+
+\item[Defense]
+Resistance to attacks.
+
+\item[Speed*]
+Affects movement and attack speed.
+
+\end{description}
+
+\subsubsection{Battle Mechanics}
+
+When an attack connects with an entity, the attack attempts to remove HP equal to its power.  Before that damage is applied, the entity's defense value is subtracted.  The resulting value is clamped to a minimum of 1 HP of damage.
+
+%TODO: Elemental craps???
+%Note: Create classes to hold stats and affect them.  These are attached to objects!
+
+\subsubsection{Abilities}
+(Abilities that must be obtained after beginning the game are indicated by *.  Abilities necessary to reach the end of the game are indicated by **.)
+
+\begin{description}
+
+\item[Moving]
+
+Using directional keys (A and D by default), the player can move left and right.%TODO: Need more???
+
+\item[Jumping]
+Jumping is by default accomplished with the Space key.  Holding the jump key longer results in a higher jump, and tragectory can be controlled in midair.
+
+\item[Wall Jumping**]
+
+A wall-jump ability is also available.  The ability can be used repeatedly in order to ascend walls, but only walls of certain materials. %TODO: Which types of materials
+
+\item[Attacking and Digging]
+
+The standard attack is a simple slash with the snow shovel.  This will remain the same regardless of the level of the player.  Standard attacks can be aimed in any direction.  This will be accomplished by moving the mouse cursor.  When the player attacks, their weapon will strike in that direction.
+
+If the attack hits a cube of terrain of any type that the player can currently destroy, that cube is destroyed.
+
+\item[Special Attacks*]
+
+A number of special attacks will be available to the player.  They will be able to use them if they find the necessary items.  The attacks are listed below.
+
+
+%Todo: Proper indentation
+\begin{description}
+
+\item[Lightning*]
+
+A bolt of lightning is fired in the direction of the cursor.
+
+\item[Fire*]
+
+The player slashes with their shovel, but the shovel is covered in flame.  This results in greater damage and an increased area of effect.
+
+\item[Ice*]
+
+A temporary shield of ice is generated around the player, stopping projectiles and damaging any enemies that come into contact with it.
+
+\end{description}
+
+
+\end{description}
+
+\subsubsection{Enemies}
+
+\subsubsection{Levels}
+
+\subsection{Controls}%TODO: Should this be here?
 
 \subsection{Data Management and Flow}
 
