@@ -9,11 +9,15 @@ public class CubeGen : MonoBehaviour {
 	
 	public Vector2 BottomLeft = Vector2.zero;
 	
-	float cubeSize = 1.0f;
+	public float cubeSize = 1.0f;
 	
-	public int width = 10;
+	public int width = 100;
 	
-	public int height = 10;
+	public int height = 100;
+	
+	public int numRooms = 100;
+	
+	public int branchRate = 0;
 	
 	public string textFile = "TestLevel1";
 		
@@ -39,6 +43,7 @@ public class CubeGen : MonoBehaviour {
 				case TileType.SNOW:
 					cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 					trans = cube.transform;
+					trans.localScale = new Vector3(cubeSize, cubeSize, cubeSize);
 					pos = BottomLeft + new Vector2((x+0.5f)*cubeSize, (y+0.5f)*cubeSize);
 					trans.position = new Vector3(pos.x, pos.y, 0f);
 					
@@ -53,6 +58,7 @@ public class CubeGen : MonoBehaviour {
 				case TileType.ROCK:
 					cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 					trans = cube.transform;
+					trans.localScale = new Vector3(cubeSize, cubeSize, cubeSize);
 					pos = BottomLeft + new Vector2((x+0.5f)*cubeSize, (y+0.5f)*cubeSize);
 					trans.position = new Vector3(pos.x, pos.y, 0f);
 					
@@ -77,7 +83,15 @@ public class CubeGen : MonoBehaviour {
 		
 		TextAsset t = Resources.Load(textFile) as TextAsset;
 				
-		Room r = Room.FromString(t.text); 
+		//Room r = Room.FromString(t.text); 
+		
+		//r.CopyRoom(Chambers.Rooms(ChamberSize.SIZE_1),0,0);
+		
+		//r.CopyRoom(Chambers.Rooms(ChamberSize.SIZE_2),20,0);
+		
+		//Room r = Room.ChambersGen0(width, height, numRooms);
+		
+		Room r = Room.MazeRoom(width, height, branchRate);
 		
 		MakeRoom(r);
 	}

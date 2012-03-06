@@ -9,7 +9,15 @@ namespace LevelGen
     {
         BLANK,
         SNOW,
-        ROCK
+        ROCK,
+		/// <summary>
+		///Exposed, Undetermined. 
+		/// </summary>
+		XU,
+		/// <summary>
+		///Unexposed, Undetermined 
+		/// </summary>
+		UU
     }
 
     public struct Tile
@@ -30,6 +38,10 @@ namespace LevelGen
 				return TileType.SNOW;
 			case '@':
 				return TileType.ROCK;
+			case ',':
+				return TileType.XU;
+			case '?':
+				return TileType.UU;
 			case ' ':
 			default:
 				return TileType.BLANK;
@@ -60,8 +72,12 @@ namespace LevelGen
                     return '*';
                 case TileType.ROCK:
                     return '@';
+				case TileType.XU:
+					return ',';
+				case TileType.UU:
+					return '?';
                 default:
-                    return '?';
+                    return '^';
             }
         }
 

@@ -44,7 +44,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Algorithms\Chambers.cs" />
      <Compile Include="Assets\Scripts\Algorithms\Level.cs" />
+     <Compile Include="Assets\Scripts\Algorithms\Misc.cs" />
      <Compile Include="Assets\Scripts\Algorithms\Room.cs" />
      <Compile Include="Assets\Scripts\Algorithms\Sector.cs" />
      <Compile Include="Assets\Scripts\Algorithms\Tile.cs" />
