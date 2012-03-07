@@ -20,6 +20,8 @@ public class CubeGen : MonoBehaviour {
 	public int branchRate = 0;
 	
 	public string textFile = "TestLevel1";
+	
+	public GameObject player = null;
 		
 	#endregion
 	
@@ -91,7 +93,14 @@ public class CubeGen : MonoBehaviour {
 		
 		//Room r = Room.ChambersGen0(width, height, numRooms);
 		
-		Room r = Room.MazeRoom(width, height, branchRate);
+		coords start = new coords();
+		
+		Room r = Room.ChambersFromMaze(Maze.GrowingTree(width, height, branchRate, out start), new System.Random());
+		
+		player.transform.position = new Vector3(
+		                                        BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
+		                                        BottomLeft.y + ((start.Y + 0.5f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
+		                                        0);
 		
 		MakeRoom(r);
 	}

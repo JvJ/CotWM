@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 namespace LevelGen{
 	
-	struct coords
+	public struct coords
 	{
 		public int X, Y;
 		
