@@ -11,6 +11,8 @@ public class CubeGen : MonoBehaviour {
 	
 	public float cubeSize = 1.0f;
 	
+	public int cubeLayer = 0;
+	
 	public int width = 100;
 	
 	public int height = 100;
@@ -44,6 +46,7 @@ public class CubeGen : MonoBehaviour {
 				switch (room[x,y].Type){
 				case TileType.SNOW:
 					cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					cube.layer = cubeLayer;
 					trans = cube.transform;
 					trans.localScale = new Vector3(cubeSize, cubeSize, cubeSize);
 					pos = BottomLeft + new Vector2((x+0.5f)*cubeSize, (y+0.5f)*cubeSize);
@@ -59,6 +62,7 @@ public class CubeGen : MonoBehaviour {
 					
 				case TileType.ROCK:
 					cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					cube.layer = cubeLayer;
 					trans = cube.transform;
 					trans.localScale = new Vector3(cubeSize, cubeSize, cubeSize);
 					pos = BottomLeft + new Vector2((x+0.5f)*cubeSize, (y+0.5f)*cubeSize);
@@ -101,6 +105,7 @@ public class CubeGen : MonoBehaviour {
 		                                        BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
 		                                        BottomLeft.y + ((start.Y + 0.5f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
 		                                        0);
+		
 		
 		MakeRoom(r);
 	}

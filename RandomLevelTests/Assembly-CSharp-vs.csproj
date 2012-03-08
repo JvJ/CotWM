@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\Algorithms\Tile.cs" />
      <Compile Include="Assets\Scripts\Control\Camera\FollowPlayer.cs" />
      <Compile Include="Assets\Scripts\Control\CharacterControl.cs" />
+     <Compile Include="Assets\Scripts\Control\CursorHit.cs" />
      <Compile Include="Assets\Scripts\Control\PhysControl.cs" />
      <Compile Include="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" />
      <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />

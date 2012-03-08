@@ -14,6 +14,6 @@ public class DethmurderGUI : MonoBehaviour {
 	}
 	
 	void OnGUI(){
-		GUI.Button( new Rect(0,0,200,100), "Click Me!");
+		//GUI.Button( new Rect(0,0,200,100), "Click Me!");
 	}
 }

@@ -6,6 +6,8 @@ public class CharacterControl : MonoBehaviour {
 	
 	#region Tunable Parameters
 	
+	public Transform aimTarget;
+	
 	public float moveSpeed = 10f; 
 	
 	public float jumpSpeed = 20f;
@@ -47,6 +49,9 @@ public class CharacterControl : MonoBehaviour {
 	
 	private bool wallJumpCounting = false;
 	
+	private int walkingAxis = 0;
+	
+	
 	// Use this for initialization
 	void Start () {
 		
@@ -57,6 +62,9 @@ public class CharacterControl : MonoBehaviour {
 		animation["Whacking"].layer = 1;
 		animation["Whacking"].enabled = true;
 		animation["Whacking"].wrapMode = whackingWrapMode;
+		animation["WhackingUp"].layer = 1;
+		animation["WhackingUp"].enabled = true;
+		animation["WhackingUp"].wrapMode = whackingWrapMode;
 	}
 	
 	void Awake(){
@@ -119,21 +127,53 @@ public class CharacterControl : MonoBehaviour {
 		vSpeed += Physics.gravity.y * Time.deltaTime;
 		
 		if (hAxis == 0){
-			transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
+			//transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
 			animation.Stop("Walking");
+			//walkingAxis = 0;
 		}
 		else if (hAxis < 0){
 			transform.rotation = Quaternion.Euler(new Vector3(0,90,0));
 			animation.CrossFade("Walking");
+			walkingAxis = -1;
 		}
 		else{
 			transform.rotation = Quaternion.Euler(new Vector3(0,-90,0));
 			animation.CrossFade("Walking");
+			walkingAxis = 1;
 		}
 		
 		// Handling the whacking and attacking!
 		if (Input.GetButton("Whack")){
-			animation.CrossFade("Whacking");
+			
+			// Find the sine and cosine of the difference to the target
+			float dx = aimTarget.position.x - transform.position.x;
+			float dy = aimTarget.position.y - transform.position.y;
+			float hyp = Mathf.Sqrt(dx * dx + dy * dy);
+			
+			float sin = dy / hyp;
+			float cos = dx / hyp;
+			
+			if (walkingAxis < 0){
+				cos = -cos;
+			}
+			
+			if (cos > 0){
+				animation.Blend("Whacking", cos);
+				animation.Blend("WhackingBack", 0);
+			}
+			else{
+				animation.Blend("Whacking", 0);
+				animation.Blend("WhackingBack", -cos);
+			}
+			
+			if (sin > 0){
+				animation.Blend("WhackingUp", sin);
+				animation.Blend("WhackingDown", 0);
+			}
+			else{
+				animation.Blend("WhackingUp", 0);
+				animation.Blend("WhackingDown", -sin);
+			}
 		}
 		
 		moveDirection.y += vSpeed;
