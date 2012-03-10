@@ -7,12 +7,20 @@ public class ShovelCollideHandler : MonoBehaviour {
 	
 	public GameObject owner;
 	
+	public AudioSource audio;
+	
+	EntityControl ec;
+	
 	#endregion
 	
 	public CharacterControl characterControl;
 	
 	// Use this for initialization
 	void Start () {
+		
+		ec = owner.GetComponent(typeof(EntityControl)) as EntityControl;
+		
+		print("The ec is : "+ec);
 		
 		characterControl = owner.GetComponent(typeof(CharacterControl)) as CharacterControl;
 		
@@ -32,10 +40,28 @@ public class ShovelCollideHandler : MonoBehaviour {
 	
 	void OnTriggerEnter (Collider other){
 		
-		if (characterControl.IsAttacking() && other.gameObject.name == "SNOW"){
+		
+		
+		if (other.gameObject != owner && characterControl.IsAttacking()){
+
+		
+			if (audio != null){
+				audio.Play();
+			}
 			
-			GameObject.Destroy(other.gameObject);
+			if (other.gameObject.name == "SNOW"){
 			
+				GameObject.Destroy(other.gameObject);
+			
+			}
+	
+			// Attempt to get an entity control object from the other entity
+			EntityControl otherControl = other.gameObject.GetComponent(typeof(EntityControl)) as EntityControl;
+			
+			// If we did get one, let's do damage to it
+			if (otherControl != null){
+				otherControl.TakeDamage(new Attack{ damageValue = ec.stats.attack, isContact=false, element=ElementType.NONE});
+			}
 		}
 	}
 }

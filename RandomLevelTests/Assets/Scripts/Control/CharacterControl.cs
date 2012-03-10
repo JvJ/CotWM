@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class CharacterControl : MonoBehaviour {
+public class CharacterControl : EntityControl {
 	
 	
 	#region Tunable Parameters
@@ -9,6 +9,11 @@ public class CharacterControl : MonoBehaviour {
 	public Transform aimTarget;
 	
 	public float moveSpeed = 10f; 
+	
+	/// <summary>
+	/// Ratio of speed to apply when moving.
+	/// </summary>
+	public float dashSpeed = 0f;
 	
 	public float jumpSpeed = 20f;
 	
@@ -21,6 +26,12 @@ public class CharacterControl : MonoBehaviour {
 	public WrapMode walkingWrapMode = WrapMode.PingPong;
 	
 	public WrapMode whackingWrapMode = WrapMode.Default;
+	
+	#region Ability-related Variables
+	
+	public bool canDash = false;
+	
+	#endregion
 	
 	#endregion
 	
@@ -76,6 +87,7 @@ public class CharacterControl : MonoBehaviour {
 		
 		var moveDirection = Vector3.zero;
 		float hAxis = Input.GetAxis("Horizontal");
+		float dashAxis = Input.GetAxis("Dash");
 		var quat = Quaternion.AngleAxis(wallJumpAngle, Vector3.Cross(jumpNormal, Vector3.up));
 		var v = quat * jumpNormal* wallJumpSpeed;
 		
@@ -117,6 +129,12 @@ public class CharacterControl : MonoBehaviour {
 		}
 		
 		if (!wallJumpCounting){
+			if (canDash){
+				if (dashAxis != 0){
+					animation.Blend("Dash");
+					moveDirection.x += dashAxis * dashSpeed;
+				}
+			}
 			moveDirection.x += hAxis * moveSpeed;
 		}
 		else{
@@ -132,45 +150,58 @@ public class CharacterControl : MonoBehaviour {
 			//walkingAxis = 0;
 		}
 		else if (hAxis < 0){
-			transform.rotation = Quaternion.Euler(new Vector3(0,90,0));
+			//transform.rotation = Quaternion.Euler(new Vector3(0,90,0));
 			animation.CrossFade("Walking");
 			walkingAxis = -1;
 		}
 		else{
-			transform.rotation = Quaternion.Euler(new Vector3(0,-90,0));
+			//transform.rotation = Quaternion.Euler(new Vector3(0,-90,0));
 			animation.CrossFade("Walking");
 			walkingAxis = 1;
 		}
 		
+		bool hitting = false;
 		// Handling the whacking and attacking!
 		if (Input.GetButton("Whack")){
+			hitting = true;
+		}
 			
-			// Find the sine and cosine of the difference to the target
-			float dx = aimTarget.position.x - transform.position.x;
-			float dy = aimTarget.position.y - transform.position.y;
-			float hyp = Mathf.Sqrt(dx * dx + dy * dy);
+		// Find the sine and cosine of the difference to the target
+		float dx = aimTarget.position.x - transform.position.x;
+		float dy = aimTarget.position.y - transform.position.y;
+		float hyp = Mathf.Sqrt(dx * dx + dy * dy);
+		
+		float sin = dy / hyp;
+		float cos = dx / hyp;
 			
-			float sin = dy / hyp;
-			float cos = dx / hyp;
 			
-			if (walkingAxis < 0){
-				cos = -cos;
-			}
+		if (cos > 0){
+			transform.rotation = Quaternion.Euler(new Vector3(0,-90,0));
+			walkingAxis = 1;
 			
-			if (cos > 0){
+			if (hitting){
 				animation.Blend("Whacking", cos);
 				animation.Blend("WhackingBack", 0);
 			}
-			else{
-				animation.Blend("Whacking", 0);
-				animation.Blend("WhackingBack", -cos);
-			}
+		}
+		else{
+			transform.rotation = Quaternion.Euler(new Vector3(0,90,0));
+			walkingAxis = -1;
 			
-			if (sin > 0){
+			if (hitting){
+				animation.Blend("Whacking", -cos);
+				animation.Blend("WhackingBack", 0);
+			}
+		}
+			
+		if (sin > 0){
+			if (hitting){
 				animation.Blend("WhackingUp", sin);
 				animation.Blend("WhackingDown", 0);
 			}
-			else{
+		}
+		else{
+			if (hitting){
 				animation.Blend("WhackingUp", 0);
 				animation.Blend("WhackingDown", -sin);
 			}
@@ -213,4 +244,35 @@ public class CharacterControl : MonoBehaviour {
 	}
 	
 	#endregion
+	
+	#region EntityControl Methods
+	
+	/// <summary>
+	/// Here's the basic damage-taking thing.
+	/// </summary>
+	/// <param name="atk">
+	/// A <see cref="Attack"/>
+	/// </param>
+	/// <returns>
+	/// A <see cref="System.Single"/>
+	/// </returns>
+	public override float TakeDamage (Attack atk)
+	{
+		stats.HP -= (atk.damageValue - stats.defense);
+	
+		lastDamage = (atk.damageValue - stats.defense);
+		
+		return (atk.damageValue - stats.defense);
+	}
+	
+	
+	
+	#endregion
+	
+	private float lastDamage = 0f;
+	
+	public void OnGUI(){
+		GUI.TextField(new Rect(0, 50, 100, 20), "Dmg: "+lastDamage);
+	}
+	
 }

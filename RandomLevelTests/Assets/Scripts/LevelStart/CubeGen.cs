@@ -24,6 +24,8 @@ public class CubeGen : MonoBehaviour {
 	public string textFile = "TestLevel1";
 	
 	public GameObject player = null;
+	
+	public GameObject firstEnemy = null;
 		
 	#endregion
 	
@@ -106,6 +108,10 @@ public class CubeGen : MonoBehaviour {
 		                                        BottomLeft.y + ((start.Y + 0.5f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
 		                                        0);
 		
+		firstEnemy.transform.position = new Vector3(
+		                                        BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
+		                                        BottomLeft.y + ((start.Y + 0.1f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
+		                                        0);
 		
 		MakeRoom(r);
 	}
