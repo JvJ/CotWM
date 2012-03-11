@@ -7,13 +7,15 @@ using System.Collections.Generic;
 public class Stats : MonoBehaviour{
 	
 	public float HP;
+	public float MP;
 	public float defense;
 	public float speed;
 	public float attack;
 	
+	public GUIStyle style;
+	
 	public const float timeOut = 2;
 	public const float pps = 20;
-	
 	
 	class TimedNotification
 	{
@@ -65,7 +67,7 @@ public class Stats : MonoBehaviour{
 			              new Rect((int)(screenPos.x - 25),
 			                       (int)((Camera.main.pixelHeight - screenPos.y) - 10 - n.vOffset),
 			                       50,20),
-			              n.msg);
+			              n.msg, style);
 			
 			n.time += Time.deltaTime;
 			

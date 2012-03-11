@@ -1,4 +1,8 @@
+
+
 \documentclass{article}
+
+\usepackage{tikz}
 
 %Various Informations
 \title{Call of the Wintermoon}
@@ -53,6 +57,80 @@ Because this game is built with the Unity engine, further platforms, such as Xbo
 
 \subsection{Architecture}
 
+Since the Unity engine is being used to create and run this game, software architecture is heavily influenced by the architecture of the engine.  However, there are still some important aspects of software architecture that must be decided on a per-game basis.  This section will outline both Unity's software architecture and how we used that architecture to implement that of our own game.
+
+\subsubsection{Overview of Unity}
+
+Unity is an integrated authoring tool used for creating 3D games.  By default, it provides many of the common technical elements present in most 3D games, such as high-performance graphics and physics.  Graphics are implemented using either Direct3D or OpenGL, and Unity also supports Nvidia's PhysX engine.  Implementation of each of these systems varies depending on the platform of deployment.
+
+While the core of the engine has varying native implementations on different devices, scripting is implemented using Mono, the open-source implementation of the .NET Framework (originally created by Microsoft).  Mono provides a software framework that allows code to run on multiple platforms.  Code is compiled to the Common Language Runtime (CLR) so that code written in different high-level languages can interoperated.  In Unity, three different languages are supported - UnityScript(Similar to JavaScript), Boo (Similar to Python) and C\#.  Because of the development team's experience, C\# was chosen as the primary scripting language.
+
+To implement scripted behaviour, the MonoBehaviour class is used.  This class is part of the UnityEngine library.  Multiple MonoBehavour objects can be attached to any game object, and each of them adds some behaviour to that object.  The class provides several hook methods, most important of which is Update, which is called once per engine update cycle (Update cycles vary, but occur approximately 60 times per second).  In addition to update functions, several event-handling functions are also provided, which can be used to detect collisions or other unexpected events that may affect the object.
+
+\subsubsection{Our Architecture}
+
+Using the architecture already created by Unity, our own architecture will be created to suit the purposes of our game.  The primary goals of this will be to handle the enemy AI and the combat system, which are specific to this game.
+
+The classes involved in AI control of game entities are derived from the EntityControl class, which is itself derived from MonoBehaviour.  See Fig \ref{AI_Combat} for a UML diagram depicting EntityControl and other classes.  EntityControl's structure is based on that of a Finite State Machine.  Each instance of EntityControl contains an array of Action objects which can be indexed by any member of the EntityState enumeration.  Action is a C\# delegate type (similar to a function pointer) representing a void function with no parameters.
+
+During the Start function (a function of MonoBehaviour that is run when a game object is initialized), the StateFunctions array is automatically initialized to default values.  During this stage, some indices of the array are matched up with their default functions (those marked as "State Function" in the UML diagram).  These functions represent states that tend to be universal across all entities.  Some indices of the array correspond to more specific states, and are therefore not initialized.  This is done so that exceptions will be thrown for invalid states, allowing bugs in code to be caught more effectively.
+
+\begin{figure}[h!]
+
+\input{UML/AI_Combat.tex}
+\caption{A UML diagram of the entity control and combat system.}
+\label{AI_Combat}
+\end{figure}
+
+
+\begin{figure}[h!]
+
+\input{UML/UpdateCycle.tex}
+\caption{A UML activity diagram representing the update cycle.}
+\label{UpdateCycle}
+\end{figure}
+
+The Update function in EntityControl functions primarily as a state-function dispatcher.  Rather than use the Update function directly in the subclasses, hooks are provided to allow more organization.  Flow of control is illustrated in Fig \ref{UpdateCycle}.  First, the Head function is called to execute any code that may be required before the state function.  Next, the current state function is fetched from the array.  If there is no function for the current state, and exception is thrown and execution stops.  Otherwise, the current state function is executed.  Control continues to a call to the Tail method, executing any code that may be required at the end of the update cycle
+
+\begin{figure}[h!]
+
+\input{UML/CombatInteractions.tex}
+\caption{A sequence diagram showing combat interactions.}
+\label{CombatInteractions}
+
+\end{figure}
+
+The combat system has its own complexities as well.  Entities are not simply destroyed when attacked, but must process the attack to compute the final amount of damage (see section \ref{CombatMechanics} for more details on combat) .  To store their HP, defense, and other attributes, an instance of the Stats class is used.  To represent attack actions, the Attack class is used.  This class represents all attributes of the attack (i.e. damage, element type, etc.)  A sequence diagram representing combat interactions is displayed in Fig. \ref{CombatInteractions}.
+
+Typically, the combat system functions as follows:
+\begin{enumerate}
+
+\item An object collides with an Entity.
+\item An attack message is sent to the Entity.
+\item The entity processes the attack message.
+\item The attack message is then passed off to the Stats object.
+\item The stats object affects the necessary changes and displays the damage value on screen.
+
+In order to more easily understand the process, a visual example will be shown.  In this example, the player attacks an enemy.  The white capsule-like object is the player, and the black sphere is an enemy.
+
+\end{enumerate}
+
+\begin{figure}[h!]
+
+%TODO: Picture
+\caption{Dethmurder prior to attacking the enemy.}
+\label{PreHit}
+
+\end{figure}
+
+\begin{figure}[h!]
+
+%TODO: Picture
+\caption{Dethmurder while attacking the enemy.}
+\label{DuringHit}
+
+\end{figure}
+
 \subsection{Game Flow}
 
 \subsection{Graphics}
@@ -84,7 +162,7 @@ Players and enemies share certain attributes that determine how they act in comb
 \begin{description}
 
 \item[HP]
-Determines how much damage an entity can take before it is destroyed.  In the case of the player, HP is displayed in a number of discreet blocks.  Each consists of 100 HP.
+Determines how much damage an entity can take before it is destroyed.  In the case of the player, HP is displayed in a number of discrete blocks.  Each consists of 100 HP.  (Similar to the energy tanks of the Metroid series.)
 
 \item[MP*]
 Depleted when the player uses special abilities
@@ -100,7 +178,8 @@ Affects movement and attack speed.
 
 \end{description}
 
-\subsubsection{Battle Mechanics}
+\label{CombatMechanics}
+\subsubsection{Combat Mechanics}
 
 When an attack connects with an entity, the attack attempts to remove HP equal to its power.  Before that damage is applied, the entity's defense value is subtracted.  The resulting value is clamped to a minimum of 1 HP of damage.
 
@@ -169,5 +248,7 @@ A temporary shield of ice is generated around the player, stopping projectiles a
 \subsection{Play Screen}
 
 \section{Technical Risk}
+
+
 
 \end{document}
