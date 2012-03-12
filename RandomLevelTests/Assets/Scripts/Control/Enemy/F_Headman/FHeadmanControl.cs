@@ -7,7 +7,7 @@ public class FHeadmanControl : EntityControl {
 	
 	public CharacterController controller;
 	
-	public float moveSpeed = 10;
+	//public float moveSpeed = 10;
 	
 	#endregion
 	
@@ -19,6 +19,11 @@ public class FHeadmanControl : EntityControl {
 	public override float TakeDamage (Attack atk)
 	{
 		float dmg = atk.damageValue;
+		
+		// This guy is weak against ice
+		if (atk.element == ElementType.ICE){
+			dmg *= 2;
+		}
 		
 		stats.DoDamage(dmg, false);
 		
@@ -62,17 +67,17 @@ public class FHeadmanControl : EntityControl {
 		
 		switch(wDir){
 		case WanderDirection.UP:
-			moveVector.y = moveSpeed * Time.deltaTime;
+			moveVector.y = stats.speed * Time.deltaTime;
 			break;
 		case WanderDirection.DOWN:
-			moveVector.y = -moveSpeed * Time.deltaTime;
+			moveVector.y = -stats.speed * Time.deltaTime;
 			break;
 		case WanderDirection.LEFT:
-			moveVector.x = -moveSpeed * Time.deltaTime;
+			moveVector.x = -stats.speed * Time.deltaTime;
 			transform.rotation = Quaternion.Euler(new Vector3(0,90,0));
 			break;
 		case WanderDirection.RIGHT:
-			moveVector.x = moveSpeed * Time.deltaTime;
+			moveVector.x = stats.speed * Time.deltaTime;
 			transform.rotation = Quaternion.Euler(new Vector3(0,-90,0));
 			break;
 		}
@@ -114,7 +119,7 @@ public class FHeadmanControl : EntityControl {
 			transform.rotation = Quaternion.Euler(new Vector3(0,-90,0));
 		}
 		
-		controller.Move(directionToPlayer * moveSpeed * Time.deltaTime);
+		controller.Move(directionToPlayer * stats.speed * Time.deltaTime);
 		
 		RaycastHit info;
 		

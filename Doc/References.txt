@@ -7,3 +7,6 @@ Don't forget the audio!
 
 Pentagram image:
 http://understandingilluminati.blogspot.com/2011/07/sermon-on-illuminati.html
+
+Maze algorithm:
+http://pcg.wikidot.com/pcg-algorithm:maze

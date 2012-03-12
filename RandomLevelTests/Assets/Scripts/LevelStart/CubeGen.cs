@@ -21,6 +21,8 @@ public class CubeGen : MonoBehaviour {
 	
 	public int branchRate = 0;
 	
+	public bool noDiagonals = true;
+	
 	public string textFile = "TestLevel1";
 	
 	public GameObject player = null;
@@ -101,7 +103,9 @@ public class CubeGen : MonoBehaviour {
 		
 		coords start = new coords();
 		
-		Room r = Room.ChambersFromMaze(Maze.GrowingTree(width, height, branchRate, out start), new System.Random());
+		Maze m = Maze.GrowingTree(width, height, branchRate, noDiagonals, out start);
+		
+		Room r = Room.ChambersFromMaze(m, new System.Random());
 		
 		player.transform.position = new Vector3(
 		                                        BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
@@ -112,6 +116,13 @@ public class CubeGen : MonoBehaviour {
 		                                        BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
 		                                        BottomLeft.y + ((start.Y + 0.1f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
 		                                        0);
+		
+		// Temporary!
+		// Output the maze and the room to files
+		
+		System.IO.File.WriteAllText("mazeText.txt", m.ToString());
+		System.IO.File.WriteAllText("levelText.txt", r.ToString());
+		
 		
 		MakeRoom(r);
 	}

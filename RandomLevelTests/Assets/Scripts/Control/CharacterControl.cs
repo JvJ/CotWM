@@ -8,7 +8,7 @@ public class CharacterControl : EntityControl {
 	
 	public Transform aimTarget;
 	
-	public float moveSpeed = 10f; 
+	//public float moveSpeed = 10f; 
 	
 	/// <summary>
 	/// Ratio of speed to apply when moving.
@@ -135,7 +135,7 @@ public class CharacterControl : EntityControl {
 					moveDirection.x += dashAxis * dashSpeed;
 				}
 			}
-			moveDirection.x += hAxis * moveSpeed;
+			moveDirection.x += hAxis * stats.speed;
 		}
 		else{
 			

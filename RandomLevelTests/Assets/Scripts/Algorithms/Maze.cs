@@ -42,8 +42,8 @@ namespace LevelGen
 		/// <returns>
 		/// A <see cref="Room"/>
 		/// </returns>
-		public static Maze GrowingTree(int width, int height, int branchRate, out coords StartLocation){
-			return GrowingTree(width, height, branchRate, new System.Random(), out StartLocation);
+		public static Maze GrowingTree(int width, int height, int branchRate, bool nDiag, out coords StartLocation){
+			return GrowingTree(width, height, branchRate, nDiag, new System.Random(), out StartLocation);
 		}
 		
 		/// <summary>
@@ -55,8 +55,8 @@ namespace LevelGen
 		/// <returns>
 		/// A <see cref="Room"/>
 		/// </returns>
-		public static Maze GrowingTree(int width, int height, int branchRate, int seed, out coords StartLocation){
-			return GrowingTree(width, height, branchRate, new System.Random(seed), out StartLocation);
+		public static Maze GrowingTree(int width, int height, int branchRate, bool nDiag, int seed, out coords StartLocation){
+			return GrowingTree(width, height, branchRate, nDiag, new System.Random(seed), out StartLocation);
 		}
 		
 		/// <summary>
@@ -75,7 +75,7 @@ namespace LevelGen
 		/// <returns>
 		/// A <see cref="Room"/>
 		/// </returns>
-		public static Maze GrowingTree(int width, int height, int branchRate, System.Random rand, out coords StartLocation){
+		public static Maze GrowingTree(int width, int height, int branchRate, bool nDiag, System.Random rand, out coords StartLocation){
 			
 			// The return value
 			Maze ret = new Maze(width, height);
@@ -255,7 +255,7 @@ namespace LevelGen
 				int rIdx = (int)(pos * frontier.Count);
 				coords choice = frontier[rIdx];
 				
-				if (check(choice.X, choice.Y, true)){
+				if (check(choice.X, choice.Y, nDiag)){
 					carve(choice.X, choice.Y);
 				}
 				else{
@@ -278,6 +278,27 @@ namespace LevelGen
 		}
 		
 		#endregion
+		
+		public override string ToString ()
+		{
+			string ret = "";
+			
+			for (int row = Height-1; row >= 0; row--){
+				for (int col = 0; col < Width; col++){
+					switch(this[col, row]){
+					case MazeTileType.WALL:
+						ret += "X";
+						break;
+					default:
+						ret += " ";
+						break;
+					}
+				}
+				ret += "\n";
+			}
+			
+			return ret;
+		}
 	}
 }
 

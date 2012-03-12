@@ -26,7 +26,7 @@ public class ShovelCollideHandler : MonoBehaviour {
 		
 		//print("It is : "+owner.GetComponent(typeof(MonoBehaviour)).GetType().ToString());
 		
-		print (characterControl.moveSpeed);
+		print (characterControl.stats.speed);
 	}
 	
 	// Update is called once per frame
@@ -60,7 +60,7 @@ public class ShovelCollideHandler : MonoBehaviour {
 			
 			// If we did get one, let's do damage to it
 			if (otherControl != null){
-				otherControl.TakeDamage(new Attack{ damageValue = ec.stats.attack, isContact=false, element=ElementType.NONE});
+				otherControl.TakeDamage(new Attack{ damageValue = ec.stats.attack, isContact=false, element=ElementType.ICE});
 			}
 		}
 	}
