@@ -27,7 +27,7 @@ public class CursorHit : MonoBehaviour {
 		}
 	}
 	
-	void OnGUI(){
-		GUI.Box(new Rect(0,0,200,50), new GUIContent("Mouse: "+Input.mousePosition));
-	}
+	//void OnGUI(){
+	//	GUI.Box(new Rect(0,0,200,50), new GUIContent("Mouse: "+Input.mousePosition));
+	//}
 }

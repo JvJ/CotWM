@@ -97,7 +97,7 @@ The code used for level generation with the Growing Tree algorithm was translate
 
 We are considering using a metaball rendering technique to simulate the amorphous nature of the Shoggoth enemies.  C\# code for creating this effect was obtained from \url{http://www.unifycommunity.com/wiki/index.php?title=MetaBalls}.
 
-Some of the code related to mouse pointing and aiming was take from a Unity example project, which can be found at \url{http://unity3d.com/support/resources/unity-extensions/head-look-controller.html}.
+Some of the code related to mouse pointing and aiming was taken from a Unity example project, which can be found at \url{http://unity3d.com/support/resources/unity-extensions/head-look-controller.html}.
 
 \section{Game mechanics}
 
@@ -118,13 +118,13 @@ It is clear from this list that techical requirements vary greatly depending on 
 \label{Architecture}
 \subsection{Architecture}
 
-Since the Unity engine is being used to create and run this game, software architecture is heavily influenced by the architecture of the engine.  However, there are still some important aspects of software architecture that must be decided on a per-game basis.  This section will outline both Unity's software architecture and how we used that architecture to implement that of our own game.
+Since the Unity engine is being used to create and run this game, software architecture is heavily influenced by the architecture of the engine.  However, there are still some important aspects of software architecture that must be decided on a per-game basis.  This section will outline both Unity's software architecture and how we plan to use that architecture to implement that of our own game.
 
 \subsubsection{Overview of Unity}
 
-Unity is an integrated authoring tool used for creating 3D games.  By default, it provides many of the common technical elements present in most 3D games, such as high-performance graphics and physics.  Graphics are implemented using either Direct3D or OpenGL, and Unity also supports Nvidia's PhysX engine.  Implementation of each of these systems varies depending on the platform of deployment.
+By default, Unity provides many of the common technical elements present in most 3D games, such as high-performance graphics and physics.  Graphics are implemented using either Direct3D or OpenGL, and Unity also supports Nvidia's PhysX engine.  Implementation of each of these systems varies depending on the platform of deployment.
 
-While the core of the engine has varying native implementations on different devices, scripting is implemented using Mono, the open-source implementation of the .NET Framework.  Mono provides a software framework that allows code to run on multiple platforms.  Code is compiled to the Common Language Runtime (CLR) so that code written in different high-level languages can interoperated.  In Unity, three different languages are supported - UnityScript(Similar to JavaScript), Boo (Similar to Python) and C\#.  Because of the development team's experience, C\# was chosen as the primary scripting language.
+While the core of the engine has varying native implementations on different devices, scripting is implemented using Mono, the open-source implementation of the .NET Framework.  Mono provides a software framework that allows code to run on multiple platforms.  Code is compiled to the Common Language Runtime (CLR) so that code written in different high-level languages can interoperate.  In Unity, three different languages are supported - UnityScript(Similar to JavaScript), Boo (Similar to Python) and C\#.  Because of the development team's experience, C\# was chosen as the primary scripting language.
 
 To implement scripted behaviour, the MonoBehaviour class is used.  This class is part of the UnityEngine library.  Multiple MonoBehavour objects can be attached to any game object, and each of them adds some behaviour to that object.  The class provides several hook methods, most important of which is Update, which is called once per engine update cycle (update cycles vary, but occur approximately 60 times per second).  In addition to update functions, several event-handling functions are also provided, which can be used to detect collisions or other  events that may affect the object.
 
@@ -132,7 +132,7 @@ To implement scripted behaviour, the MonoBehaviour class is used.  This class is
 
 Using the architecture already created by Unity, our own architecture will be created to suit the purposes of our game.  The primary goals of this will be to handle the enemy AI and the combat system, which are specific to this game.
 
-The classes involved in AI control of game entities are derived from the EntityControl class, which is itself derived from MonoBehaviour.  See Fig \ref{AI_Combat} for a UML diagram depicting EntityControl and other classes.  EntityControl's structure is based on that of a Finite State Machine.  Each instance of EntityControl contains an array of Action objects which can be indexed by any member of the EntityState enumeration.  Action is a C\# delegate type (similar to a function pointer) representing a void function with no parameters.
+The classes involved in AI control of game entities are derived from the EntityControl class, which is itself derived from MonoBehaviour.  See Fig \ref{AI_Combat} for a UML diagram depicting EntityControl and other classes.  EntityControl's structure is based on that of a Finite State Machine.  Each instance of EntityControl contains an array of Action objects which can be indexed by any member of the EntityState enumeration.  Action is a C\# delegate type (similar to a function pointer) representing a void function with no parameters.  This array allows functions to be easily accessed and run based on the current state of an object.
 
 
 
@@ -158,9 +158,9 @@ The flow of control in code as it relates to the AI and Combat systems will be d
 
 \subsubsection{State Machines and AI}
 
-During the Start function (a function of MonoBehaviour that is run when a game object is initialized), the StateFunctions array is automatically initialized to default values.  During this stage, some indices of the array are matched up with their default functions (those marked as "State Function" in the UML diagram).  These functions represent states that tend to be universal across all entities.  Some indices of the array correspond to more specific states, and are therefore not initialized.  This is done so that exceptions will be thrown for invalid states, allowing bugs in code to be caught more effectively.
+During the Start function (a function of MonoBehaviour that is run when a game object is initialized), the StateFunctions array of an EntityControl object is automatically initialized to default values.  During this stage, some indices of the array are matched up with their default functions (those marked as "State Function" in the UML diagram).  These functions represent states that tend to be universal across all entities.  Some indices of the array correspond to more specific states, and are therefore not initialized.  This is done so that exceptions will be thrown for invalid states, allowing bugs in code to be caught more effectively.
 
-The Update function in EntityControl functions primarily as a state-function dispatcher.  Rather than use the Update function directly in the subclasses, hooks are provided to allow more organization.  Flow of control is illustrated in Fig \ref{UpdateCycle}.  First, the Head function is called to execute any code that may be required before the state function.  Next, the current state function is fetched from the array.  If there is no function for the current state, and exception is thrown and execution stops.  Otherwise, the current state function is executed.  Control continues to a call to the Tail method, executing any code that may be required at the end of the update cycle.
+The Update method in EntityControl functions primarily as a state function dispatcher.  Rather than use the Update method directly in the subclasses, hooks are provided to allow more organization.  Flow of control is illustrated in Fig \ref{UpdateCycle}.  First, the Head function is called to execute any code that may be required before the state function.  Next, the current state function is fetched from the array.  If there is no function for the current state, and exception is thrown and execution stops.  Otherwise, the current state function is executed.  Control continues to the Tail method, executing any code that may be required at the end of the update cycle.
 
 \begin{figure}[h!]
 {\scalefont{0.8}
@@ -203,7 +203,7 @@ Player	&	100	&	0	&	0	&	20	&	10 \\ \hline
 Enemy	&	100	&	0	&	10	&	0	&	10 \\ \hline
 
 \end{tabular}
-\caption{Player and enemy stats.}
+\caption{Player and enemy stats for the illustrative example.}
 \label{Stats}
 \end{figure}
 
@@ -213,17 +213,6 @@ Figure \ref{PreHit} shows the state of the world before attacking has started.  
 Figure \ref{CollideHandler} shows the code for the collision handling method.  If the object that it has collided with is not the hitbox's owner (the player), and it has an EntityControl script, then a new Attack object is constructed and sent to that EntityControl script.  The Attack object gets constructed and has its attributes set on lines 11-15.  It can be clearly seen that the attack power is equal to that in the player's Stats object.  The isContact flag is set to false, indicating that this is not contact damage, and the attack's elemental attribute is set to ice.
 
 This Attack message is then handled by the enemy's TakeDamage method, which can be seen in Fig. \ref{TakeDamage}.  The Attack object is processed before the final damage value is sent to the Stats object.  This particular TakeDamage method doubles damage if its element type is ice.  The damage value is then sent to the Stats object, which subtracts the defense value from the damage before applying it to the HP.
-
-The complete process looks something like this:
-\begin{enumerate}
-
-\item Hit box collides with enemy, collision handler is called.
-\item An attack message with properties \{attack=20, isContact = false, element = ICE\} is sent to the enemy.
-\item The entity processes the attack message, multiplying the damage by 2 (to get 40) because of the ICE attribute.
-\item The attack message is then passed off to the Stats object, which subtracts the defense value (10) from the damage (yielding 30), and subtracts it form the HP value (yielding 70 HP).
-\item The final damage value (30) is displayed on screen  above the enemy.
-
-\end{enumerate}
 
 \begin{figure}[h!]
 
@@ -240,6 +229,19 @@ The complete process looks something like this:
 \label{DuringHit}
 
 \end{figure}
+
+The complete process looks something like this:
+\begin{enumerate}
+
+\item Hit box collides with enemy, collision handler is called.
+\item An attack message with properties \{attack=20, isContact = false, element = ICE\} is sent to the enemy.
+\item The entity processes the attack message, multiplying the damage by 2 (yielding 40) because of the ICE attribute.
+\item The attack message is then passed off to the Stats object.  Because the ignoreDefense flag is set to false, the defense value (10) is subtracted from the damage value (yielding 30).  The final damage is subsequently subtracted from the HP value (yielding 70 HP).
+\item The final damage value (30) is displayed on screen  above the enemy.
+
+\end{enumerate}
+
+
 
 \begin{figure}[htbp]
 	%\makebox[\textwidth]{\hrulefill}{
@@ -262,7 +264,7 @@ The complete process looks something like this:
 
 \subsection{Graphics}
 
-Despite having gameplay restricted along a 2D plane, the game's graphics will be entirely 3D.  Models and animations will be created using Blender, and imported to Unity.  The technical aspects of the rendering will be handled by Unity's graphics engine.
+Despite having gameplay restricted along a 2D plane, the game's graphics will be entirely 3D.  Models and animations will be created using Blender and imported to Unity.  The technical aspects of the rendering will be handled by Unity's graphics engine.
 
 \subsubsection{Unity Graphics Overview}
 
@@ -270,13 +272,13 @@ Being a multi-platform engine, the specifics of the graphics engine vary between
 
 While the specifics of the rendering engine are much too complex to understand for such a small development team with limited time and resources, certain key details are revealed on Unity's website so that developers can optimize their graphics performance.  The most significant of these details as they apply to our game are those about optimizing meshes.  It is suggested that each mesh should be between 1500 and 4000 triangles, and that each should use a single material, as multi-material meshes are rendered once for each material attached to them.  We will attempt to follow these guidelines as closely as possible to optimize graphics performance.
 
-Additionally, there are several emulation modes available with the unity graphics engine, which can be used to test compatibility with older hardware.  Because we do not want our game to have high technical requirements, we will make use of this feature.
+Additionally, there are several emulation modes available with the Unity graphics engine, which can be used to test compatibility with older hardware.  Because we do not want our game to have high technical requirements, we will likely make use of this feature.
 
 \subsubsection{Models and Animations}
 
-As mentioned, Blender will be used to create models and animation.  The development team has experience with Blender, so there is an extremely low learning curve.  Additionally, Unity includes built-in support for importing blender models and animations, further reducing the effort required to create 3D graphics.
+As mentioned, Blender will be used to create models and animation.  The development team has experience with Blender, so there is an extremely low learning curve.  Additionally, Unity includes built-in support for importing Blender models and animations, further reducing the effort required to create 3D graphics.
 
-Both Blender and Unity support skeletal animation systems, which further simplifies the task of animation.  The positions of bones can be keyframed in Blender to produce animations, and those animations will carry over to Unity when imported.  An issue that causes some concern is the absence of an inverse kinematics system in Unity, despite its availability in Blender.  Inverse kinematics solvers enable chains of bones (such as limbs) to be more easily animated.  However, by keyframing the position and rotation attributes of the bones controlled by inverse kinematics in blender, and through use of animation blending, we should be able to accomplish most animation tasks.
+Both Blender and Unity support skeletal animation systems, which further simplifies the task of animation.  The positions of bones can be keyframed in Blender to produce animations, and those animations will carry over to Unity when imported.  An issue that causes some concern is the absence of an inverse kinematics system in Unity, despite its availability in Blender.  Inverse kinematics solvers enable chains of bones (such as limbs) to be more easily animated.  However, by keyframing the position and rotation attributes of the bones controlled by inverse kinematics in Blender, and through use of animation blending, we should be able to accomplish most animation tasks.
 
 Animation blending is also supported by both systems, which means that muiltiple animations can be combined in new and interesting ways.  One of the features this is used to implement is the player's directional attacking ability.  Figures \ref{ForwardHit}, \ref{UpHit} and \ref{DiagHit} show how this can be accomplished.  Only two animations have been defined manually - the forward hit and upward hit animations.  Attacks always occur in the direction of the mouse pointer.  In these cases, weights are assigned to the animations based on the angle between the player and the mouse pointer.  The upward hit is proportional to the sine (dy / hyp), and the forward hit is proportional to the cosine (dx / hyp).  Thus, when dx = 0, the sine is 1 and the cosine is 0, resulting in a complete upward hit.  When dy = 0, the cosine is 1, resulting in a complete forward hit.  For any angles in between, the weights are appropriately adjusted to combine the animations in the right proportions.
 
@@ -306,40 +308,35 @@ Animation blending is also supported by both systems, which means that muiltiple
 
 \subsection{Audio}
 
-Unity's audio system is very easy to use and supports a number of different audio types.  Audio assets can be imported from .aif, .wav, .mp3, and .ogg formats.  When the assets are imported, they can be built into one of 2 formats: native (.wav) and compressed (using Ogg Vorbis compression).  Mono, stereo, and multi-channel audio (up to 8 channels) is are also supported.
+Unity's audio system is very easy to use and supports a number of different audio types.  Audio assets can be imported from .aif, .wav, .mp3, and .ogg formats.  When the assets are imported, they can be built into one of 2 formats: native (.wav) and compressed (using Ogg Vorbis compression).  Mono, stereo, and multi-channel audio (up to 8 channels) are also supported.
 
 Unity also supports 3D sound, allowing audio sources to be placed at 3D coordinates in the game world.  AudioSource components are attached to game objects, and will produce sound at their location.  Many aspects of an AudioSource, such as reverberation and distance fall-off functions can be edited to suit the developer's needs.
 
 \subsection{Artificial Intelligence}
 
-In this game there will be different enemies with different attributes and qualities. Each enemy has a finite state machine which is managed by EntityControl class. Each enemy class overrides this class to get his own special behaviour, attacks and qualities.
+In this game there will be different enemies with different attributes and qualities. Each enemy has a finite state machine which is managed by an EntityControl class. Each enemy class overrides this class to get his own special behaviour, attacks and qualities.
 
-As said before enemies are similar to the player in a sense that they all have stats. Each individual enemy object inherits from EntityControl.  Inside of each entity controller there is a
-stats object.   The functionality of the finite state machine model is outlined in section \ref{Architecture}.  In this section, the specifics of each enemy's finite state machine will be detailed.
+As said before enemies are similar to the player in a sense that they all have stats.  Inside of each entity controller there is a Stats object.   The functionality of the finite state machine model is outlined in section \ref{Architecture}.  In this section, the specifics of each enemy's finite state machine will be detailed.
 
 \subsubsection{Description of Common States}
-A number of states are shared among many of the enemies, and will have their own implementations in each enemy class.  However, the core of their functionality is the same.
+A number of states are shared among many of the enemies, and will have their own implementations in each EntityControl class.  However, the core of their functionality is the same.
 
 \paragraph{Wander}
-The start state for almost all enemies is wandering. In this state the NPC moves around in random direction for a certain amount of time. He changes the direction after time out and
-chooses another random direction.  For most enemies, this involves moving along the ground.  Floating enemies such as F. Headman, Shadowman may wander in any direction.
+The start state for almost all enemies is wandering. In this state the entity moves around in random direction for a certain amount of time.  It changes the direction after time out and chooses another random direction.  For most enemies, this involves moving along the ground.  Floating enemies such as F. Headman and Shadowman may wander in any direction.
 
 \paragraph{Close In}
-In each update the enemy checks for if the player is visible by ray casting.  If the player is seen, the state machine will typically transition to close in state which the player is pursued.  Pursuit stops chasing the player is in range, or when visibility is cut off.  If the NPC faces an obstacle which hides the player, it will go back to the wandering state.
+In each update the enemy checks if the player is visible by ray casting.  If the player is seen, the state machine will typically transition to the close-in state, in which the player is pursued.  Pursuit stops when the player is in range, or when visibility is cut off.  If the entity faces an obstacle which hides the player, it will go back to the wandering state.
 
 \paragraph{Attack}
-If enemy successfully get to the range of the player, it starts periodic attacks.  If the player gets out of the enemy’s range it will go back to the close in state.
+If the enemy successfully gets in range of the player, it starts periodic attacks.  If the player gets out of the enemy’s range it will go back to the close-in state.
 
 \paragraph{Dead}
-In each update the enemy game stats will be checked to see if his alive or not ,this means checking his HP level. If HP equals zero the enemy is dead. The dead state hasn’t shown in any
-of diagrams but obviously in every update enemy HP will be checked and he can transfer from any of active states to dead one.
+In each update the enemy game stats will be checked to see if it is alive or not.  This means checking his HP level.  If HP equals zero the enemy is dead.  The dead state isn't shown in any of the diagrams but obviously in every update HP will be checked.  Zero HP will result in a transition between any of the active states and the Dead state.
 
 \subsubsection{Enemy-specific Idiosyncracies}
 
-
-
 \begin{figure}[h!]
-{\scalefont{0.6}
+{\scalefont{1.0}
 \input{Graphics/wyrim.tex}
 }
 \caption{A Wyrm's state machine.}
@@ -358,9 +355,7 @@ The Wyrms lack a close-in state.  Instead, they wander until they make contact w
 \end{figure}
 
 \paragraph{F. Headman}
-The F. Headman enemies follow the common states very closely.  Its attack involves spitting fire at the player.
-
-
+The F. Headman enemies follow the common states very closely.  Their attack involves spitting fire at the player.
 
 \paragraph{Shadowman}
 The Shadowman is very similar to F. Headman.  However, the attack is different.  When it comes into close range of the player, it opens its cloak and expands.  In this expanding state, it attempts to suck the player in.  If the player is sucked in, it is attacked and expelled.  If the player escapes, the Shadowman goes back to the wandering state.
@@ -369,7 +364,7 @@ The Shadowman is very similar to F. Headman.  However, the attack is different. 
 {\scalefont{0.6}
 \input{Graphics/SnowMan.tex}
 }
-\caption{Abominable Shadowman's state machine.}
+\caption{Abominable Snowman's state machine.}
 \label{FSMSnowman}
 \end{figure}
 
@@ -388,7 +383,7 @@ The abominable snowman does not have a wander state, as it is a stationary enemy
 The shoggoths follow the common states very closely.  Its attack involves hititng the player with its tentacle, which sends the player flying.
 
 \begin{figure}[h!]
-{\scalefont{0.6}
+{\scalefont{0.8}
 \input{Graphics/boss.tex}
 }
 \caption{Xl'Grhthbtrg's state machine.}
@@ -400,7 +395,7 @@ Xl'Grhthbtrg acts similar to the abominable snowman.  Because it is a boss, it w
 
 \subsection{Physics}
 
-A physics engine is provided by default with Unity.  Although our game will not make heavy use of the physics engine, it is important for handling collision detection.  Unity provides a variety of basic collider components which can be attached to game objects.  Among these are primitives such as cubes, spheres, and capsules.  Colliders can be set as triggers, which enables them to detect collisions with other objects, but not affect those objects in any way (i.e. they can pass through other objects).  The extent to whcih the physics system is used in our game will be primarily for collision detection and response, which can be easily accomplished through collision event handlers (see Fig. \ref{CollideHandler}).
+A physics engine is provided by default with Unity.  Although our game will not make heavy use of the physics engine, it is important for handling collision detection.  Unity provides a variety of basic collider components which can be attached to game objects.  Among these are primitives such as cubes, spheres, and capsules.  Colliders can be set as triggers, which enables them to detect collisions with other objects, but not affect those objects in any way (i.e. they can pass through other objects).  The extent to which the physics system is used in our game will be primarily for collision detection and response, which can be easily accomplished through collision event handlers (see Fig. \ref{CollideHandler}).
 
 \subsection{Game Objects and Logic}
 
@@ -408,9 +403,9 @@ A physics engine is provided by default with Unity.  Although our game will not 
 
 Gameplay is restricted along the 2-dimensional XY plane, although the graphics are rendered in 3D.  The basic player actions can be classified as moving, attacking, and jumping.  There are several extensions of these actions that will be further elaborated upon in the Abilities section.
 
-Levels will be randomly generated, and will consist of a 2-dimensional grid of cubes, some of which may be empty.  The non-empty cubes will consist of a variety of different materials (i.e. snow, ice, rock, etc.).  Attacking cubes made of snow will allow the player to further progress in the game.
+Levels will be randomly generated, and will consist of a 2-dimensional grid of cubes, some of which may be empty.  The non-empty cubes will consist of either snow or rock.  Attacking cubes made of snow will allow the player to destroy them and progress further in the game.
 
-As the player explores the game world and defeats enemies, they will gain experience points.  The number of points gained is specific to the enemy type.
+As the player explores the game world and defeats enemies, they will gain experience points.  The number of points gained is specific to the enemy type (see section \ref{StatsSection} for more details).
 
 \subsubsection{Player and Enemy Attirbutes}
 
@@ -438,7 +433,9 @@ Affects movement and attack speed.
 \label{CombatMechanics}
 \subsubsection{Combat Mechanics}
 
-When an attack connects with an entity, the attack attempts to remove HP equal to its power.  Before that damage is applied, the entity's defense value is subtracted.  The resulting value is clamped to a minimum of 1 HP of damage.
+When an attack connects with an entity, the attack attempts to remove HP equal to its power.  Before that damage is applied, the entity's defense value is subtracted.  The resulting value is clamped to a minimum of 1 HP of damage.  The total HP of any entity is clamped to a minimum of 0 and a maximum of their max HP value.
+
+In addition to damage values, attacks can have elemental attributes.  Currently, the only three element types are fire, ice, and lightning.  Elemental attributes may have different effects on enemies, depending on how that enemy handles damage.
 
 \label{AbilitiesSection}
 \subsubsection{Abilities}
@@ -470,13 +467,12 @@ A wall-jump ability is also available.  The ability can be used repeatedly in or
 
 The standard attack is a simple slash with the snow shovel.  This will remain the same regardless of the level of the player, although the attack power may increase.  Standard attacks can be aimed in any direction, according to the position of the mouse cursor.
 
-If the attack hits a cube of ice, it will be destroyed.
+If the attack hits a cube of snow, it will be destroyed.
 
 \item[Special Abilities*]
 
-A number of special attacks will be available to the player.  They will be able to use them if they find the necessary items.  The attacks are listed below.
+A number of special abilities will be available to the player.  They will be able to use them if they acquire them through use of the level-up pentagram.  The abilities are listed below.
 
-%Todo: Proper indentation
 \begin{description}
 
 \item[Lightning Bolt*]
@@ -501,63 +497,40 @@ Allows quick, short bursts of movement.  Ideal for fast motion and evasion of en
 
 \end{description}
 
-
 \end{description}
+
+\subsubsection{Items}
+
+Only two types of items are available to the player, and are randomly dropped by enemies.
+
+\paragraph{HP Up}
+This item heals one tank of HP.
+
+\paragraph{MP Up}
+This item heals one tank of MP.
 
 \subsubsection{Enemies}
 
-\begin{figure}[h!]
-\includegraphics[width=5in]{Graphics/Wyrm.png}
-\caption{Wyrm}
-\label{WyrmPic}
-\end{figure}
+See section the image files included with the electronic submission for concept art.
 
 \paragraph{Wyrm}
 Millenia of exposure to the black Majyyks of the cursed glacier have turned worms into Wyrms!  They have little wings and sharp teeth and are scary now!  Watch out for their blood sucking attack.  It will suck your blood!
 
-\begin{figure}[h!]
-\includegraphics[width=5in]{Graphics/FHeadman.png}
-\caption{F. Headman}
-\label{FHeadPic}
-\end{figure}
-
 \paragraph{F. Headman}
 Question 1: Does the F stand for Floating or Flaming?  Question 2: Does it really matter?  F. Headman is one of a decapitated horde of fire-breathing black metal singers cursed to float around and breathe fire for eternity.... which is not really a curse because it’s totally awesome!  Anyway, he can shoot fire at you, so watch it!
-
-\begin{figure}[h!]
-\includegraphics[width=5in]{Graphics/Shadowman.png}
-\caption{Shadowman}
-\label{ShadowmanPic}
-\end{figure}
 
 \paragraph{Shadowman}
 A cursed soul destined to wander the bowels of the earth forever in search of flesh to satisfy its hunger.  He’s a robe hooded guy with skeleton arms or something.  He may seem fairly harmless, but he will open his robe to suck you in, so watch out!
 
-\begin{figure}[h!]
-\includegraphics[width=5in]{Graphics/Snowman.png}
-\caption{Abominable Snowman}
-\label{SnowmanPic}
-\end{figure}
-
 \paragraph{Abominable Snowman}
 Wow, look at this guy.  He has a knife for a nose!  That is not a carrot.  THAT IS WHAT MUTILATES CARROTS!  Just like this guy will mutilate YOU!
-
-\begin{figure}[h!]
-\includegraphics[width=5in]{Graphics/Shoggoth.png}
-\caption{Shoggoth}
-\label{ShoggothPic}
-\end{figure}
 
 \paragraph{Shoggoth}
 “It was a terrible, indescribable thing vaster than any subway train—a shapeless congeries of protoplasmic bubbles, faintly self-luminous, and with myriads of temporary eyes forming and un-forming as pustules of greenish light all over the tunnel-filling front that bore down upon us.”
 
 These were the last words of HP Lovecraft before he was eaten by one of these bad boys.  You don’t want to get in their way.  They’ll form an un-form pustules of PAIN on the inside of your BRAIN!
 
-\begin{figure}[h!]
-\includegraphics[width=5in]{Graphics/Xlgrhthbtrg_black.png}
-\caption{Xl'Grhthbtrg}
-\label{XlPic}
-\end{figure}
+
 
 \paragraph{Xl'Grhthbtrg}
 The power of Xl'grhthlbtrg is not one that can be known by the simple minds of men, for his very existence is drawn from the blackest voids beyond the abominable stars. There he beholds the unspeakable creations of the Nameless One and screams his master's dark will across the cosmos.
@@ -571,7 +544,7 @@ Also, he’s the final boss of level 1.  You’d think that with all those cosmi
 Levels are randomly generated with every new game.  Level generation begins with the construction of a random maze, which is then processed to produce a complete level.  Enemies are then added to the level.  Level generation follows a three-step process, which is outlined here.
 
 \paragraph{Maze Generation}
-A maze generation algorithm called the Growing Tree algorithm is first initialized with a random seed, and proceeds to generate a maze.  this maze generation algorithm ensures the creation of a maze with no loops.  That is, there is only one path between any two empty squares.  An example of such a maze can be seen in figure \ref{TextMaze}.  In this figure, X' represent walls, while periods represent empty spaces.
+A maze generation algorithm called the Growing Tree algorithm is first initialized with a random seed, and then proceeds to generate a maze.  This maze generation algorithm ensures the creation of a maze with no loops.  That is, there is only one path between any two empty squares.  An example of such a maze can be seen in figure \ref{TextMaze}.  In this figure, X's represent walls, while periods represent empty spaces.
 
 \begin{figure}[htbp]
 	\verbatiminput{Code/mazetext.txt}
@@ -585,7 +558,7 @@ Once the maze is created, it is converted into a level.  This is done by replaci
 \begin{figure}[h!]
 
 \includegraphics[width=5in]{Graphics/textmaze.png}
-\caption{A fully-generated level.}
+\caption{A fully-generated level.  Individual characters are not visible, as the image is zoomed-out.}
 \label{TextLevel}
 
 \end{figure}
@@ -595,12 +568,9 @@ The third step involves placing enemies in the rooms.  For each room type, a num
 
 \subsubsection{Gaining Experience and Abilities}
 
-Increasing player stats and gaining abilities is achieved through use of the level-up pentagram.  The level-up pentagram (fig. \ref{Pentagram}) can be accessed through the status menu by pressing tab on the game screen.  The level-up pentagram enables customization and specialization of stats and abilities, allowing different play experiences for different play-throughs of the game.
+Increasing player stats and gaining abilities is achieved through use of the level-up pentagram.  The level-up pentagram (fig. \ref{Pentagram}) can be accessed through the status menu by pressing tab on the game screen.  It enables customization and specialization of stats and abilities, allowing different play experiences for different play-throughs of the game.
 
-%TODO Experience levels chart!
-As the player defeats enemies, they gain experience points.  When enough experience is acquired to advance to the next level, the player gains a level-up point ([TODO: Level-up charts!!!]).  Level-up points may be used to activate nodes on the level-up pentagram.  A node may only be activated if an adjacent node is also activated.  A special case is the first level-up, in which the player chooses one of the nodes on the inner pentagram.
-
-
+As the player defeats enemies, they gain experience points.  When enough experience is acquired to advance to the next level, the player gains a level-up point (see figure \ref{LevelupStats}).  Level-up points may be used to activate nodes on the level-up pentagram.  A node may only be activated if an adjacent node is also activated.  A special case is the first level-up, in which the player chooses one of the nodes on the inner pentagram.
 
 \begin{figure}[h!]
 
@@ -610,9 +580,7 @@ As the player defeats enemies, they gain experience points.  When enough experie
 
 \end{figure}
 
-
-Activating each node provides an increase to one or more of the player's stats.  The nodes on the outer points provide +2 points to Attack, Defense, HP, MP, and Speed, while the inner nodes provide +1 points to 2 stats, determined by which outer points they are adjacent to.  For example, the inner node adjacent to both the +2 HP and +2 MP nodes provides +1 to each.  Although increase of stats is abstracted into a simple, consistent point system, the effects of a single point on each stat are different, and are illustrated in fig. \ref{LevelupStats}.
-
+Activating each node provides an increase to one or more of the player's stats.  The nodes on the outer points provide +2 points to Attack, Defense, HP, MP, and Speed, while the inner nodes provide +1 points to 2 stats, determined by which outer points they are adjacent to.  For example, the inner node adjacent to both the +2 HP and +2 MP nodes provides +1 to both HP and MP.  Although increase of stats is abstracted into a simple, consistent point system, the effects of a single point are different for each stat, and are illustrated in figure \ref{LevelupStats}.
 
 \begin{figure}[h!]
 \begin{tabular}{|r|l|}
@@ -630,7 +598,7 @@ Attack & +10 attack. \\
 \label{LevelupStats}
 \end{figure}
 
-Gaining abilities is also achieved using the pentagram.  Each of the triangular points of the pentagram is associated with an ability (Fire, Dash, Lightning, Heal, Ice).  Activating all nodes co surrounding that ability gives that ability to the player.  The abilities are generally themed such that each one corresponds roughly to the stat associated with its triangle.  For example, activating all HP nodes gives the player the Heal ability, which restores HP.  Similarly, Activating all speed nodes gives the player the Dash ability, which allows fast movement.
+Gaining abilities is also achieved using the pentagram.  Each of the triangular points of the pentagram is associated with an ability (Fire, Dash, Lightning, Heal, Ice).  Activating all nodes surrounding that ability gives that ability to the player.  The abilities are generally themed such that each one corresponds roughly to the stat associated with its triangle.  For example, activating all HP nodes gives the player the Heal ability, which restores HP.  Similarly, Activating all speed nodes gives the player the Dash ability, which allows fast movement.
 
 Because the level-up system is intended to encourage replayability, a player will not be able to activate all nodes or gain all abilities in a single play-through.  Because there are a total of 10 nodes, the player will be limited to a maximum of 5 level-ups throughout the course of the game, ensuring that only a limited selection of abilities will be chosen by the player.  It is worth noting that the Pentagram was initially intended to be much more extensive, with each triangle segmented into 4 sub-triangles, giving a total of 25 nodes and 20 unique abilities.  However, due to limited time and resources, as well as the fact that only a demo version is being developed, the pentagram was reduced in size.
 
@@ -644,7 +612,7 @@ Jumping is accomplished using the space key.  There will be a short delay after 
 
 Despite being a sidescroller, the inclusion of the ability to aim inspired us to use the conventions of first-person shooters.  Aiming and attacking is done with the mouse.  The left mouse button executes the primary attack, which may be aimed in any direction.  Additionally, the orientation of the player's character (left or right).  is determined by the position of the mouse.  This enables the player to move forwards and backwards easily while aiming at any desired target.
 
-Special abilities are used with the right moust button.  There is at most one active special ability, which may either be selected by using the number keys or by using the mouse's scroll wheel.  This scheme should be familiar to most first-person shooter players, who are used to selecting weapons in this way.  The fire ability functions much like a normal attack, and can similarly be aimed in any direction.  The lightning ability is the only projectile ability, and can be aimed at any target on the screen.  Ice and heal cause effects local only to the player, and therefore aiming has no effect on them.
+Special abilities are used with the right mouse button.  There is at most one active special ability, which may either be selected by using the number keys or by using the mouse's scroll wheel.  This scheme should be familiar to most first-person shooter players, who are used to selecting weapons in this way.  The fire ability functions much like a normal attack, and can similarly be aimed in any direction.  The lightning ability is the only projectile ability, and can be aimed at any target on the screen.  Ice and heal cause effects local only to the player, and therefore aiming has no effect on them.
 
 Dash is a special case of abilities.  Rather than being selected and used with the right mouse button, it is mapped to movement keys.  The Q and E keys allow left- and right-dashing respectively.  They were chosen due to their close proximity to A and D, the left and right movement keys.
 
@@ -663,8 +631,8 @@ Mouse & Aim \\
 Left Mouse & Attack \\
 Right Mouse & Special ability \\
 Mouse Wheel & Change special ability \\
-1 & Select Fire \\
-2 & Select Lightning \\
+1 & Select Lightning \\
+2 & Select Fire \\
 3 & Select Ice \\
 4 & Select Heal \\
 \hline
@@ -720,7 +688,7 @@ In the middle top part of the game screen, there will be two other sections.  Th
 On the right-hand side of the top of the screen, a small local map is displayed.  This includes the current room and all rooms immediately adjacent to the it.
 
 \begin{figure}[h!]
-{\scalefont{1.0}
+{\scalefont{0.6}
 \input{Graphics/menu.tex}
 }
 \caption{Game screens FSM.}
@@ -728,23 +696,31 @@ On the right-hand side of the top of the screen, a small local map is displayed.
 \end{figure}
 
 \begin{figure}[h!]
-{\scalefont{1.0}
-\input{Graphics/levelupScreen.tex}
-}
-\caption{Level-Up Screen.}
+\includegraphics[width=5in]{Graphics/StatusMenu.png}
+\caption{Level-Up and Map Screen.}
 \label{LevelupScreen}
 \end{figure}
 
 \begin{figure}[h!]
-{\scalefont{1.0}
-\input{Graphics/gameScene.tex}
-}
+\includegraphics[width=5in]{Graphics/GameScene.png}
 \caption{Game Scene.}
 \label{GameScene}
 \end{figure}
 
 
 \section{Technical Risk}
+
+Every software development project faces probable risks during its development process. Call of the Wintermoon is a promising video game with innovative features, and has its own technical risks.  In this section possible risks and appropriate strategies for dealing with each of them will be outlined.
+
+\subsection{Meeting the deadline}
+The deadline for completing the first demo is April 15th.  The main concern of the group is not meeting this deadline.  Call of the Wintermoon includes numerous features, characters and game objects.  For handling this problem development will be accomplished through multiple iterations.  In the first iterations the most important priority is to implement the basic functionalities, yielding a playable game.  In the next iteration the group will try to identify and prioritize remaining features.
+
+\subsection{Scripting Animation}
+Blender includes certain advanced features for 3D animation.  Some of these features (such as the inverse kinematics system) are not present in Unity.  As a result, some aspects of animations which are easily implemented in Blender may not be implementable in Unity.  This may cause the animation quality to suffer, or may require more effort than expected to achieve a reasonable solution.
+
+\subsection{Dynamic level Generation}
+The idea of dynamic level generation was one of the most interesting concepts in designing Call of the Wintermoon gameplay.  The fact that the player can play the whole game in a short sitting while also being able to acquire different abilities is quite interesting and there are not many games which offer this flexibility.  The current state of the random level generation is not very sophistocated, and doesn't adjust to any type of difficulty curve.  We plan to add these features, but are uncertain if it will be feasible to accomplish this in the limited time we have.
+
 
 \label{StatsSection}
 \section{Player and Enemy Statistics}
@@ -778,6 +754,8 @@ Level-Up&Experience Required\\
 
 \label{RoomAndEnemy}
 \section{Room and Enemy Configurations}
+
+Basic room configurations are listed in this section.  For a more complete listing, refer to the text files accompanied by the electronic submission.
 
 \begin{tabular}{|r|l|}
 \hline
@@ -840,36 +818,5 @@ X & Xl'Grhthbtrg \\
 	\caption{Room type 5.}
 	\label{Type5}
 \end{figure}
-
-\pagebreak
-
-\begin{multicols}{2}[\textbf{Room 1 Configurations}]
-\verbatiminput{Code/type1_configurations.txt}
-\end{multicols}
-
-\pagebreak
-\newpage
-
-\begin{multicols}{2}[\textbf{Room 2 Configurations}]
-\verbatiminput{Code/type2_configurations.txt}
-\end{multicols}
-
-\pagebreak
-
-\begin{multicols}{2}[\textbf{Room 3 Configurations}]
-\verbatiminput{Code/type3_configurations.txt}
-\end{multicols}
-
-\pagebreak
-
-\begin{multicols}{2}[\textbf{Room 4 Configurations}]
-\verbatiminput{Code/type4_configurations.txt}
-\end{multicols}
-
-\pagebreak
-
-\begin{multicols}{2}[\textbf{Room 5 Configurations}]
-\verbatiminput{Code/type5_configurations.txt}
-\end{multicols}
 
 \end{document}

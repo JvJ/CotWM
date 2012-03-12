@@ -271,8 +271,8 @@ public class CharacterControl : EntityControl {
 	
 	private float lastDamage = 0f;
 	
-	public void OnGUI(){
-		GUI.TextField(new Rect(0, 50, 100, 20), "Dmg: "+lastDamage);
-	}
+	//public void OnGUI(){
+	//	GUI.TextField(new Rect(0, 50, 100, 20), "Dmg: "+lastDamage);
+	//}
 	
 }
