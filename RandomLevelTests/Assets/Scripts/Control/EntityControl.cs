@@ -13,6 +13,7 @@ public enum EntityState{
 	
 	// Shadowman
 	EXPANDING,
+	EXPELLING,
 	
 	// Keep this here - it's important!
 	NumElements
@@ -69,7 +70,7 @@ public class EntityControl : MonoBehaviour {
 	
 	#region Inheritable Methods
 	
-	public virtual float TakeDamage(Attack atk)
+	public virtual void TakeDamage(Attack atk)
 	{
 		throw new NotImplementedException();
 	}
@@ -97,7 +98,7 @@ public class EntityControl : MonoBehaviour {
 		RunStateFunc(currentState);
 	}
 	
-	public void SwitchState(EntityState s){
+	public virtual void SwitchState(EntityState s){
 		currentState = s;
 	}
 	
@@ -147,6 +148,26 @@ public class EntityControl : MonoBehaviour {
 	/// This function always succeeds the update function.
 	/// </summary>
 	public virtual void Tail(){
+	}
+	
+	#endregion
+	
+	#region Utility Methods
+	
+	public bool castToPlayer(){
+		
+		// Do a ray-cast to the player
+		Vector3 dPlayer = player.transform.position - transform.position;
+		
+		RaycastHit info;
+		
+		if (Physics.Raycast(new Ray(transform.position, dPlayer), out info)){
+			if (info.collider.gameObject == player){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	#endregion

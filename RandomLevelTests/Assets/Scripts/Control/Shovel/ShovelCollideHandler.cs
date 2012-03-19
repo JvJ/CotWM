@@ -13,7 +13,7 @@ public class ShovelCollideHandler : MonoBehaviour {
 	
 	#endregion
 	
-	public CharacterControl characterControl;
+	public DethmurderControl characterControl;
 	
 	// Use this for initialization
 	void Start () {
@@ -22,7 +22,7 @@ public class ShovelCollideHandler : MonoBehaviour {
 		
 		print("The ec is : "+ec);
 		
-		characterControl = owner.GetComponent(typeof(CharacterControl)) as CharacterControl;
+		//characterControl = owner.GetComponent(typeof(CharacterControl)) as CharacterControl;
 		
 		//print("It is : "+owner.GetComponent(typeof(MonoBehaviour)).GetType().ToString());
 		

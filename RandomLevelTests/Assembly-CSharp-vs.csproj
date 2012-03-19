@@ -54,11 +54,17 @@
      <Compile Include="Assets\Scripts\Control\Camera\FollowPlayer.cs" />
      <Compile Include="Assets\Scripts\Control\CharacterControl.cs" />
      <Compile Include="Assets\Scripts\Control\CursorHit.cs" />
+     <Compile Include="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs" />
      <Compile Include="Assets\Scripts\Control\Enemy\F_Headman\FHeadmanControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Shaddowman\ShadowmanControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\TentacleInit.cs" />
      <Compile Include="Assets\Scripts\Control\EntityControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Extra\Attractor.cs" />
      <Compile Include="Assets\Scripts\Control\PhysControl.cs" />
      <Compile Include="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" />
      <Compile Include="Assets\Scripts\Control\Stats.cs" />
+     <Compile Include="Assets\Scripts\Control\cuebTest.cs" />
      <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />
      <Compile Include="Assets\Scripts\LevelStart\CubeGen.cs" />
      <Compile Include="Assets\Scripts\MetaBall\MCBlob.cs" />

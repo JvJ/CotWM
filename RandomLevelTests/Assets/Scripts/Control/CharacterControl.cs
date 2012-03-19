@@ -256,13 +256,11 @@ public class CharacterControl : EntityControl {
 	/// <returns>
 	/// A <see cref="System.Single"/>
 	/// </returns>
-	public override float TakeDamage (Attack atk)
+	public override void TakeDamage (Attack atk)
 	{
 		stats.HP -= (atk.damageValue - stats.defense);
 	
 		lastDamage = (atk.damageValue - stats.defense);
-		
-		return (atk.damageValue - stats.defense);
 	}
 	
 	

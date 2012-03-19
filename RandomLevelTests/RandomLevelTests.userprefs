@@ -1,19 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MetaBall\MCBlob.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Control\Enemy\Shaddowman\ShadowmanControl.cs">
     <Files>
-      <File FileName="Assets\Scripts\Control\Stats.cs" Line="51" Column="3" />
-      <File FileName="Assets\Scripts\Algorithms\Chambers.cs" Line="33" Column="39" />
-      <File FileName="Assets\Scripts\LevelStart\CubeGen.cs" Line="113" Column="73" />
-      <File FileName="Assets\Scripts\Control\CharacterControl.cs" Line="194" Column="4" />
-      <File FileName="Assets\Scripts\Algorithms\Room.cs" Line="13" Column="3" />
-      <File FileName="Assets\Scripts\Algorithms\Maze.cs" Line="39" Column="16" />
-      <File FileName="Assets\Scripts\Algorithms\Misc.cs" Line="9" Column="9" />
-      <File FileName="Assets\Scripts\GUI\DethmurderGUI.cs" Line="17" Column="5" />
-      <File FileName="Assets\Scripts\Control\CursorHit.cs" Line="12" Column="26" />
-      <File FileName="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Control\Enemy\F_Headman\FHeadmanControl.cs" Line="22" Column="30" />
-      <File FileName="Assets\Scripts\MetaBall\MCBlob.cs" Line="80" Column="19" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shaddowman\ShadowmanControl.cs" Line="18" Column="27" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" Line="78" Column="2" />
+      <File FileName="Assets\Scripts\Control\Enemy\F_Headman\FHeadmanControl.cs" Line="19" Column="22" />
+      <File FileName="Assets\Scripts\Control\EntityControl.cs" Line="101" Column="17" />
+      <File FileName="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" Line="45" Column="68" />
+      <File FileName="Assets\Scripts\Control\CharacterControl.cs" Line="249" Column="2" />
+      <File FileName="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs" Line="265" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

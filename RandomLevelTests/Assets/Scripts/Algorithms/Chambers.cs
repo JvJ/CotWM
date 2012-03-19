@@ -6,10 +6,10 @@ namespace LevelGen
 	
 	public enum ChamberType
 	{
-		TYPE_1,
-		TYPE_2,
-		TYPE_3,
-		TYPE_4,
+		//TYPE_1,
+		//TYPE_2,
+		//TYPE_3,
+		//TYPE_4,
 		TYPE_5,
 		NumElements
 	}
@@ -97,7 +97,7 @@ namespace LevelGen
 		{
 			rooms = new Room[(int)ChamberType.NumElements];
 			
-			rooms[(int)ChamberType.TYPE_1] = Room.FromString
+		/*	rooms[(int)ChamberType.TYPE_1] = Room.FromString
 
 				(
 
@@ -189,7 +189,7 @@ namespace LevelGen
 				 "@@@@@@@@@             @@@@@@@@"+"\n"+
 				 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"
 
-				 );
+				 );*/
 			
 			rooms[(int)ChamberType.TYPE_5] = Room.FromString
 

@@ -16,7 +16,7 @@ public class FHeadmanControl : EntityControl {
 		base.Start();
 	}
 	
-	public override float TakeDamage (Attack atk)
+	public override void TakeDamage (Attack atk)
 	{
 		float dmg = atk.damageValue;
 		
@@ -26,8 +26,6 @@ public class FHeadmanControl : EntityControl {
 		}
 		
 		stats.DoDamage(dmg, false);
-		
-		return dmg;
 	}
 	
 	#region State Functions
@@ -88,18 +86,7 @@ public class FHeadmanControl : EntityControl {
 		
 		// Check for state transitions
 		
-		// Do a ray-cast to the player
-		Vector3 dPlayer = player.transform.position - transform.position;
 		
-		RaycastHit info;
-		
-		if (Physics.Raycast(new Ray(transform.position, dPlayer), out info)){
-			if (info.collider.gameObject == player){
-				//TODO: Do this better with child objects...?
-				SwitchState(EntityState.CLOSE_IN);
-				directionTimeCounter = 0;
-			}
-		}
 	}
 	
 	/// <summary>
