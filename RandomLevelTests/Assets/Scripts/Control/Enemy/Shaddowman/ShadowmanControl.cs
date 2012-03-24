@@ -5,7 +5,7 @@ using AssemblyCSharp;
 
 public class ShadowmanControl : EntityControl {
 	
-	public DethmurderControl controller;
+	public CharacterController controller;
 	
 	private Attractor attr;
 	
@@ -17,7 +17,7 @@ public class ShadowmanControl : EntityControl {
 		this[EntityState.EXPANDING] = expand;
 		this[EntityState.EXPELLING] = expelling;
 		
-		pController = player.GetComponent(typeof(CharacterController)) as CharacterController;
+		pController = player.gameObject.GetComponent(typeof(CharacterController)) as CharacterController;
 		
 		attr = new Attractor(transform, suckSpeed);
 	}
@@ -38,16 +38,15 @@ public class ShadowmanControl : EntityControl {
 	
 	public override void SwitchState (EntityState s)
 	{
-		// LEFTOFF!
 		if (currentState == EntityState.EXPANDING){
-			controller.removeAttractor(attr);
+			player.removeAttractor(attr);
 		}
 		
 		base.SwitchState (s);
 		
 		// Add the attractor if necessary
 		if ( s == EntityState.EXPANDING){
-			controller.addAttractor(attr);
+			player.addAttractor(attr);
 		}
 	}
 	
@@ -95,7 +94,7 @@ public class ShadowmanControl : EntityControl {
 		controller.Move((currentTarget - transform.position).normalized * stats.speed * Time.deltaTime);
 		
 		if (castToPlayer()){
-			//SwitchState(EntityState.CLOSE_IN);
+			SwitchState(EntityState.CLOSE_IN);
 		}
 		
 		Debug.DrawLine(transform.position, currentTarget, drawColor);
@@ -110,9 +109,9 @@ public class ShadowmanControl : EntityControl {
 	public override void CloseIn ()
 	{
 		
-		controller.Move((player.transform.position - transform.position).normalized * stats.speed * Time.deltaTime);
+		controller.Move((player.gameObject.transform.position - transform.position).normalized * stats.speed * Time.deltaTime);
 		
-		if (Vector3.Distance(transform.position, player.transform.position) < triggerRadius){
+		if (Vector3.Distance(transform.position, player.gameObject.transform.position) < triggerRadius){
 			SwitchState(EntityState.EXPANDING);
 		}
 	}
@@ -127,13 +126,7 @@ public class ShadowmanControl : EntityControl {
 	
 	public void expand(){
 		
-		/*if (pController != null){
-			
-			pController.Move((transform.position - player.transform.position).normalized * suckSpeed * Time.deltaTime);
-			
-			
-			
-		}*/
+		// LEFTOFF: The expulsion trigger!
 	}
 	
 	public void expelling(){

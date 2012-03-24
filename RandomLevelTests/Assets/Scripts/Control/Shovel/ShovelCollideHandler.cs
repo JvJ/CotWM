@@ -40,8 +40,6 @@ public class ShovelCollideHandler : MonoBehaviour {
 	
 	void OnTriggerEnter (Collider other){
 		
-		
-		
 		if (other.gameObject != owner && characterControl.IsAttacking()){
 
 		
@@ -49,7 +47,7 @@ public class ShovelCollideHandler : MonoBehaviour {
 				audio.Play();
 			}
 			
-			if (other.gameObject.name == "SNOW"){
+			if (other.gameObject.CompareTag("SNOW")){
 			
 				GameObject.Destroy(other.gameObject);
 			
@@ -57,6 +55,7 @@ public class ShovelCollideHandler : MonoBehaviour {
 	
 			// Attempt to get an entity control object from the other entity
 			EntityControl otherControl = other.gameObject.GetComponent(typeof(EntityControl)) as EntityControl;
+			
 			
 			// If we did get one, let's do damage to it
 			if (otherControl != null){

@@ -3,12 +3,19 @@ using System.Collections;
 
 public class ShoggothControl : EntityControl{
 
-	public CharacterController controller;
+	public Rigidbody rb;
 	public Collider coll;
+	
+	/// <summary>
+	/// How fast will the player go when he gets hit??
+	/// </summary>
+	public float playerWhackIntensity;
 	
 	// Use this for initialization
 	void Start () {
 		base.Start();
+		
+		rb.WakeUp();
 	}
 	
 	
@@ -36,7 +43,7 @@ public class ShoggothControl : EntityControl{
 	/// <summary>
 	/// The amount of time left in the wandering
 	/// </summary>
-	private float wanderCountDown = 0;
+	public float wanderCountDown = 0;
 	
 	
 	/// <summary>
@@ -48,11 +55,14 @@ public class ShoggothControl : EntityControl{
 	
 	public override void Wander ()
 	{
+
 		//print("Something is happening");
 		
 		// Execute the wandering
 		//controller.AddForce(new Vector3(wanderDirection * stats.speed, 0, 0));
-		controller.SimpleMove(new Vector3(wanderDirection * stats.speed, 0, 0));
+		var v = new Vector3(wanderDirection * stats.speed * Time.deltaTime, 0, 0);
+		rb.MovePosition(transform.position + v);
+			//SimpleMove(new Vector3(wanderDirection * stats.speed, 0, 0));
 		
 		// Update the timer
 		wanderCountDown -= Time.deltaTime;
@@ -85,6 +95,25 @@ public class ShoggothControl : EntityControl{
 			{
 				// Reset the timer!
 				wanderCountDown = wanderTimeOut;
+			}
+		}
+	}
+	
+	void OnCollisionEnter(Collision collision){
+		
+		foreach (var c in collision.contacts){
+			Debug.DrawLine(c.point, c.point + c.normal, Color.white, 1.0f);
+			
+			// Only horizontal hits count, yo!
+			if (c.normal.y == 0){
+				if (c.otherCollider.gameObject.CompareTag("SNOW")
+				    || c.otherCollider.gameObject.CompareTag("ROCK"))
+				{
+					// Reset the timer!
+					//wanderCountDown = wanderTimeOut;
+					wanderDirection = -wanderDirection;
+					return;
+				}
 			}
 		}
 	}

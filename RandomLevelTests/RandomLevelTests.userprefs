@@ -1,14 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Control\Enemy\Shaddowman\ShadowmanControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs">
     <Files>
-      <File FileName="Assets\Scripts\Control\Enemy\Shaddowman\ShadowmanControl.cs" Line="18" Column="27" />
-      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" Line="78" Column="2" />
-      <File FileName="Assets\Scripts\Control\Enemy\F_Headman\FHeadmanControl.cs" Line="19" Column="22" />
-      <File FileName="Assets\Scripts\Control\EntityControl.cs" Line="101" Column="17" />
-      <File FileName="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" Line="45" Column="68" />
-      <File FileName="Assets\Scripts\Control\CharacterControl.cs" Line="249" Column="2" />
-      <File FileName="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs" Line="265" Column="4" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs" Line="22" Column="28" />
+      <File FileName="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" Line="62" Column="55" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" Line="10" Column="52" />
+      <File FileName="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs" Line="414" Column="18" />
+      <File FileName="Assets\Scripts\Control\EntityControl.cs" Line="19" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -70,6 +70,18 @@ public class DethmurderControl : EntityControl {
 	void Start () {
 		base.Start();
 		
+		// TODO: Should this just be set in the editor?
+		if (controller == null){
+			controller = GetComponent(typeof(CharacterController)) as CharacterController;
+		}
+		
+		// Setting up some more state functions
+		this[EntityState.JUMPSTART] = JumpStart;
+		this[EntityState.JUMPING] = Jumping;
+		this[EntityState.GROUNDED] = Grounded;
+		this[EntityState.GO_FLYING] = GoFlying;
+		
+		
 		animation["Walking"].layer = 0;
 		animation["Walking"].enabled = true;
 		animation["Walking"].wrapMode = walkingWrapMode;
@@ -95,13 +107,21 @@ public class DethmurderControl : EntityControl {
 	public override void Head ()
 	{
 		base.Head ();
+		
+		moveDirection = Vector3.zero;
+		
+		// Modify vertical speed
+		vSpeed += Physics.gravity.y * Time.deltaTime;
+		
+		UpdateAim();
 	}
 	
 	public override void Tail ()
 	{
 		base.Tail ();
 		
-		//print("moveDirection at beginning of tail: "+moveDirection);
+		// Apply vertical speed
+		moveDirection.y += vSpeed;
 		
 		// Apply velocity from attractors
 
@@ -111,6 +131,7 @@ public class DethmurderControl : EntityControl {
 			float d2 = Vector3.Magnitude(dir);
 			
 			dir.Normalize();
+			dir *= a.gConstant;
 			
 			moveDirection += (1f/d2) * dir;
 		}
@@ -122,7 +143,120 @@ public class DethmurderControl : EntityControl {
 	
 	#region State Methods
 	
-	public override void Wander ()
+	#region JumpStart Parameters
+	
+	public float jumpLim;
+	
+	public float initVelocity;
+	
+	public float velocityMultiplier;
+	
+	private float jumpTimer = 0f;
+	
+	#endregion
+	
+	// A simple utility function for movement
+	public void UpdateBasicMovement(){
+		float hAxis = Input.GetAxis("Horizontal");
+		float dashAxis = Input.GetAxis("Dash");
+		
+		// Handle the turning
+		transform.rotation = Quaternion.Euler(new Vector3(0, cos < 0 ? 90 : -90,0));
+		
+		// Moving
+		moveDirection.x += hAxis * stats.speed;
+	}
+	
+	// Utility function for updating aim
+	float sin;
+	float cos;
+	public void UpdateAim(){
+		// Find the sine and cosine of the difference to the target
+		float dx = aimTarget.position.x - transform.position.x;
+		float dy = aimTarget.position.y - transform.position.y;
+		float hyp = Mathf.Sqrt(dx * dx + dy * dy);
+		
+		sin = dy / hyp;
+		cos = dx / hyp;
+	}
+	
+	// Utility function for activating attacks
+	public void UpdateAttacking(){
+		
+		if (Input.GetButton("Whack")
+		    && !animation.IsPlaying("Whacking")
+		    && !animation.IsPlaying("WhackingUp")
+		    && !animation.IsPlaying("WhackingDown")){
+			
+			animation.Blend("Whacking", Mathf.Abs(cos));
+			
+			animation.Blend(sin > 0 ? "WhackingUp" : "WhackingDown", Mathf.Abs(sin));
+			
+		}
+	}
+	
+	public void Grounded(){
+		
+		UpdateBasicMovement();
+		
+		// Always reset the vertical speed
+		vSpeed = 0f;
+		
+		
+		// Handle the attacking
+		UpdateAttacking();
+		
+		if (Input.GetButton("Jump")){
+			SwitchState(EntityState.JUMPSTART);
+		}
+		
+		if (!controller.isGrounded){
+			SwitchState(EntityState.JUMPING);
+		}
+	}
+	
+	public void JumpStart(){
+		
+		UpdateBasicMovement();
+		
+		UpdateAttacking();
+		
+		// Add to ther timer
+		if (jumpTimer >= jumpLim){
+			jumpTimer = 0f;
+			SwitchState(EntityState.JUMPING);
+			return;
+		}
+		
+		jumpTimer += Time.deltaTime;
+		
+		// Do the lerp!
+		vSpeed = initVelocity + Mathf.Lerp(0f, jumpLim, jumpTimer)* velocityMultiplier;
+		
+		// If, at any point, jump is not being pressed, switch state!
+		if (!Input.GetButton("Jump")){
+			jumpTimer = 0f;
+			SwitchState(EntityState.JUMPING);
+		}
+	}
+	
+	public void Jumping(){
+		
+		UpdateBasicMovement();
+		
+		UpdateAttacking();
+		
+		// Gotta switch back if it's grounded
+		if (controller.isGrounded){
+			SwitchState(EntityState.GROUNDED);
+		}
+	}
+	
+	public void GoFlying(){
+		controller.Move(flyingForce * Time.deltaTime);
+	}
+	
+	/*public override void Wander ()
 	{
 		moveDirection = Vector3.zero;
 		float hAxis = Input.GetAxis("Horizontal");
@@ -130,9 +264,7 @@ public class DethmurderControl : EntityControl {
 		var quat = Quaternion.AngleAxis(wallJumpAngle, Vector3.Cross(jumpNormal, Vector3.up));
 		var v = quat * jumpNormal* wallJumpSpeed;
 		
-		if (controller == null){
-			controller = GetComponent(typeof(CharacterController)) as CharacterController;
-		}
+		
 		
 		// Counting the wall jump timer
 		if (wallJumpCounting){
@@ -250,7 +382,7 @@ public class DethmurderControl : EntityControl {
 		
 		//print("moveDirection at end of Wander: "+moveDirection);
 		
-	}
+	}*/
 	
 	/// <summary>
 	/// Called when a collider is encountered.
@@ -258,6 +390,10 @@ public class DethmurderControl : EntityControl {
 	void OnControllerColliderHit(ControllerColliderHit hit){
 		
 		Debug.DrawLine(hit.point, hit.point + hit.normal, drawColor, 0.1f);
+		
+		if (currentState == EntityState.GO_FLYING){
+			SwitchState(EntityState.JUMPING);
+		}
 		
 		if (hit.normal.y == 0f){
 			jumpNormal = hit.normal;
@@ -287,6 +423,21 @@ public class DethmurderControl : EntityControl {
 	
 	public void removeAttractor(Attractor a){
 		attractors.Remove(a);
+	}
+	
+	/// <summary>
+	/// Used to go flying!
+	/// </summary>
+	Vector3 flyingForce;
+	
+	/// <summary>
+	/// Set force for when you... go flying!
+	/// </summary>
+	/// <param name="force">
+	/// A <see cref="Vector3"/>
+	/// </param>
+	public void setForce(Vector3 force){
+		flyingForce = force;
 	}
 	
 	#endregion

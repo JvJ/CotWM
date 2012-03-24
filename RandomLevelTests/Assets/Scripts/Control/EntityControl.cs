@@ -11,6 +11,13 @@ public enum EntityState{
 	ATTACKING,
 	DEAD,
 	
+	// Dethmurder
+	JUMPSTART,
+	JUMPING,
+	GROUNDED,
+	WHACKING,
+	GO_FLYING,
+	
 	// Shadowman
 	EXPANDING,
 	EXPELLING,
@@ -51,7 +58,7 @@ public class EntityControl : MonoBehaviour {
 	
 	public EntityState currentState;
 	
-	public GameObject player;
+	public DethmurderControl player;
 	
 	#endregion
 	
@@ -157,12 +164,12 @@ public class EntityControl : MonoBehaviour {
 	public bool castToPlayer(){
 		
 		// Do a ray-cast to the player
-		Vector3 dPlayer = player.transform.position - transform.position;
+		Vector3 dPlayer = player.gameObject.transform.position - transform.position;
 		
 		RaycastHit info;
 		
 		if (Physics.Raycast(new Ray(transform.position, dPlayer), out info)){
-			if (info.collider.gameObject == player){
+			if (info.collider.gameObject == player.gameObject){
 				return true;
 			}
 		}

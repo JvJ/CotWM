@@ -96,7 +96,7 @@ public class FHeadmanControl : EntityControl {
 	{
 		base.CloseIn ();
 		
-		Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+		Vector3 directionToPlayer = (player.gameObject.transform.position - transform.position).normalized;
 		
 		// Turn to face the right (or left - LOL!) direction
 		if (directionToPlayer.x < 0){
@@ -113,7 +113,7 @@ public class FHeadmanControl : EntityControl {
 		// Raycast again to make sure we can still see the player
 		// If not, then go back to wandering
 		if (Physics.Raycast(new Ray(transform.position, directionToPlayer), out info)){
-			if (info.collider.gameObject != player){
+			if (info.collider.gameObject != player.gameObject){
 				//TODO: Do this better with child objects...?
 				SwitchState(EntityState.WANDER);
 				directionTimeCounter = 0;
