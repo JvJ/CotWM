@@ -162,19 +162,75 @@ public class EntityControl : MonoBehaviour {
 	#region Utility Methods
 	
 	public bool castToPlayer(){
+		RaycastHit h;
+		return castToPlayer(out h);
+	}
+	
+	public bool castToPlayer(out RaycastHit hitInfo){
 		
 		// Do a ray-cast to the player
 		Vector3 dPlayer = player.gameObject.transform.position - transform.position;
 		
 		RaycastHit info;
 		
-		if (Physics.Raycast(new Ray(transform.position, dPlayer), out info)){
-			if (info.collider.gameObject == player.gameObject){
+		// This is important!  It tells the enemies to ignore themselves when casting!
+		int mask = 0;
+		
+		mask |= 1 << LayerMask.NameToLayer("Default");
+		mask |= 1 << LayerMask.NameToLayer("Terrain");
+		
+		if (Physics.Raycast(new Ray(transform.position, dPlayer), out info, float.PositiveInfinity, mask)){
+			hitInfo = info;
+			//Debug.DrawLine(transform.position, info.point, Color.red, 1.0f);
+			
+			// TODO: This is just a work-around, but will probably work out alright!
+			if ( Vector3.Distance (info.point, transform.position) >
+			    Vector3.Distance(player.transform.position, transform.position)){
+				return true;
+			}
+			
+			if (info.collider.gameObject.CompareTag("PLAYER") ||
+			    info.collider.gameObject.CompareTag("PLAYERCHILD")){
 				return true;
 			}
 		}
 		
+		hitInfo = info;
+		
 		return false;
+	}
+	
+	/// <summary>
+	/// Set the tag of all descendant objects recursively.
+	/// </summary>
+	/// <param name="targ">
+	/// A <see cref="GameObject"/>.  Start with this game object.
+	/// </param>
+	/// <param name="tag">
+	/// A <see cref="System.String"/>.  What tag do you want to use?
+	/// </param>
+	public virtual void SetChildTags(GameObject targ, string tag){
+		
+		print("Setting tags for "+targ.name);
+		
+		if (transform == null){
+			return;
+		}
+		
+		foreach( Transform t in targ.transform){
+			
+			if (t.gameObject == null){
+				continue;
+			}
+			
+			print("Setting tags in loop for: "+t.gameObject.name);
+			
+			// Always set t's tag first, since we don't necessarily want
+			// this game object to have the tag!
+			t.gameObject.tag = tag;
+			
+			SetChildTags(t.gameObject, tag);
+		}
 	}
 	
 	#endregion

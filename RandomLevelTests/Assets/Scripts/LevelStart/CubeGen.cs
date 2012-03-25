@@ -59,6 +59,7 @@ public class CubeGen : MonoBehaviour {
 					//cube.tag = "SNOW";
 					cube.name = "SNOW";
 					cube.tag = "SNOW";
+					cube.layer = LayerMask.NameToLayer("Terrain");
 					
 					// Get the material component!
 					mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
@@ -76,6 +77,7 @@ public class CubeGen : MonoBehaviour {
 					//cube.tag = "ROCK";
 					cube.name = "ROCK";
 					cube.tag = "ROCK";
+					cube.layer = LayerMask.NameToLayer("Terrain");
 					
 					// Get the material component!
 					mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
@@ -116,7 +118,7 @@ public class CubeGen : MonoBehaviour {
 		
 		firstEnemy.transform.position = new Vector3(
 		                                        BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
-		                                        BottomLeft.y + ((start.Y + 0.4f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
+		                                        BottomLeft.y + ((start.Y + 0.2f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
 		                                        0);
 		
 		// Temporary!

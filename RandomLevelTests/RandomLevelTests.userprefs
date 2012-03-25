@@ -1,13 +1,45 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs">
     <Files>
-      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs" Line="22" Column="28" />
-      <File FileName="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" Line="62" Column="55" />
-      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" Line="10" Column="52" />
-      <File FileName="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs" Line="414" Column="18" />
-      <File FileName="Assets\Scripts\Control\EntityControl.cs" Line="19" Column="12" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\BigTentacleInit.cs" Line="15" Column="2" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\TentacleInit.cs" Line="10" Column="3" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" Line="135" Column="40" />
+      <File FileName="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" Line="31" Column="2" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs" Line="19" Column="3" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="Algorithms" expanded="True" />
+                <Node name="Control" expanded="True">
+                  <Node name="Enemy" expanded="True">
+                    <Node name="Shoggoth" expanded="True">
+                      <Node name="ShoggothControl.cs" selected="True" />
+                    </Node>
+                  </Node>
+                  <Node name="Shovel" expanded="True" />
+                </Node>
+                <Node name="LevelStart" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>dx</Value>
+          <Value>dy</Value>
+          <Value>aimTarget</Value>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

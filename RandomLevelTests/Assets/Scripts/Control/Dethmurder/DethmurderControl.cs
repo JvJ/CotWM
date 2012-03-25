@@ -6,7 +6,7 @@ public class DethmurderControl : EntityControl {
 	
 	#region Tunable Parameters
 	
-	public Transform aimTarget;
+	public GameObject aimTarget;
 	
 	//public float moveSpeed = 10f; 
 	
@@ -26,6 +26,8 @@ public class DethmurderControl : EntityControl {
 	public WrapMode walkingWrapMode = WrapMode.PingPong;
 	
 	public WrapMode whackingWrapMode = WrapMode.Default;
+	
+	public float speedAnimMultiplier = 0.1f;
 	
 	#region Ability-related Variables
 	
@@ -82,16 +84,20 @@ public class DethmurderControl : EntityControl {
 		this[EntityState.GO_FLYING] = GoFlying;
 		
 		
-		animation["Walking"].layer = 0;
-		animation["Walking"].enabled = true;
-		animation["Walking"].wrapMode = walkingWrapMode;
+		animation["WalkCycle"].layer = 0;
+		animation["WalkCycle"].enabled = true;
+		animation["WalkCycle"].wrapMode = walkingWrapMode;
 		
-		animation["Whacking"].layer = 1;
-		animation["Whacking"].enabled = true;
-		animation["Whacking"].wrapMode = whackingWrapMode;
-		animation["WhackingUp"].layer = 1;
-		animation["WhackingUp"].enabled = true;
-		animation["WhackingUp"].wrapMode = whackingWrapMode;
+		
+		animation["WhackingForward_m"].layer = 1;
+		animation["WhackingForward_m"].enabled = true;
+		animation["WhackingForward_m"].wrapMode = whackingWrapMode;
+		animation["WhackingUp_m"].layer = 1;
+		animation["WhackingUp_m"].enabled = true;
+		animation["WhackingUp_m"].wrapMode = whackingWrapMode;
+		animation["WhackingDown_m"].layer = 1;
+		animation["WhackingDown_m"].enabled = true;
+		animation["WhackingDown_m"].wrapMode = whackingWrapMode;
 		
 		attractors = new List<Attractor>();
 		
@@ -100,6 +106,8 @@ public class DethmurderControl : EntityControl {
 	
 	void Awake(){
 		moveDirection = new Vector3(1.0f, 0.0f, 0.0f);
+		
+		SetChildTags(gameObject, "PLAYERCHILD");
 	}
 	
 	#region Head and tail
@@ -107,6 +115,9 @@ public class DethmurderControl : EntityControl {
 	public override void Head ()
 	{
 		base.Head ();
+		
+		// This may seem strange, but it has to do with stats
+		animation["WalkCycle"].speed = stats.speed * speedAnimMultiplier;
 		
 		moveDirection = Vector3.zero;
 		
@@ -161,20 +172,23 @@ public class DethmurderControl : EntityControl {
 		float dashAxis = Input.GetAxis("Dash");
 		
 		// Handle the turning
-		transform.rotation = Quaternion.Euler(new Vector3(0, cos < 0 ? 90 : -90,0));
+		transform.rotation = Quaternion.Euler(new Vector3(0, cos < 0 ? -90 : 90,0));
 		
 		// Moving
 		moveDirection.x += hAxis * stats.speed;
 	}
 	
 	// Utility function for updating aim
-	float sin;
-	float cos;
+	public float sin;
+	public float cos;
+	public float dx;
+	public float dy;
+	public float hyp;
 	public void UpdateAim(){
 		// Find the sine and cosine of the difference to the target
-		float dx = aimTarget.position.x - transform.position.x;
-		float dy = aimTarget.position.y - transform.position.y;
-		float hyp = Mathf.Sqrt(dx * dx + dy * dy);
+		dx = aimTarget.transform.position.x - transform.position.x;
+		dy = aimTarget.transform.position.y - transform.position.y;
+		hyp = Mathf.Sqrt(dx * dx + dy * dy);
 		
 		sin = dy / hyp;
 		cos = dx / hyp;
@@ -184,13 +198,13 @@ public class DethmurderControl : EntityControl {
 	public void UpdateAttacking(){
 		
 		if (Input.GetButton("Whack")
-		    && !animation.IsPlaying("Whacking")
-		    && !animation.IsPlaying("WhackingUp")
-		    && !animation.IsPlaying("WhackingDown")){
+		    && !animation.IsPlaying("WhackingForward_m")
+		    && !animation.IsPlaying("WhackingUp_m")
+		    && !animation.IsPlaying("WhackingDown_m")){
 			
-			animation.Blend("Whacking", Mathf.Abs(cos));
+			animation.Blend("WhackingForward_m", Mathf.Abs(cos));
 			
-			animation.Blend(sin > 0 ? "WhackingUp" : "WhackingDown", Mathf.Abs(sin));
+			animation.Blend(sin > 0 ? "WhackingUp_m" : "WhackingDown_m", Mathf.Abs(sin));
 			
 		}
 	}
@@ -198,6 +212,23 @@ public class DethmurderControl : EntityControl {
 	public void Grounded(){
 		
 		UpdateBasicMovement();
+		
+		if (moveDirection.x == 0){
+			animation.CrossFade("DefaultPose");
+		}
+		else{
+			animation.CrossFade("WalkCycle");
+			
+			// If the direction of motion does not equal the
+			// direction of aiming, then reverse the animation!
+			if (cos < 0 && moveDirection.x > 0
+			    || cos > 0 && moveDirection.x < 0){
+				animation["WalkCycle"].speed = - stats.speed * speedAnimMultiplier;
+			}
+			else{
+				animation["WalkCycle"].speed = stats.speed * speedAnimMultiplier;
+			}
+		}
 		
 		// Always reset the vertical speed
 		vSpeed = 0f;
@@ -207,6 +238,7 @@ public class DethmurderControl : EntityControl {
 		UpdateAttacking();
 		
 		if (Input.GetButton("Jump")){
+			animation.CrossFade("Jumping");
 			SwitchState(EntityState.JUMPSTART);
 		}
 		

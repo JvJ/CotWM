@@ -3,13 +3,23 @@ using System.Collections;
 
 public class ShoggothControl : EntityControl{
 
+	#region Editor Variables
+	
 	public Rigidbody rb;
 	public Collider coll;
+	
+	public GameObject leftTentacle, rightTentacle;
+	
+	public float attackRadius;
+	
+	public Vector3 playerWhackNormal;
 	
 	/// <summary>
 	/// How fast will the player go when he gets hit??
 	/// </summary>
 	public float playerWhackIntensity;
+		
+	#endregion
 	
 	// Use this for initialization
 	void Start () {
@@ -29,6 +39,13 @@ public class ShoggothControl : EntityControl{
 		
 		stats.DoDamage(dmg, false);
 	}
+	
+	/// <summary>
+	/// Start the basic animations on the tentacles.
+	/// </summary>
+	//public void StartTentacleAnimations(){
+		
+	//}
 	
 	#region State Functions
 	
@@ -53,16 +70,15 @@ public class ShoggothControl : EntityControl{
 	
 	#endregion
 	
-	public override void Wander ()
-	{
-
-		//print("Something is happening");
+	public void UpdateBasicMovement(){
 		
-		// Execute the wandering
-		//controller.AddForce(new Vector3(wanderDirection * stats.speed, 0, 0));
 		var v = new Vector3(wanderDirection * stats.speed * Time.deltaTime, 0, 0);
 		rb.MovePosition(transform.position + v);
-			//SimpleMove(new Vector3(wanderDirection * stats.speed, 0, 0));
+	}
+	
+	public override void Wander ()
+	{
+		UpdateBasicMovement();
 		
 		// Update the timer
 		wanderCountDown -= Time.deltaTime;
@@ -75,10 +91,54 @@ public class ShoggothControl : EntityControl{
 			wanderCountDown = wanderTimeOut;
 		}
 		
-		// Check if we can see the player
-		//if (castToPlayer()){
-		//	SwitchState(EntityState.CLOSE_IN);
-		//}
+		// See player
+		if (castToPlayer()){
+			wanderCountDown = wanderTimeOut;
+			SwitchState(EntityState.CLOSE_IN);
+		}
+	}
+	
+	public override void CloseIn ()
+	{
+		wanderDirection = (int)Mathf.Sign(player.transform.position.x - transform.position.x);
+		
+		UpdateBasicMovement();
+		
+		// Lost sight of player
+		RaycastHit rcInfo;
+		if (!castToPlayer(out rcInfo)){
+			
+			Debug.DrawLine(transform.position, rcInfo.point, Color.red, 1.0f);
+			
+			SwitchState(EntityState.WANDER);
+		}
+		// In range
+		Debug.DrawLine(transform.position, transform.position + new Vector3(0, attackRadius, 0), Color.blue);
+		if (Vector3.Distance(transform.position, player.transform.position) < attackRadius){
+			SwitchState(EntityState.ATTACKING);
+		}
+	}
+	
+	public override void Attacking ()
+	{
+		wanderDirection = (int)Mathf.Sign(player.transform.position.x - transform.position.x);
+		
+		UpdateBasicMovement();
+		
+		// Initiate smacking!
+		
+		// Which tentacle can I use?
+		var tent = wanderDirection < 0 ? leftTentacle : rightTentacle;
+		
+		if (!tent.animation.IsPlaying("Smack_scripted")){
+			tent.animation.CrossFade("Smack_scripted");
+			tent.animation.PlayQueued("Wiggle");
+		}
+		
+		// Out of range
+		if (Vector3.Distance(transform.position, player.transform.position) > attackRadius){
+			SwitchState(EntityState.CLOSE_IN);
+		}
 	}
 	
 	#endregion

@@ -7,7 +7,7 @@ public class ShovelCollideHandler : MonoBehaviour {
 	
 	public GameObject owner;
 	
-	public AudioSource audio;
+	public AudioSource shovelAudio;
 	
 	EntityControl ec;
 	
@@ -40,11 +40,11 @@ public class ShovelCollideHandler : MonoBehaviour {
 	
 	void OnTriggerEnter (Collider other){
 		
-		if (other.gameObject != owner && characterControl.IsAttacking()){
+		if (!other.gameObject.CompareTag("PLAYER") && !other.gameObject.CompareTag("PLAYERCHILD") && characterControl.IsAttacking()){
 
 		
-			if (audio != null){
-				audio.Play();
+			if (shovelAudio != null){
+				shovelAudio.Play();
 			}
 			
 			if (other.gameObject.CompareTag("SNOW")){
