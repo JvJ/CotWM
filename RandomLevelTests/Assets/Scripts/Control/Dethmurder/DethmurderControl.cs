@@ -92,12 +92,21 @@ public class DethmurderControl : EntityControl {
 		animation["WhackingForward_m"].layer = 1;
 		animation["WhackingForward_m"].enabled = true;
 		animation["WhackingForward_m"].wrapMode = whackingWrapMode;
+		//animation["WhackingForward_m"].blendMode = AnimationBlendMode.Additive;
+		
 		animation["WhackingUp_m"].layer = 1;
 		animation["WhackingUp_m"].enabled = true;
 		animation["WhackingUp_m"].wrapMode = whackingWrapMode;
+		//animation["WhackingUp_m"].blendMode = AnimationBlendMode.Additive;
+		
 		animation["WhackingDown_m"].layer = 1;
 		animation["WhackingDown_m"].enabled = true;
 		animation["WhackingDown_m"].wrapMode = whackingWrapMode;
+		//animation["WhackingDown_m"].blendMode = AnimationBlendMode.Additive;
+		
+		animation["Crouching_m"].wrapMode = WrapMode.Once;
+		animation["Crouching_m"].layer = 1;
+		
 		
 		attractors = new List<Attractor>();
 		
@@ -202,6 +211,8 @@ public class DethmurderControl : EntityControl {
 		    && !animation.IsPlaying("WhackingUp_m")
 		    && !animation.IsPlaying("WhackingDown_m")){
 			
+			animation.Stop("WalkCycle");
+			
 			animation.Blend("WhackingForward_m", Mathf.Abs(cos));
 			
 			animation.Blend(sin > 0 ? "WhackingUp_m" : "WhackingDown_m", Mathf.Abs(sin));
@@ -244,6 +255,17 @@ public class DethmurderControl : EntityControl {
 		
 		if (!controller.isGrounded){
 			SwitchState(EntityState.JUMPING);
+		}
+		
+		// Handle crouching
+		// LEFTOFF: Seriously, read about animation!
+		if (Input.GetButtonDown("Crouch")){
+			animation["Crouching_m"].speed = 1;
+			animation.Play("Crouching_m");
+		}
+		if (!Input.GetButtonUp("Crouch")){
+			animation["Crouching_m"].speed = -1;
+			animation.Play("Crouching_m");
 		}
 	}
 	

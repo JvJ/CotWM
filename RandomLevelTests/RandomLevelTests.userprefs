@@ -1,12 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs">
     <Files>
-      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\BigTentacleInit.cs" Line="15" Column="2" />
-      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\TentacleInit.cs" Line="10" Column="3" />
-      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" Line="135" Column="40" />
-      <File FileName="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" Line="31" Column="2" />
-      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs" Line="19" Column="3" />
+      <File FileName="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs" Line="89" Column="53" />
+      <File FileName="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\LevelStart\CubeGen.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Control\CursorHit.cs" Line="23" Column="4" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,12 +14,12 @@
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Algorithms" expanded="True" />
                 <Node name="Control" expanded="True">
+                  <Node name="Dethmurder" expanded="True">
+                    <Node name="DethmurderControl.cs" selected="True" />
+                  </Node>
                   <Node name="Enemy" expanded="True">
-                    <Node name="Shoggoth" expanded="True">
-                      <Node name="ShoggothControl.cs" selected="True" />
-                    </Node>
+                    <Node name="Shoggoth" expanded="True" />
                   </Node>
                   <Node name="Shovel" expanded="True" />
                 </Node>
