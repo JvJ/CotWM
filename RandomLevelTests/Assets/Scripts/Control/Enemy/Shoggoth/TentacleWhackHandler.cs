@@ -1,34 +1,48 @@
 using UnityEngine;
 using System.Collections;
 
-public class TentacleWhackHandler : MonoBehaviour {
+public class TentacleWhackHandler : CollideHandler {
 	
 	public ShoggothControl shoggoth;
 	
-	public bool okToHit = false;
-	
-	public float hitFloat = -1f;
+	private MeshRenderer mRend = null;
 	
 	// Use this for initialization
-	void Start () {
-	
+	protected override void Start(){
+		base.Start();
+		mRend = GetComponent(typeof(MeshRenderer)) as MeshRenderer;
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	protected override void Update(){
+		base.Update();
 		
-		var M = GetComponent(typeof(MeshRenderer)) as MeshRenderer;
-		
-		okToHit = hitFloat > 0;
-		
-		if (okToHit){
-			M.material.color = Color.red;
+		if (hitFloat > 0){
+			mRend.material.color = Color.red;
 		}
 		else{
-			M.material.color = Color.white;
+			mRend.material.color = Color.green;
 		}
 	}
 	
+	protected override bool addCondition (Collider c)
+	{
+		return c.gameObject.CompareTag("PLAYER") || c.gameObject.CompareTag("PLAYERCHILD");
+	}
+	
+	protected override void hitCollider (Collider c)
+	{	
+		var v = shoggoth.playerWhackNormal;
+
+		v.z = 0;
+			
+		v.x *= shoggoth.wanderDirection;
+			
+		shoggoth.player.setForce( v.normalized * shoggoth.playerWhackIntensity );
+			
+		shoggoth.player.SwitchState(EntityState.GO_FLYING);
+	}
+	
+	/*
 	void OnTriggerEnter (Collider other){
 		
 		// Make sure it's the player
@@ -46,5 +60,5 @@ public class TentacleWhackHandler : MonoBehaviour {
 			
 			shoggoth.player.SwitchState(EntityState.GO_FLYING);
 		}
-	}
+	}*/
 }

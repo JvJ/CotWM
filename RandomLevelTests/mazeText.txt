@@ -1,5 +1,5 @@
-     
-X XX 
-    X
- XXX 
-     
+ X   
+  XX 
+X X  
+   X 
+ X   

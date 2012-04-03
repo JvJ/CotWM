@@ -28,6 +28,10 @@ public class CubeGen : MonoBehaviour {
 	public GameObject player = null;
 	
 	public GameObject firstEnemy = null;
+	
+	public UnityEngine.Object snowPrefab = null;
+	
+	public UnityEngine.Object rockPrefab = null;
 		
 	#endregion
 	
@@ -49,12 +53,19 @@ public class CubeGen : MonoBehaviour {
 				
 				switch (room[x,y].Type){
 				case TileType.SNOW:
-					cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					//cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					
+					cube = GameObject.Instantiate(snowPrefab) as GameObject;
+					
+					
 					cube.layer = cubeLayer;
 					trans = cube.transform;
 					trans.localScale = new Vector3(cubeSize, cubeSize, cubeSize);
 					pos = BottomLeft + new Vector2((x+0.5f)*cubeSize, (y+0.5f)*cubeSize);
 					trans.position = new Vector3(pos.x, pos.y, 0f);
+					
+					print("Attempted to set position to : "+pos);
+					print("Instead, got : "+trans.position);
 					
 					//cube.tag = "SNOW";
 					cube.name = "SNOW";
@@ -64,10 +75,14 @@ public class CubeGen : MonoBehaviour {
 					// Get the material component!
 					mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
 					mRend.material.color = new Color(1.0f, 1.0f, 1.0f);
+					print( "Final mark!!");
 					break;
 					
 				case TileType.ROCK:
-					cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					//cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					
+					cube = GameObject.Instantiate(rockPrefab) as GameObject;
+					
 					cube.layer = cubeLayer;
 					trans = cube.transform;
 					trans.localScale = new Vector3(cubeSize, cubeSize, cubeSize);
@@ -77,7 +92,7 @@ public class CubeGen : MonoBehaviour {
 					//cube.tag = "ROCK";
 					cube.name = "ROCK";
 					cube.tag = "ROCK";
-					cube.layer = LayerMask.NameToLayer("Terrain");
+					cube.layer = LayerMask.NameToLayer("Default");
 					
 					// Get the material component!
 					mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
@@ -121,14 +136,14 @@ public class CubeGen : MonoBehaviour {
 		                                        BottomLeft.y + ((start.Y + 0.2f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
 		                                        0);
 		
+		
+		MakeRoom(r);
+		
 		// Temporary!
 		// Output the maze and the room to files
 		
-		System.IO.File.WriteAllText("mazeText.txt", m.ToString());
-		System.IO.File.WriteAllText("levelText.txt", r.ToString());
-		
-		
-		MakeRoom(r);
+		/*System.IO.File.WriteAllText("mazeText.txt", m.ToString());
+		System.IO.File.WriteAllText("levelText.txt", r.ToString());*/
 	}
 	
 	// Update is called once per frame

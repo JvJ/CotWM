@@ -18,7 +18,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_3_5_0;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_3_5_0;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_WEBPLAYER;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\Algorithms\Room.cs" />
      <Compile Include="Assets\Scripts\Algorithms\Sector.cs" />
      <Compile Include="Assets\Scripts\Algorithms\Tile.cs" />
+     <Compile Include="Assets\Scripts\Collision\CollideHandler.cs" />
      <Compile Include="Assets\Scripts\Control\Camera\FollowPlayer.cs" />
      <Compile Include="Assets\Scripts\Control\CharacterControl.cs" />
      <Compile Include="Assets\Scripts\Control\ChildCallbacks\ChildCallback.cs" />
@@ -67,9 +68,11 @@
      <Compile Include="Assets\Scripts\Control\Extra\Attractor.cs" />
      <Compile Include="Assets\Scripts\Control\Extra\PhysControl.cs" />
      <Compile Include="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" />
-     <Compile Include="Assets\Scripts\Control\Stats.cs" />
+     <Compile Include="Assets\Scripts\Control\Stats\EnemyStats.cs" />
+     <Compile Include="Assets\Scripts\Control\Stats\Stats.cs" />
      <Compile Include="Assets\Scripts\Control\cuebTest.cs" />
      <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\TestGUIs.cs" />
      <Compile Include="Assets\Scripts\LevelStart\CubeGen.cs" />
      <Compile Include="Assets\Scripts\MetaBall\MCBlob.cs" />
      <Compile Include="Assets\Scripts\TestScript.cs" />

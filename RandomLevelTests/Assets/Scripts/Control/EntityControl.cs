@@ -17,6 +17,7 @@ public enum EntityState{
 	GROUNDED,
 	WHACKING,
 	GO_FLYING,
+	CROUCHING,
 	
 	// Shadowman
 	EXPANDING,
