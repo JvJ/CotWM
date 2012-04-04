@@ -64,6 +64,9 @@
      <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" />
      <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\TentacleInit.cs" />
      <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XTentacleCollideHandler.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XTentacleControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XlGrhthbtrgControl.cs" />
      <Compile Include="Assets\Scripts\Control\EntityControl.cs" />
      <Compile Include="Assets\Scripts\Control\Extra\Attractor.cs" />
      <Compile Include="Assets\Scripts\Control\Extra\PhysControl.cs" />
@@ -71,10 +74,13 @@
      <Compile Include="Assets\Scripts\Control\Stats\EnemyStats.cs" />
      <Compile Include="Assets\Scripts\Control\Stats\Stats.cs" />
      <Compile Include="Assets\Scripts\Control\cuebTest.cs" />
+     <Compile Include="Assets\Scripts\Effects\LightningBolt.cs" />
      <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\TestGUIs.cs" />
      <Compile Include="Assets\Scripts\LevelStart\CubeGen.cs" />
      <Compile Include="Assets\Scripts\MetaBall\MCBlob.cs" />
+     <Compile Include="Assets\Scripts\Plugins\MeshExtrusion.cs" />
+     <Compile Include="Assets\Scripts\Plugins\Perlin.cs" />
      <Compile Include="Assets\Scripts\TestScript.cs" />
      <None Include="Assets\Resources\TestLevelBig.txt" />
      <None Include="Assets\Resources\TestLevel1.txt" />

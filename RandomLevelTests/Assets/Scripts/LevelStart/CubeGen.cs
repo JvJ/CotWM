@@ -32,8 +32,28 @@ public class CubeGen : MonoBehaviour {
 	public UnityEngine.Object snowPrefab = null;
 	
 	public UnityEngine.Object rockPrefab = null;
+	
+	public Room gameMap{
+		get;
+		private set;
+	}
+	
+	public Maze gameMaze{
+		get;
+		private set;
+	}
 		
 	#endregion
+	
+	#region Static bananas!
+	
+	public static CubeGen Singleton{
+		get;
+		private set;
+	}
+	
+	#endregion
+	
 	
 	/// <summary>
 	/// Takes a room as a parameter and adds it to the stage.
@@ -106,6 +126,8 @@ public class CubeGen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	
+		// :o How selfish!!!
+		Singleton = this;
 	}
 	
 	void Awake() {
@@ -139,6 +161,8 @@ public class CubeGen : MonoBehaviour {
 		
 		MakeRoom(r);
 		
+		gameMap = r;
+		
 		// Temporary!
 		// Output the maze and the room to files
 		
@@ -150,4 +174,34 @@ public class CubeGen : MonoBehaviour {
 	void Update () {
 		
 	}
+	
+	#region Utility Methods
+	
+	/// <summary>
+	/// Currents the room.
+	/// </summary>
+	/// <returns>
+	/// A rectangle of the current room.  The "top" property should be used as
+	/// the bottom!!!
+	/// </returns>
+	/// <param name='position'>
+	/// Position.
+	/// </param>
+	public Rect CurrentRoom(Vector2 position){
+		
+		coords c = RoomIndex(position);
+		
+		return new Rect( Chambers.CHAMBER_WIDTH * c.X + BottomLeft.x, Chambers.CHAMBER_HEIGHT * c.Y + BottomLeft.y, Chambers.CHAMBER_WIDTH, Chambers.CHAMBER_HEIGHT);
+	}
+	
+	public coords RoomIndex(Vector2 position){
+		
+		int windex = (int)((position.x - BottomLeft.x) / Chambers.CHAMBER_WIDTH);
+		
+		int hindex = (int)((position.y - BottomLeft.y) / Chambers.CHAMBER_HEIGHT);
+		
+		return new coords(windex, hindex);
+	}
+	
+	#endregion
 }

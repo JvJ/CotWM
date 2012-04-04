@@ -29,6 +29,8 @@ public class DethmurderControl : EntityControl {
 	
 	public float speedAnimMultiplier = 0.1f;
 	
+	public float whackSpeedMultiplier = 2.0f;
+	
 	#region Ability-related Variables
 	
 	public bool canDash = false;
@@ -98,6 +100,7 @@ public class DethmurderControl : EntityControl {
 		//var leftLegTransform = transform.Find("Armature/");
 		var hipTransform = transform.Find("Armature/Hip");
 		
+		animation["WhackingForward_m_scripted"].speed = whackSpeedMultiplier;
 		animation["WhackingForward_m_scripted"].layer = 1;
 		animation["WhackingForward_m_scripted"].enabled = true;
 		animation["WhackingForward_m_scripted"].wrapMode = whackingWrapMode;
@@ -105,6 +108,7 @@ public class DethmurderControl : EntityControl {
 		animation["WhackingForward_m_scripted"].AddMixingTransform(mixTransform2);
 		//animation["WhackingForward_m_scripted"].blendMode = AnimationBlendMode.Additive;
 		
+		animation["WhackingUp_m_scripted"].speed = whackSpeedMultiplier;
 		animation["WhackingUp_m_scripted"].layer = 1;
 		animation["WhackingUp_m_scripted"].enabled = true;
 		animation["WhackingUp_m_scripted"].wrapMode = whackingWrapMode;
@@ -113,6 +117,7 @@ public class DethmurderControl : EntityControl {
 		
 		//animation["WhackingUp_m_scripted"].blendMode = AnimationBlendMode.Additive;
 		
+		animation["WhackingDown_m_scripted"].speed = whackSpeedMultiplier;
 		animation["WhackingDown_m_scripted"].layer = 1;
 		animation["WhackingDown_m_scripted"].enabled = true;
 		animation["WhackingDown_m_scripted"].wrapMode = whackingWrapMode;

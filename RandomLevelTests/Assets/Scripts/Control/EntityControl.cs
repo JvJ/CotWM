@@ -234,5 +234,37 @@ public class EntityControl : MonoBehaviour {
 		}
 	}
 	
+	/// <summary>
+	/// Smooths the move when fading between 2 movement targets.
+	/// </summary>
+	/// <returns>
+	/// The move.
+	/// </returns>
+	/// <param name='currentPos'>
+	/// Current position.
+	/// </param>
+	/// <param name='dest1'>
+	/// Dest1.
+	/// </param>
+	/// <param name='dest2'>
+	/// Dest2.
+	/// </param>
+	/// <param name='current'>
+	/// Current.
+	/// </param>
+	/// <param name='limit'>
+	/// Limit.
+	/// </param>
+	public Vector3 smoothMove(Vector3 currentPos, Vector3 dest1, Vector3 dest2, float current, float limit){
+		
+		Vector3 v1 = (dest1 - currentPos).normalized;
+		Vector3 v2 = (dest2 - currentPos).normalized;
+		
+		float w1 = Mathf.Lerp(0, limit, current);
+		float w2 = 1 - w1;
+		
+		return ((v1 * w1 + v2 * w2) / 2f).normalized;
+	}
+	
 	#endregion
 }
