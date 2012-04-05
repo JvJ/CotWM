@@ -301,6 +301,49 @@ namespace LevelGen
 			
 		}
 		
+		/// <summary>
+		/// Get a sub-room in the specified rectangle.
+		/// </summary>
+		/// <param name='x'>
+		/// X.
+		/// </param>
+		/// <param name='y'>
+		/// Y.
+		/// </param>
+		/// <param name='width'>
+		/// Width.
+		/// </param>
+		/// <param name='height'>
+		/// Height.
+		/// </param>
+		public Room Slice(int x, int y, int width, int height){
+			
+			if (x < 0) x = 0;
+			if (x > Width-1) x = Width-1;
+			if (y < 0) y = 0;
+			if (y > Height-1) y = Height-1;
+			
+			if (width < 1) width = 1;
+			if (x + width > Width) width = Width-x;
+			if (height < 1) height = 1;
+			if (y + height > Height) height = Height-y;
+			
+			Room ret = new Room(width, height);
+			
+			// Do the copying!
+			for (int xx = 0; xx < width; xx++){
+				for (int yy = 0; yy < height; yy++){
+					ret[xx,yy] = this[xx+x, yy+y];
+				}
+			}
+			
+			return ret;
+		}
+		
+		public Room Slice(intRect r){
+			return Slice(r.X, r.Y, r.Width, r.Height);
+		}
+		
         /// <summary>
         /// String representation of the grid.
         /// </summary>

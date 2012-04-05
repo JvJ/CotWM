@@ -172,6 +172,14 @@ public class CubeGen : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+	
+		// Debug rendering
+		// Iterate through all the rooms and draw them!
+		for (int x = 0; x < gameMaze.Width; x++){
+			for (int y = 0; y < gameMaze.Height; y++){
+				
+			}
+		}
 		
 	}
 	
@@ -189,8 +197,10 @@ public class CubeGen : MonoBehaviour {
 	/// </param>
 	public Rect CurrentRoom(Vector2 position){
 		
-		coords c = RoomIndex(position);
-		
+		return rectFromCoords(RoomIndex(position));
+	}
+	
+	public Rect rectFromCoords(coords c){
 		return new Rect( Chambers.CHAMBER_WIDTH * cubeSize * c.X + BottomLeft.x, Chambers.CHAMBER_HEIGHT * cubeSize * c.Y + BottomLeft.y,
 			Chambers.CHAMBER_WIDTH * cubeSize, Chambers.CHAMBER_HEIGHT * cubeSize);
 	}
@@ -202,6 +212,15 @@ public class CubeGen : MonoBehaviour {
 		int hindex = (int)((position.y - BottomLeft.y) / (Chambers.CHAMBER_HEIGHT * cubeSize));
 		
 		return new coords(windex, hindex);
+	}
+	
+	public intRect SubRoomRect(coords position){
+		return new intRect(position.X * Chambers.CHAMBER_WIDTH, position.Y * Chambers.CHAMBER_HEIGHT,
+			Chambers.CHAMBER_WIDTH, Chambers.CHAMBER_HEIGHT); 
+	}
+	
+	public Room SubRoom(coords position){
+		return gameMap.Slice(SubRoomRect(position));
 	}
 	
 	#endregion
