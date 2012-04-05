@@ -291,7 +291,6 @@ public class DethmurderControl : EntityControl {
 		// Do the crouch
 		if (Input.GetButton("Crouch")){
 			
-			
 			// TODO: HACK!!!
 			if (animation["Crouching_m"].normalizedTime < 0.8f){
 				animation["Crouching_m"].speed = 1;
@@ -580,7 +579,9 @@ public class DethmurderControl : EntityControl {
 	/// </returns>
 	public override void TakeDamage (Attack atk)
 	{
-		stats.HP -= (atk.damageValue - stats.defense);
+		
+		stats.DoDamage(atk.damageValue, false);
+		//stats.HP -= (atk.damageValue - stats.defense);
 	
 		//lastDamage = (atk.damageValue - stats.defense);
 	}

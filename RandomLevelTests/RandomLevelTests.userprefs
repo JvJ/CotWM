@@ -10,12 +10,14 @@
                 <Node name="Control" expanded="True">
                   <Node name="Dethmurder" expanded="True" />
                   <Node name="Enemy" expanded="True">
-                    <Node name="XlGrhthbtrg" expanded="True" />
+                    <Node name="Shoggoth" expanded="True" />
+                    <Node name="Wyrm" expanded="True" />
+                  </Node>
+                  <Node name="Stats" expanded="True">
+                    <Node name="Stats.cs" selected="True" />
                   </Node>
                 </Node>
-                <Node name="Effects" expanded="True">
-                  <Node name="LightningBolt.cs" selected="True" />
-                </Node>
+                <Node name="GUI" expanded="True" />
                 <Node name="LevelStart" expanded="True" />
               </Node>
             </Node>

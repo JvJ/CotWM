@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" />
      <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\TentacleInit.cs" />
      <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Wyrm\WyrmControl.cs" />
      <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XTentacleCollideHandler.cs" />
      <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XTentacleControl.cs" />
      <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XlGrhthbtrgControl.cs" />
@@ -76,6 +77,7 @@
      <Compile Include="Assets\Scripts\Control\cuebTest.cs" />
      <Compile Include="Assets\Scripts\Effects\LightningBolt.cs" />
      <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\GUIVars.cs" />
      <Compile Include="Assets\Scripts\GUI\TestGUIs.cs" />
      <Compile Include="Assets\Scripts\LevelStart\CubeGen.cs" />
      <Compile Include="Assets\Scripts\MetaBall\MCBlob.cs" />

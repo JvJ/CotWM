@@ -191,14 +191,15 @@ public class CubeGen : MonoBehaviour {
 		
 		coords c = RoomIndex(position);
 		
-		return new Rect( Chambers.CHAMBER_WIDTH * c.X + BottomLeft.x, Chambers.CHAMBER_HEIGHT * c.Y + BottomLeft.y, Chambers.CHAMBER_WIDTH, Chambers.CHAMBER_HEIGHT);
+		return new Rect( Chambers.CHAMBER_WIDTH * cubeSize * c.X + BottomLeft.x, Chambers.CHAMBER_HEIGHT * cubeSize * c.Y + BottomLeft.y,
+			Chambers.CHAMBER_WIDTH * cubeSize, Chambers.CHAMBER_HEIGHT * cubeSize);
 	}
 	
 	public coords RoomIndex(Vector2 position){
 		
-		int windex = (int)((position.x - BottomLeft.x) / Chambers.CHAMBER_WIDTH);
+		int windex = (int)((position.x - BottomLeft.x) / (Chambers.CHAMBER_WIDTH * cubeSize));
 		
-		int hindex = (int)((position.y - BottomLeft.y) / Chambers.CHAMBER_HEIGHT);
+		int hindex = (int)((position.y - BottomLeft.y) / (Chambers.CHAMBER_HEIGHT * cubeSize));
 		
 		return new coords(windex, hindex);
 	}

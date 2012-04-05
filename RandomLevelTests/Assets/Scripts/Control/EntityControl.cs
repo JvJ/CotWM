@@ -261,9 +261,11 @@ public class EntityControl : MonoBehaviour {
 		Vector3 v2 = (dest2 - currentPos).normalized;
 		
 		float w1 = Mathf.Lerp(0, limit, current);
+		w1 = Mathf.Clamp01(w1);
+		
 		float w2 = 1 - w1;
 		
-		return ((v1 * w1 + v2 * w2) / 2f).normalized;
+		return ((v1 * w2 + v2 * w1) / 2f).normalized;
 	}
 	
 	#endregion

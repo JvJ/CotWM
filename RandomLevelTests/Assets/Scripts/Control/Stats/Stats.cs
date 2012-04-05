@@ -12,7 +12,9 @@ public class Stats : MonoBehaviour{
 	public float speed;
 	public float attack;
 	
-	public GUIStyle style;
+	GUIStyle style;
+	
+	public Transform rootTransform;
 	
 	public const float timeOut = 2;
 	public const float pps = 20;
@@ -45,6 +47,10 @@ public class Stats : MonoBehaviour{
 	// Damage notifications list
 	List<TimedNotification> notifications = new List<TimedNotification>();
 	
+	void Start(){
+		style = GUIVars.Singleton.gStyle;
+	}
+	
 	public void DoDamage(float dmg, bool defIgnore)
 	{
 		if (!defIgnore){
@@ -57,7 +63,9 @@ public class Stats : MonoBehaviour{
 	
 	public virtual void OnGUI()
 	{
-		Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+		Transform t = rootTransform == null ? transform : rootTransform;
+		
+		Vector3 screenPos = Camera.main.WorldToScreenPoint(t.position);
 		//Vector3 screenPos = Camera.main.WorldToViewportPoint(transform.position);
 		
 		List<TimedNotification> removals = new List<TimedNotification>();
