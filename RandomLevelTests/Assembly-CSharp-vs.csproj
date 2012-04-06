@@ -79,6 +79,7 @@
      <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIVars.cs" />
      <Compile Include="Assets\Scripts\GUI\TestGUIs.cs" />
+     <Compile Include="Assets\Scripts\LevelStart\Configs.cs" />
      <Compile Include="Assets\Scripts\LevelStart\CubeGen.cs" />
      <Compile Include="Assets\Scripts\MetaBall\MCBlob.cs" />
      <Compile Include="Assets\Scripts\Plugins\MeshExtrusion.cs" />

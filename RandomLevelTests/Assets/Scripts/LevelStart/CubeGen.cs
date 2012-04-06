@@ -121,6 +121,23 @@ public class CubeGen : MonoBehaviour {
 				}
 			}
 		}
+		
+		// Add triggers
+		for (int x = 0; x < gameMaze.Width; x++){
+			for (int y = 0; y < gameMaze.Height; y++){
+				var r = rectFromCoords(new coords(x,y));
+				
+				var g = new GameObject("Room ("+x+","+y+")");
+				
+				g.transform.position = new Vector3(r.center.x, r.center.y, 0);
+				
+				g.transform.localScale = new Vector3(r.width, r.height, cubeSize);
+				
+				var collider = g.AddComponent(typeof(BoxCollider)) as BoxCollider;
+				
+				collider.isTrigger = true;
+			}
+		}
 	}
 	
 	// Use this for initialization
@@ -148,6 +165,10 @@ public class CubeGen : MonoBehaviour {
 		
 		Room r = Room.ChambersFromMaze(m, new System.Random());
 		
+		gameMap = r;
+		
+		gameMaze = m;
+		
 		player.transform.position = new Vector3(
 		                                        BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
 		                                        BottomLeft.y + ((start.Y + 0.5f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
@@ -161,7 +182,7 @@ public class CubeGen : MonoBehaviour {
 		
 		MakeRoom(r);
 		
-		gameMap = r;
+		
 		
 		// Temporary!
 		// Output the maze and the room to files
@@ -177,7 +198,17 @@ public class CubeGen : MonoBehaviour {
 		// Iterate through all the rooms and draw them!
 		for (int x = 0; x < gameMaze.Width; x++){
 			for (int y = 0; y < gameMaze.Height; y++){
+				var r = rectFromCoords(new coords(x,y));
 				
+				var bl = new Vector3(r.xMin, r.yMin);
+				var br = new Vector3(r.xMax, r.yMin);
+				var tr = new Vector3(r.xMax, r.yMax);
+				var tl = new Vector3(r.xMin, r.yMax);
+				
+				Debug.DrawLine(bl, br, Color.red, 0f, false);
+				Debug.DrawLine(br, tr, Color.red, 0f, false);
+				Debug.DrawLine(tr, tl, Color.red, 0f, false);
+				Debug.DrawLine(tl, bl, Color.red, 0f, false);
 			}
 		}
 		

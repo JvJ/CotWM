@@ -7,7 +7,7 @@ using UnityEngine;
 namespace LevelGen
 {
 	
-	public class RoomFormatException : Exception{
+	public class RoomFormatException : UnityException{
 		
 		string msg;
 		
