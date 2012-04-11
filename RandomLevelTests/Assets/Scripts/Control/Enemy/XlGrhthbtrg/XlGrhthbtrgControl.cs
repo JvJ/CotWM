@@ -329,4 +329,15 @@ public class XlGrhthbtrgControl : EntityControl {
 	}
 	
 	#endregion
+	
+	public override void setScript (bool onOff)
+	{
+		base.setScript (onOff);
+		
+		if (tentacles != null){
+			foreach(XTentacleControl t in tentacles){
+				t.enabled = false;
+			}
+		}
+	}
 }

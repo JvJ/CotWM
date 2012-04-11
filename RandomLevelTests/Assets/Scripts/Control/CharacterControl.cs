@@ -102,7 +102,7 @@ public class CharacterControl : EntityControl {
 				wallJumpTimeCounter = 0f;
 				wallJumpCounting = false;
 			}
-		}		
+		}
 		
 		if (controller.isGrounded){
 			drawColor = Color.red;

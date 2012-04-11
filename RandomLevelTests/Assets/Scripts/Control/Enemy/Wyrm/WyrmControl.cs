@@ -9,11 +9,15 @@ public class WyrmControl : EntityControl {
 	
 	public float maxWanderTime = 2f;
 		
+	public float attackTime = 2f;
+	
 	#endregion
 	
 	private float currentWanderTimeOut;
 	
 	private float currentWanderTime;
+	
+	private float currentAttackTime;
 	
 	private float moveDirection;
 	
@@ -28,10 +32,16 @@ public class WyrmControl : EntityControl {
 		currentWanderTime = maxWanderTime;
 		
 		currentWanderTimeOut = Random.Range(minWanderTime, maxWanderTime);
+		
+		currentAttackTime = 0f;
 	}
 	
 	#region State Functions
 	
+	public override void TakeDamage (Attack atk)
+	{
+		stats.DoDamage(atk.damageValue, false);
+	}
 	
 	/// <summary>
 	/// Randomly move back and forth.
@@ -59,9 +69,19 @@ public class WyrmControl : EntityControl {
 		currentWanderTime += Time.deltaTime;
 	}
 	
+	private Vector3 attachPosition;
 	public override void Attacking ()
 	{
 		base.Attacking ();
+		
+		transform.localPosition = attachPosition;
+		
+		currentAttackTime += Time.deltaTime;
+		
+		if (currentAttackTime >= attackTime){
+			currentAttackTime = 0f;
+			player.TakeDamage(new Attack{damageValue=stats.attack, element = ElementType.NONE, isContact = false});
+		}
 	}
 	
 	/// <summary>
@@ -85,7 +105,7 @@ public class WyrmControl : EntityControl {
 			
 			// Parent it to the player transform
 			transform.parent = g.transform.parent = player.transform;
-			
+			/*
 			// Set up the hinge's rigid body
 			var rb = g.AddComponent(typeof(Rigidbody)) as Rigidbody;
 			rb.useGravity = false;
@@ -93,18 +113,36 @@ public class WyrmControl : EntityControl {
 			
 			var hj = g.AddComponent(typeof(HingeJoint)) as HingeJoint;
 			
+			hj.anchor = g.transform.position;
+			
 			
 			rigidbody.useGravity = false;
 			collider.isTrigger = true;
 			rigidbody.velocity = Vector3.zero;
+			*/
 			
+			var v = Random.insideUnitCircle;
+			v.x = Mathf.Abs(v.x);
+			attachPosition = new Vector3(v.x, v.y, 0);
 			
+			collider.isTrigger = true;
 			
 			SwitchState(EntityState.ATTACKING);
 		}
 		
 	}
 	
+	public override void setScript (bool onOff)
+	{
+		base.setScript (onOff);
+		
+		animation.Play("WormWiggle");
+		
+		collider.isTrigger = !onOff;
+		
+		rigidbody.isKinematic = !onOff;
+		rigidbody.useGravity = onOff;
+	}
 	
 	#endregion
 }

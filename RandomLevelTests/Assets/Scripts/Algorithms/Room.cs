@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -237,15 +237,30 @@ namespace LevelGen
 		/// <returns>
 		/// A <see cref="Room"/>
 		/// </returns>
-		public static Room ChambersFromMaze(Maze m, System.Random rand){
+		public static Room ChambersFromMaze(Maze m, ChamberMap cm, System.Random rand, coords StartPosition, coords EndPosition){
 			
+			// LEFTOFF: Here!
 			Room ret = new Room(m.Width * Chambers.CHAMBER_WIDTH, m.Height  * Chambers.CHAMBER_HEIGHT);
 			
 			for (int x = 0; x < m.Width; x++){
 				for (int y = 0; y < m.Height; y++){
 					
-					// TODO: Randomize this!!!
-					Room r = Chambers.Rooms((ChamberType)(rand.Next() % (int)ChamberType.NumElements)).Clone() as Room;
+					// Select a random chamber type
+					ChamberType ct;  
+					
+					if (new coords(x,y) == EndPosition){
+						ct = ChamberType.TYPE_BOSS;
+					}
+					else{
+						ct = (ChamberType)(rand.Next() % (int)ChamberType.NumElements);
+						if (ct == ChamberType.TYPE_BOSS){
+							ct = ChamberType.TYPE_5;
+						}
+					}
+					
+					cm[x,y] = ct;
+					
+					Room r = Chambers.Rooms(ct).Clone() as Room;
 					
 					switch(m[x,y]){
 					case MazeTileType.SPACE:
@@ -351,7 +366,7 @@ namespace LevelGen
         public override string ToString()
         {
             string ret = "";
-
+			/*
             for (int y = Height-1; y >= 0; y--)
             {
                 for (int x = 0; x < Width; x++)
@@ -359,7 +374,7 @@ namespace LevelGen
                     ret += this[x, y];
                 }
                 ret += "\r\n";
-            }
+            }*/
 
             return ret;
         }

@@ -15,8 +15,6 @@ public class DethmurderControl : EntityControl {
 	/// </summary>
 	public float dashSpeed = 0f;
 	
-	public float jumpSpeed = 20f;
-	
 	public float wallJumpSpeed = 20f;
 	
 	public float wallJumpAngle = 45;
@@ -74,6 +72,8 @@ public class DethmurderControl : EntityControl {
 	void Start () {
 		base.Start();
 		
+		initVelocity = defaultInitVelocity;
+		
 		// TODO: Should this just be set in the editor?
 		if (controller == null){
 			controller = GetComponent(typeof(CharacterController)) as CharacterController;
@@ -96,39 +96,39 @@ public class DethmurderControl : EntityControl {
 		animation["WalkCycle"].wrapMode = walkingWrapMode;
 		
 		var mixTransform = transform.Find("Armature/Hip/Spine_1/Spine_2");
-		var mixTransform2 = transform.Find("Armature/ShovelBone");
+		var mixTransform2 = transform.Find("Armature/Hip/ShovelBone");
 		//var leftLegTransform = transform.Find("Armature/");
 		var hipTransform = transform.Find("Armature/Hip");
 		
-		animation["WhackingForward_m_scripted"].speed = whackSpeedMultiplier;
-		animation["WhackingForward_m_scripted"].layer = 1;
-		animation["WhackingForward_m_scripted"].enabled = true;
-		animation["WhackingForward_m_scripted"].wrapMode = whackingWrapMode;
-		animation["WhackingForward_m_scripted"].AddMixingTransform(mixTransform);
-		animation["WhackingForward_m_scripted"].AddMixingTransform(mixTransform2);
-		//animation["WhackingForward_m_scripted"].blendMode = AnimationBlendMode.Additive;
+		animation["WhackingForward_m_s2"].speed = whackSpeedMultiplier;
+		animation["WhackingForward_m_s2"].layer = 1;
+		animation["WhackingForward_m_s2"].enabled = true;
+		animation["WhackingForward_m_s2"].wrapMode = whackingWrapMode;
+		animation["WhackingForward_m_s2"].AddMixingTransform(mixTransform);
+		animation["WhackingForward_m_s2"].AddMixingTransform(mixTransform2);
+		//animation["WhackingForward_m_s2"].blendMode = AnimationBlendMode.Additive;
 		
-		animation["WhackingUp_m_scripted"].speed = whackSpeedMultiplier;
-		animation["WhackingUp_m_scripted"].layer = 1;
-		animation["WhackingUp_m_scripted"].enabled = true;
-		animation["WhackingUp_m_scripted"].wrapMode = whackingWrapMode;
-		animation["WhackingUp_m_scripted"].AddMixingTransform(mixTransform);
-		animation["WhackingUp_m_scripted"].AddMixingTransform(mixTransform2);
+		animation["WhackingUp_m_s2"].speed = whackSpeedMultiplier;
+		animation["WhackingUp_m_s2"].layer = 1;
+		animation["WhackingUp_m_s2"].enabled = true;
+		animation["WhackingUp_m_s2"].wrapMode = whackingWrapMode;
+		animation["WhackingUp_m_s2"].AddMixingTransform(mixTransform);
+		animation["WhackingUp_m_s2"].AddMixingTransform(mixTransform2);
 		
-		//animation["WhackingUp_m_scripted"].blendMode = AnimationBlendMode.Additive;
+		//animation["WhackingUp_m_s2"].blendMode = AnimationBlendMode.Additive;
 		
-		animation["WhackingDown_m_scripted"].speed = whackSpeedMultiplier;
-		animation["WhackingDown_m_scripted"].layer = 1;
-		animation["WhackingDown_m_scripted"].enabled = true;
-		animation["WhackingDown_m_scripted"].wrapMode = whackingWrapMode;
-		animation["WhackingDown_m_scripted"].AddMixingTransform(mixTransform);
-		animation["WhackingDown_m_scripted"].AddMixingTransform(mixTransform2);
-		//animation["WhackingDown_m_scripted"].blendMode = AnimationBlendMode.Additive;
+		animation["WhackingDown_m_s2"].speed = whackSpeedMultiplier;
+		animation["WhackingDown_m_s2"].layer = 1;
+		animation["WhackingDown_m_s2"].enabled = true;
+		animation["WhackingDown_m_s2"].wrapMode = whackingWrapMode;
+		animation["WhackingDown_m_s2"].AddMixingTransform(mixTransform);
+		animation["WhackingDown_m_s2"].AddMixingTransform(mixTransform2);
+		//animation["WhackingDown_m_s2"].blendMode = AnimationBlendMode.Additive;
 		
-		animation["Crouching_m"].wrapMode = WrapMode.Once;
-		animation["Crouching_m"].layer = 1;
-		//animation["Crouching_m"].AddMixingTransform(hipTransform);
-		animation["Crouching_m"].enabled = true;
+		animation["Crouch_m"].wrapMode = WrapMode.Clamp;
+		animation["Crouch_m"].layer = 1;
+		//animation["Crouch_m"].AddMixingTransform(hipTransform);
+		animation["Crouch_m"].enabled = true;
 		
 		//moveDirection = new Vector3(1.0f, 0.0f, 0.0f);
 	}
@@ -189,6 +189,10 @@ public class DethmurderControl : EntityControl {
 	
 	public float initVelocity;
 	
+	public float defaultInitVelocity;
+	
+	public float highInitVelocity;
+	
 	public float velocityMultiplier;
 	
 	private float jumpTimer = 0f;
@@ -227,20 +231,24 @@ public class DethmurderControl : EntityControl {
 	public void UpdateAttacking(){
 		
 		if (Input.GetButton("Whack")
-		    && !animation.IsPlaying("WhackingForward_m_scripted")
-		    && !animation.IsPlaying("WhackingUp_m_scripted")
-		    && !animation.IsPlaying("WhackingDown_m_scripted")){
+		    && !animation.IsPlaying("WhackingForward_m_s2")
+		    && !animation.IsPlaying("WhackingUp_m_s2")
+		    && !animation.IsPlaying("WhackingDown_m_s2")){
+			
+			WhackThemWorms();
 			
 			animation.Stop("WalkCycle");
 			
-			animation.Blend("WhackingForward_m_scripted", Mathf.Abs(cos));
+			animation.Blend("WhackingForward_m_s2", Mathf.Abs(cos));
 			
-			animation.Blend(sin > 0 ? "WhackingUp_m_scripted" : "WhackingDown_m_scripted", Mathf.Abs(sin));
+			animation.Blend(sin > 0 ? "WhackingUp_m_s2" : "WhackingDown_m_s2", Mathf.Abs(sin));
 			
 		}
 	}
 	
 	public void Grounded(){
+		
+		initVelocity = defaultInitVelocity;
 		
 		UpdateBasicMovement();
 		
@@ -273,7 +281,11 @@ public class DethmurderControl : EntityControl {
 		if (Input.GetButton("Jump")){
 			animation.CrossFade("Jumping");
 			SwitchState(EntityState.JUMPSTART);
-		}
+		}/*
+		else if (!controller.isGrounded){
+			animation.CrossFade("Jumping");
+			SwitchState(EntityState.JUMPING);
+		}*/
 		
 		if (!controller.isGrounded){
 			SwitchState(EntityState.JUMPING);
@@ -282,39 +294,25 @@ public class DethmurderControl : EntityControl {
 		// Handle crouching
 		// LEFTOFF: Seriously, read about animation!
 		if (Input.GetButton("Crouch")){
+			animation.CrossFade("Crouch_m");
 			SwitchState(EntityState.CROUCHING);
 		}
 	}
 	
 	public void Crouching(){
 		
-		// Do the crouch
-		if (Input.GetButton("Crouch")){
-			
-			// TODO: HACK!!!
-			if (animation["Crouching_m"].normalizedTime < 0.8f){
-				animation["Crouching_m"].speed = 1;
-				animation.CrossFade("Crouching_m");
-				
-			}
-			else{
-				//animation.Stop("Crouching_m");
-				animation["Crouching_m"].speed = 0f;
-				animation.CrossFade("Crouching_m");
-			}	
-			
-		}
-		else{
-			animation["Crouching_m"].speed = -1;
-			if (animation["Crouching_m"].normalizedTime > 0.0f){
-				animation.CrossFade("Crouching_m");
-			}
-		}
+		initVelocity = highInitVelocity;
 		
-		// Switch back if the animation is finished
-		if (animation["Crouching_m"].speed < 0 && 
-			animation["Crouching_m"].time <= 0){
+		UpdateAttacking();
+		
+		// Do the crouch
+		if (!Input.GetButton("Crouch")){
+			animation.CrossFade("UnCrouch_m");
 			SwitchState(EntityState.GROUNDED);
+		}
+		if (Input.GetButton("Jump")){
+			animation.CrossFade("Jumping");
+			SwitchState(EntityState.JUMPSTART);
 		}
 		
 	}
@@ -503,7 +501,7 @@ public class DethmurderControl : EntityControl {
 			jumpNormal = hit.normal;
 			wallJumpOK = true;
 		}
-		else if (hit.normal.y < 0f){
+		else if (vSpeed > 0 && hit.normal.y < 0f){
 			vSpeed = 0f;
 		}
 		else if (controller.isGrounded){
@@ -517,20 +515,20 @@ public class DethmurderControl : EntityControl {
 	float max = 0f;
 	float tMax = 0f;
 	void OnGUI(){
-		GUI.Box(new Rect(0,0, 200, 20), "Norm: "+animation["Crouching_m"].normalizedTime);
-		GUI.Box(new Rect(0,20, 200, 20), "Time: "+animation["Crouching_m"].time);
+		GUI.Box(new Rect(0,0, 200, 20), "Norm: "+animation["Crouch_m"].normalizedTime);
+		GUI.Box(new Rect(0,20, 200, 20), "Time: "+animation["Crouch_m"].time);
 		
-		if (animation["Crouching_m"].normalizedTime > max){
-			max = animation["Crouching_m"].normalizedTime;
+		if (animation["Crouch_m"].normalizedTime > max){
+			max = animation["Crouch_m"].normalizedTime;
 		}
 		
-		if (animation["Crouching_m"].time > tMax){
-			tMax = animation["Crouching_m"].time;
+		if (animation["Crouch_m"].time > tMax){
+			tMax = animation["Crouch_m"].time;
 		}
 		
 		GUI.Box(new Rect(0,40, 200, 20), "Max: "+max);
 		GUI.Box(new Rect(0,60, 200, 20), "tMax: "+tMax);
-		GUI.Box(new Rect(0,80, 200, 20), "Length: "+animation["Crouching_m"].length);
+		GUI.Box(new Rect(0,80, 200, 20), "Length: "+animation["Crouch_m"].length);
 	}
 	
 	#endregion
@@ -564,6 +562,16 @@ public class DethmurderControl : EntityControl {
 		flyingForce = force;
 	}
 	
+	public void WhackThemWorms(){
+		foreach (Transform t in transform){
+			var wc = t.GetComponent(typeof(WyrmControl)) as WyrmControl;
+			
+			if (wc != null){
+				wc.TakeDamage(new Attack{damageValue = stats.attack,element = ElementType.NONE, isContact = false});
+			}
+		}
+	}
+	
 	#endregion
 	
 	#region EntityControl Methods
@@ -581,11 +589,8 @@ public class DethmurderControl : EntityControl {
 	{
 		
 		stats.DoDamage(atk.damageValue, false);
-		//stats.HP -= (atk.damageValue - stats.defense);
-	
-		//lastDamage = (atk.damageValue - stats.defense);
+
 	}
-	
 	
 	
 	#endregion

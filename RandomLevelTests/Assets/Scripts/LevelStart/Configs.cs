@@ -16,14 +16,19 @@ public class Configs : MonoBehaviour{
 		{
 			return msg;
 		}
+		
 	}
 	
 	#region Prefabs
+	
+	public DethmurderControl player;
 	
 	public Object ShoggothPrefab;
 	public Object WyrmPrefab;
 	public Object XlGrhthbtrgPrefab;
 	public Object SnowPrefab;
+	
+	public int numWyrms = 0;
 	
 	#endregion
 	
@@ -207,11 +212,15 @@ public class Configs : MonoBehaviour{
 	// Initialization before Start()
 	void Awake(){
 		
+		Singleton = this;
+		
 		prefabs = new Object[(int)ObjectType.NumElements];
 		
+		this[ObjectType.PLAYER_START] = new GameObject("PStart");
 		this[ObjectType.SHOGGOTH] = ShoggothPrefab;
 		this[ObjectType.XLGRHTHBTRG] = XlGrhthbtrgPrefab;
 		this[ObjectType.WYRM] = WyrmPrefab;
+		this[ObjectType.SNOW] = SnowPrefab;
 		
 		configurations = new Config[(int)ChamberType.NumElements][];
 		
@@ -219,7 +228,7 @@ public class Configs : MonoBehaviour{
 		
 		this[ChamberType.TYPE_1] = new Config[]{
 			
-			Config.ConfigFromString(
+			/*Config.ConfigFromString(
 			"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -227,14 +236,14 @@ public class Configs : MonoBehaviour{
 "@@@            f           @@@"+"\n"+
 "@@      f            f      @@"+"\n"+
 "@                            @"+"\n"+
-"@              @             @"+"\n"+
+"@             $@             @"+"\n"+
 "@       f     @@@    f       @"+"\n"+
 "@@                          @@"+"\n"+
 "@@@     @@@@       @@@@    @@@"+"\n"+
 "@@@@           f          @@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*//*
  Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
@@ -248,11 +257,11 @@ public class Configs : MonoBehaviour{
 "@@        s         s       @@"+"\n"+
 "@@@     @@@@       @@@@    @@@"+"\n"+
 "@@@@                      @@@@"+"\n"+
-"@@@@@@         s        @@@@@@"+"\n"+
+"@@@@@@$        s        @@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
 
-			Config.ConfigFromString(
+			/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -260,14 +269,14 @@ public class Configs : MonoBehaviour{
 "@@@                        @@@"+"\n"+
 "@@                          @@"+"\n"+
 "@        f           f       @"+"\n"+
-"@              @             @"+"\n"+
+"@             $@             @"+"\n"+
 "@             @@@            @"+"\n"+
 "@@       n           n      @@"+"\n"+
 "@@@     @@@@       @@@@    @@@"+"\n"+
 "@@@@                      @@@@"+"\n"+
 "@@@@@@    f        f    @@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
 			Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
@@ -276,14 +285,14 @@ public class Configs : MonoBehaviour{
 "@@@@                      @@@@"+"\n"+
 "@@@                        @@@"+"\n"+
 "@@                          @@"+"\n"+
-"@                            @"+"\n"+
+"@              $             @"+"\n"+
 "@              @             @"+"\n"+
 "@             @@@            @"+"\n"+
-"@@      wwww       wwww     @@"+"\n"+
-"@@@     @@@@ wwwww @@@@    @@@"+"\n"+
-"@@@@        wwwwwww       @@@@"+"\n"+
-"@@@@@@wwwwwwwwwwwwwwwwww@@@@@@"+"\n"+
-"@@@@@@@@@wwwwwwwwwwwww@@@@@@@@"+"\n"+
+"@@         w        w       @@"+"\n"+
+"@@@     @@@@   w   @@@@    @@@"+"\n"+
+"@@@@         w   w        @@@@"+"\n"+
+"@@@@@@ w   w   w   w   w@@@@@@"+"\n"+
+"@@@@@@@@@w           w@@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
  
 			Config.ConfigFromString(
@@ -293,24 +302,7 @@ public class Configs : MonoBehaviour{
 "@@@@                      @@@@"+"\n"+
 "@@@                        @@@"+"\n"+
 "@@                          @@"+"\n"+
-"@                            @"+"\n"+
-"@              @             @"+"\n"+
-"@             @@@            @"+"\n"+
-"@@                          @@"+"\n"+
-"@@@     @@@@       @@@@    @@@"+"\n"+
-"@@@@                      @@@@"+"\n"+
-"@@@@@@                  @@@@@@"+"\n"+
-"@@@@@@@@@      h      @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
- 
-			Config.ConfigFromString(
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
-"@@@@@@@@@             @@@@@@@@"+"\n"+
-"@@@@@@                  @@@@@@"+"\n"+
-"@@@@                      @@@@"+"\n"+
-"@@@                        @@@"+"\n"+
-"@@                          @@"+"\n"+
-"@                            @"+"\n"+
+"@              $             @"+"\n"+
 "@              @             @"+"\n"+
 "@             @@@            @"+"\n"+
 "@@                          @@"+"\n"+
@@ -319,6 +311,7 @@ public class Configs : MonoBehaviour{
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@@      h      @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+
  
 			Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
@@ -327,7 +320,7 @@ public class Configs : MonoBehaviour{
 "@@@@                      @@@@"+"\n"+
 "@@@                        @@@"+"\n"+
 "@@                          @@"+"\n"+
-"@                            @"+"\n"+
+"@              $             @"+"\n"+
 "@              @             @"+"\n"+
 "@             @@@            @"+"\n"+
 "@@       h           h      @@"+"\n"+
@@ -347,7 +340,7 @@ public class Configs : MonoBehaviour{
 "@        f     s     f       @"+"\n"+
 "@        f     @     f       @"+"\n"+
 "@        f    @@@    f       @"+"\n"+
-"@@                   h      @@"+"\n"+
+"@@$                  h      @@"+"\n"+
 "@@@     @@@@       @@@@    @@@"+"\n"+
 "@@@@                      @@@@"+"\n"+
 "@@@@@@wwww          wwww@@@@@@"+"\n"+
@@ -367,32 +360,15 @@ public class Configs : MonoBehaviour{
 "@@                          @@"+"\n"+
 "@                            @"+"\n"+
 "@                            @"+"\n"+
-"@                            @"+"\n"+
+"@              $             @"+"\n"+
 "@@             @@@          @@"+"\n"+
-"@@@      www@@@@  s        @@@"+"\n"+
-"@@@@wwwww@@@@@@       @@@@@@@@"+"\n"+
+"@@@      w  @@@@  h        @@@"+"\n"+
+"@@@@ w w @@@@@@       @@@@@@@@"+"\n"+
 "@@@@@@@@@@       @@@@@@@@@@@@@"+"\n"+
-"@@@@@@@@@    n        @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
- 
-				Config.ConfigFromString(
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
-"@@@@@@                  @@@@@@"+"\n"+
-"@@@@                      @@@@"+"\n"+
-"@@@                        @@@"+"\n"+
-"@@                          @@"+"\n"+
-"@                            @"+"\n"+
-"@                            @"+"\n"+
-"@                            @"+"\n"+
-"@@             @@@          @@"+"\n"+
-"@@@      www@@@@  s        @@@"+"\n"+
-"@@@@wwwww@@@@@@       @@@@@@@@"+"\n"+
-"@@@@@@@@@@       @@@@@@@@@@@@@"+"\n"+
-"@@@@@@@@@    n        @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
  
-				Config.ConfigFromString(
+				/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -404,10 +380,10 @@ public class Configs : MonoBehaviour{
 "@    f f f     f f    f f    @"+"\n"+
 "@@             @@@          @@"+"\n"+
 "@@@         @@@@           @@@"+"\n"+
-"@@@@     @@@@@@       @@@@@@@@"+"\n"+
+"@@@@  $  @@@@@@       @@@@@@@@"+"\n"+
 "@@@@@@@@@@       @@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
 				Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
@@ -418,14 +394,14 @@ public class Configs : MonoBehaviour{
 "@@                          @@"+"\n"+
 "@                            @"+"\n"+
 "@                            @"+"\n"+
-"@                            @"+"\n"+
+"@              $             @"+"\n"+
 "@@             @@@          @@"+"\n"+
 "@@@         @@@@           @@@"+"\n"+
 "@@@@  h  @@@@@@     h @@@@@@@@"+"\n"+
 "@@@@@@@@@@       @@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
- 
+ /*
 				Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
@@ -436,12 +412,12 @@ public class Configs : MonoBehaviour{
 "@                            @"+"\n"+
 "@                            @"+"\n"+
 "@               n            @"+"\n"+
-"@@             @@@          @@"+"\n"+
+"@@          $  @@@          @@"+"\n"+
 "@@@         @@@@           @@@"+"\n"+
 "@@@@  n  @@@@@@     n @@@@@@@@"+"\n"+
 "@@@@@@@@@@       @@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@  n          @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
 				Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
@@ -452,15 +428,15 @@ public class Configs : MonoBehaviour{
 "@@                          @@"+"\n"+
 "@                            @"+"\n"+
 "@                            @"+"\n"+
-"@                            @"+"\n"+
+"@               $            @"+"\n"+
 "@@             @@@          @@"+"\n"+
-"@@@wwwwwwwww@@@@wwwwwwwwwww@@@"+"\n"+
-"@@@@wwwww@@@@@@wwwwwww@@@@@@@@"+"\n"+
-"@@@@@@@@@@wwwwwww@@@@@@@@@@@@@"+"\n"+
-"@@@@@@@@@wwwwwwwwwwwww@@@@@@@@"+"\n"+
+"@@@         @@@@  w w   w w@@@"+"\n"+
+"@@@@w w w@@@@@@ w w  w@@@@@@@@"+"\n"+
+"@@@@@@@@@@w w w w@@@@@@@@@@@@@"+"\n"+
+"@@@@@@@@@w           w@@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
  
-				Config.ConfigFromString(
+				/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -471,11 +447,11 @@ public class Configs : MonoBehaviour{
 "@                            @"+"\n"+
 "@               n            @"+"\n"+
 "@@             @@@          @@"+"\n"+
-"@@@         @@@@           @@@"+"\n"+
+"@@@         @@@@         $ @@@"+"\n"+
 "@@@@  s  @@@@@@     s @@@@@@@@"+"\n"+
 "@@@@@@@@@@       @@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@   s      s  @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")*/
 		};
 		
 		this[ChamberType.TYPE_3] = new Config[]{
@@ -488,16 +464,16 @@ public class Configs : MonoBehaviour{
 "@@@        @      @        @@@"+"\n"+
 "@@         @      @         @@"+"\n"+
 "@          @      @          @"+"\n"+
-"@          @      @          @"+"\n"+
+"@          @  $   @          @"+"\n"+
 "@          ********          @"+"\n"+
 "@@         ********         @@"+"\n"+
 "@@@        @@@@@@@@        @@@"+"\n"+
 "@@@@    @@@@      @@@@    @@@@"+"\n"+
-"@@@@@@wwwwwwwwwwwwwwwwww@@@@@@"+"\n"+
-"@@@@@@@@@wwwwwwwwwwwww@@@@@@@@"+"\n"+
+"@@@@@@w w w  w w w w w w@@@@@@"+"\n"+
+"@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
  
-				Config.ConfigFromString(
+				/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -505,14 +481,14 @@ public class Configs : MonoBehaviour{
 "@@@        @      @        @@@"+"\n"+
 "@@         @      @         @@"+"\n"+
 "@          @      @          @"+"\n"+
-"@          @      @          @"+"\n"+
+"@          @   $  @          @"+"\n"+
 "@          ********          @"+"\n"+
 "@@         ********         @@"+"\n"+
 "@@@       n@@@@@@@@n       @@@"+"\n"+
 "@@@@    @@@@      @@@@    @@@@"+"\n"+
 "@@@@@@wwwwwwwwwwwwwwwwww@@@@@@"+"\n"+
 "@@@@@@@@@wwwwwwwwwwwww@@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
 				Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
@@ -525,7 +501,7 @@ public class Configs : MonoBehaviour{
 "@          @  h   @          @"+"\n"+
 "@          ********          @"+"\n"+
 "@@         ********         @@"+"\n"+
-"@@@        @@@@@@@@        @@@"+"\n"+
+"@@@      $ @@@@@@@@        @@@"+"\n"+
 "@@@@    @@@@      @@@@    @@@@"+"\n"+
 "@@@@@@s                s@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
@@ -542,13 +518,13 @@ public class Configs : MonoBehaviour{
 "@          @  h   @          @"+"\n"+
 "@          ********          @"+"\n"+
 "@@         ********         @@"+"\n"+
-"@@@        @@@@@@@@        @@@"+"\n"+
+"@@@      $ @@@@@@@@        @@@"+"\n"+
 "@@@@    @@@@      @@@@    @@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@@      h      @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
  
-				Config.ConfigFromString(
+				/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -559,13 +535,13 @@ public class Configs : MonoBehaviour{
 "@          @  nn  @          @"+"\n"+
 "@          ********          @"+"\n"+
 "@@         ********         @@"+"\n"+
-"@@@        @@@@@@@@        @@@"+"\n"+
+"@@@      $ @@@@@@@@        @@@"+"\n"+
 "@@@@    @@@@      @@@@    @@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
-				Config.ConfigFromString(
+				/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -576,13 +552,13 @@ public class Configs : MonoBehaviour{
 "@     f    @      @     f    @"+"\n"+
 "@     f    ********     f    @"+"\n"+
 "@@         ********         @@"+"\n"+
-"@@@        @@@@@@@@        @@@"+"\n"+
+"@@@      $ @@@@@@@@        @@@"+"\n"+
 "@@@@    @@@@      @@@@    @@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@@      n      @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
-				Config.ConfigFromString(
+				/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@     n      n     @@@@@@"+"\n"+
@@ -593,13 +569,13 @@ public class Configs : MonoBehaviour{
 "@          @   s  @          @"+"\n"+
 "@          ********          @"+"\n"+
 "@@         ********         @@"+"\n"+
-"@@@        @@@@@@@@        @@@"+"\n"+
+"@@@      $ @@@@@@@@        @@@"+"\n"+
 "@@@@    @@@@      @@@@    @@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@@      s      @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
-				Config.ConfigFromString(
+				/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -607,14 +583,14 @@ public class Configs : MonoBehaviour{
 "@@@  f    f@      @f    f  @@@"+"\n"+
 "@@         @      @         @@"+"\n"+
 "@          @      @          @"+"\n"+
-"@          @      @          @"+"\n"+
+"@          @   $  @          @"+"\n"+
 "@          ********          @"+"\n"+
 "@@         ********         @@"+"\n"+
 "@@@     n  @@@@@@@@  n     @@@"+"\n"+
 "@@@@    @@@@      @@@@    @@@@"+"\n"+
 "@@@@@@wwwwwwwwwwwwwwwwww@@@@@@"+"\n"+
 "@@@@@@@@@wwwwwwwwwwwww@@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
 				Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
@@ -627,10 +603,10 @@ public class Configs : MonoBehaviour{
 "@          @  h   @          @"+"\n"+
 "@          ********          @"+"\n"+
 "@@         ********         @@"+"\n"+
-"@@@        @@@@@@@@        @@@"+"\n"+
+"@@@        @@@@@@@@  $     @@@"+"\n"+
 "@@@@    @@@@      @@@@    @@@@"+"\n"+
-"@@@@@@wwwwwwwwwwwwwwwwww@@@@@@"+"\n"+
-"@@@@@@@@@wwwwwwwwwwwww@@@@@@@@"+"\n"+
+"@@@@@@ w     w  w      w@@@@@@"+"\n"+
+"@@@@@@@@@             @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 			
 		};
@@ -647,14 +623,14 @@ public class Configs : MonoBehaviour{
 "@  @       @*******@      @  @"+"\n"+
 "@   @      *********     @   @"+"\n"+
 "@    @  s  *********  s @    @"+"\n"+
-"@@    ****@@@@@@@@@@@***     @"+"\n"+
+"@@ $  ****@@@@@@@@@@@***     @"+"\n"+
 "@@@*******@@@@@@@@@@@******@@@"+"\n"+
 "@@@@******@@@@@@@@@@@*****@@@@"+"\n"+
-"@@@@@@wwwwwwwwwwwwwwwwww@@@@@@"+"\n"+
-"@@@@@@@@@wwwwwwwwwwwww@@@@@@@@"+"\n"+
+"@@@@@@w     w     w   w @@@@@@"+"\n"+
+"@@@@@@@@@w w       w w@@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
  
-			Config.ConfigFromString(
+			/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@@  @*******@  @@@@@@@@"+"\n"+
 "@@@@@@     @*******@    @@@@@@"+"\n"+
@@ -663,13 +639,13 @@ public class Configs : MonoBehaviour{
 "@@@        @*******@       @@@"+"\n"+
 "@  @       @*******@      @  @"+"\n"+
 "@   @      *********     @   @"+"\n"+
-"@    @     *********    @    @"+"\n"+
+"@    @ $   *********    @    @"+"\n"+
 "@@    ****@@@@@@@@@@@***     @"+"\n"+
 "@@@*******@@@@@@@@@@@******@@@"+"\n"+
 "@@@@******@@@@@@@@@@@*****@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@@             @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")*/
 			
 		};
 		
@@ -677,19 +653,19 @@ public class Configs : MonoBehaviour{
 			
 			Config.ConfigFromString(
 			"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
-"@@@@@@@@     *ww*     @@@@@@@@"+"\n"+
-"@@@@@@       *ww*       @@@@@@"+"\n"+
-"@@@@         *ww*         @@@@"+"\n"+
-"@@@          *ww*          @@@"+"\n"+
-"@@           *ww*           @@"+"\n"+
-"@            *ww*            @"+"\n"+
-"@            *ww*            @"+"\n"+
-"@            *ww*            @"+"\n"+
-"@@           *ww*           @@"+"\n"+
-"@@@          *ww*          @@@"+"\n"+
-"@@@@         *ww*         @@@@"+"\n"+
-"@@@@@@       *ww*       @@@@@@"+"\n"+
-"@@@@@@@@     *ww*     @@@@@@@@"+"\n"+
+"@@@@@@@@     *  *     @@@@@@@@"+"\n"+
+"@@@@@@       * w*       @@@@@@"+"\n"+
+"@@@@         *  *         @@@@"+"\n"+
+"@@@          *  *          @@@"+"\n"+
+"@@           *w *           @@"+"\n"+
+"@            *  *            @"+"\n"+
+"@            *  *            @"+"\n"+
+"@            * w*            @"+"\n"+
+"@@           *w *           @@"+"\n"+
+"@@@          *  *          @@@"+"\n"+
+"@@@@         *w *         @@@@"+"\n"+
+"@@@@@@$      *  *       @@@@@@"+"\n"+
+"@@@@@@@@     *  *     @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
  
 				Config.ConfigFromString(
@@ -698,9 +674,9 @@ public class Configs : MonoBehaviour{
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@                      @@@@"+"\n"+
 "@@@                        @@@"+"\n"+
-"@@                          @@"+"\n"+
+"@@             $            @@"+"\n"+
 "@ ************************** @"+"\n"+
-"@ *wwwwwwwwwwwwwwwwwwwwwwww* @"+"\n"+
+"@ *  w       w   w       w * @"+"\n"+
 "@ ************************** @"+"\n"+
 "@@                          @@"+"\n"+
 "@@@                        @@@"+"\n"+
@@ -709,7 +685,7 @@ public class Configs : MonoBehaviour{
 "@@@@@@@@              @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
  
-				Config.ConfigFromString(
+				/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@              @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -721,7 +697,7 @@ public class Configs : MonoBehaviour{
 "@                            @"+"\n"+
 "@@      f      f      f     @@"+"\n"+
 "@@@                        @@@"+"\n"+
-"@@@@    f      f      f   @@@@"+"\n"+
+"@@@@ $  f      f      f   @@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@              @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
@@ -738,10 +714,10 @@ public class Configs : MonoBehaviour{
 "@                            @"+"\n"+
 "@@                          @@"+"\n"+
 "@@@           s            @@@"+"\n"+
-"@@@@                      @@@@"+"\n"+
+"@@@@ $                    @@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@              @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
 				Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
@@ -755,12 +731,12 @@ public class Configs : MonoBehaviour{
 "@                            @"+"\n"+
 "@@                          @@"+"\n"+
 "@@@                        @@@"+"\n"+
-"@@@@                      @@@@"+"\n"+
+"@@@@ $        h h         @@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
-"@@@@@@@@   h  h h  h  @@@@@@@@"+"\n"+
+"@@@@@@@@   h       h  @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
 				
-				Config.ConfigFromString(
+				/*Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@              @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
@@ -772,17 +748,22 @@ public class Configs : MonoBehaviour{
 "@                            @"+"\n"+
 "@@                          @@"+"\n"+
 "@@@                        @@@"+"\n"+
-"@@@@                      @@@@"+"\n"+
+"@@@@ $                    @@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@   n n   n n  @@@@@@@@"+"\n"+
-"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),
+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"),*/
  
-				Config.ConfigFromString(
+				
+			
+		};
+		
+		this[ChamberType.TYPE_BOSS] = new Config[]{
+		Config.ConfigFromString(
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
 "@@@@@@@@              @@@@@@@@"+"\n"+
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@                      @@@@"+"\n"+
-"@@@                        @@@"+"\n"+
+"@@@            $           @@@"+"\n"+
 "@@          *******         @@"+"\n"+
 "@           *     *          @"+"\n"+
 "@           *  X  *          @"+"\n"+
@@ -793,7 +774,6 @@ public class Configs : MonoBehaviour{
 "@@@@@@                  @@@@@@"+"\n"+
 "@@@@@@@@              @@@@@@@@"+"\n"+
 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-			
 		};
 		
 		#endregion
@@ -808,5 +788,86 @@ public class Configs : MonoBehaviour{
 	// Update is called once per frame
 	void Update () {
 	
+	}
+	
+	/// <summary>
+	/// Overlay the specified roomControl, room and config onto the room control.
+	/// </summary>
+	/// <param name='roomControl'>
+	/// Room control.
+	/// </param>
+	/// <param name='room'>
+	/// Room.
+	/// </param>
+	/// <param name='config'>
+	/// Config.
+	/// </param>
+	public void Overlay(RoomControl roomControl, Room room, Config config){
+		
+		if (config.Width != room.Width || config.Height != room.Height){
+			throw new ConfigFormatException("Room and config dimensions do not match!");
+		}
+		
+		for( int x = 0; x < room.Width; x++){
+			for(int y = 0; y < room.Height; y++){
+				
+				// Only add the overlay if it's not already occupied by the room
+				switch(room[x,y].Type){
+				case TileType.BLANK:
+					
+					var currentConf = config[x,y];
+					var currentPre = this[currentConf];
+					
+					if (currentPre != null){
+					
+						// Instantiate whatever the prefab is!
+						var o = GameObject.Instantiate(currentPre) as GameObject;
+						
+						o.transform.position = CubeGen.Singleton.PositionFromIdx(roomControl.Position, new coords(x,y));
+						
+						switch (currentConf){
+						case ObjectType.SNOW:
+							o.transform.localScale = new Vector3( CubeGen.Singleton.cubeSize, CubeGen.Singleton.cubeSize, CubeGen.Singleton.cubeSize);
+							var mRend = o.GetComponent(typeof(MeshRenderer)) as MeshRenderer;
+							mRend.material.color = new Color(1f,1f,1f);
+							o.tag = "SNOW";
+							o.layer = LayerMask.NameToLayer("Terrain");
+							roomControl.AddTerrain(o);
+							break;
+						case ObjectType.PLAYER_START:
+							roomControl.PlayerStart = o;
+							break;
+						case ObjectType.XLGRHTHBTRG:
+							var xc = o.GetComponent(typeof(XlGrhthbtrgControl)) as XlGrhthbtrgControl;
+							xc.player = player;
+							xc.currentState = EntityState.STILL;
+							xc.target = player.transform.Find("Armature/Hip");
+							o.layer = LayerMask.NameToLayer("Enemy");
+							roomControl.AddEnemy(xc);
+							break;
+						case ObjectType.WYRM:
+							numWyrms++;
+							var wc = o.GetComponent(typeof(WyrmControl)) as WyrmControl;
+							wc.player = player;
+							wc.currentState = EntityState.STILL;
+							o.layer = LayerMask.NameToLayer("Wyrm");
+							roomControl.AddEnemy(wc);
+							break;
+						case ObjectType.SHOGGOTH:
+							var sc = o.GetComponent(typeof(ShoggothControl)) as ShoggothControl;
+							sc.player = player;
+							sc.currentState = EntityState.STILL;
+							o.layer = LayerMask.NameToLayer("Enemy");
+							roomControl.AddEnemy(sc);
+							break;
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		
 	}
 }

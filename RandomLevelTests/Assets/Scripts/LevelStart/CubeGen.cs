@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using LevelGen;
+using System;
 
 public class CubeGen : MonoBehaviour {
 	
@@ -25,7 +26,7 @@ public class CubeGen : MonoBehaviour {
 	
 	public string textFile = "TestLevel1";
 	
-	public GameObject player = null;
+	public DethmurderControl player = null;
 	
 	public GameObject firstEnemy = null;
 	
@@ -39,6 +40,16 @@ public class CubeGen : MonoBehaviour {
 	}
 	
 	public Maze gameMaze{
+		get;
+		private set;
+	}
+	
+	public ChamberMap gameChambers{
+		get;
+		private set;
+	}
+	
+	public RoomControl[,] roomControls{
 		get;
 		private set;
 	}
@@ -61,12 +72,13 @@ public class CubeGen : MonoBehaviour {
 	/// <param name="room">
 	/// A <see cref="Room"/>
 	/// </param>
-	void MakeRoom(Room room){
+	void MakeRoom(Room room, System.Random rand){
 		
-		for (int x = 0; x < room.Width; x++){
-			for (int y = 0; y < room.Height; y++){
+		
+		Func<int,int,GameObject> makeTile =(int x, int y)=>
+			{
 				
-				GameObject cube;
+				GameObject cube = null;
 				Transform trans;
 				Vector2 pos;
 				MeshRenderer mRend;
@@ -84,8 +96,8 @@ public class CubeGen : MonoBehaviour {
 					pos = BottomLeft + new Vector2((x+0.5f)*cubeSize, (y+0.5f)*cubeSize);
 					trans.position = new Vector3(pos.x, pos.y, 0f);
 					
-					print("Attempted to set position to : "+pos);
-					print("Instead, got : "+trans.position);
+					//print("Attempted to set position to : "+pos);
+					//print("Instead, got : "+trans.position);
 					
 					//cube.tag = "SNOW";
 					cube.name = "SNOW";
@@ -93,9 +105,8 @@ public class CubeGen : MonoBehaviour {
 					cube.layer = LayerMask.NameToLayer("Terrain");
 					
 					// Get the material component!
-					mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
-					mRend.material.color = new Color(1.0f, 1.0f, 1.0f);
-					print( "Final mark!!");
+					/*mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
+					mRend.material.color = new Color(1.0f, 1.0f, 1.0f);*/
 					break;
 					
 				case TileType.ROCK:
@@ -112,30 +123,68 @@ public class CubeGen : MonoBehaviour {
 					//cube.tag = "ROCK";
 					cube.name = "ROCK";
 					cube.tag = "ROCK";
-					cube.layer = LayerMask.NameToLayer("Default");
+					cube.layer = LayerMask.NameToLayer("Terrain");
 					
 					// Get the material component!
-					mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
-					mRend.material.color = new Color(0.0f, 0.0f, 0.0f);
+					/*mRend = (MeshRenderer)cube.GetComponent(typeof(MeshRenderer));
+					mRend.material.color = new Color(0.0f, 0.0f, 0.0f);*/
 					break;
 				}
-			}
-		}
+			
+			return cube;
+			};
 		
-		// Add triggers
+		// Gotta initialize this ol' feller
+		roomControls = new RoomControl[gameMaze.Width, gameMaze.Height];
+		
+		// Add triggers and overlay enemy configurations
+		
 		for (int x = 0; x < gameMaze.Width; x++){
 			for (int y = 0; y < gameMaze.Height; y++){
+				
+				if (gameMaze[x,y] != MazeTileType.SPACE){
+					continue;
+				}
+				
 				var r = rectFromCoords(new coords(x,y));
 				
 				var g = new GameObject("Room ("+x+","+y+")");
 				
 				g.transform.position = new Vector3(r.center.x, r.center.y, 0);
 				
-				g.transform.localScale = new Vector3(r.width, r.height, cubeSize);
-				
 				var collider = g.AddComponent(typeof(BoxCollider)) as BoxCollider;
 				
 				collider.isTrigger = true;
+				
+				collider.size = new Vector3(r.width, r.height, cubeSize);
+				
+				// Adding the room control
+				var roomControl = g.AddComponent(typeof(RoomControl)) as RoomControl;
+				
+				roomControl.player = player;
+				
+				roomControl.Position = new coords(x,y);
+				
+				roomControls[x,y] = roomControl;
+				
+				for (int xx = 0; xx < Chambers.CHAMBER_WIDTH; xx++){
+					for (int yy = 0; yy < Chambers.CHAMBER_HEIGHT; yy++){
+						var o = makeTile(x * Chambers.CHAMBER_WIDTH + xx, y * Chambers.CHAMBER_HEIGHT + yy);
+						
+						if (o != null){
+							roomControl.AddTerrain(o);
+						}
+					}
+				}
+				
+				// Get a random configuration
+				var confs = Configs.Singleton[gameChambers[x,y]];
+				
+				// Get a single random configuration from that array
+				var sconf = confs[rand.Next() % confs.Length];
+				
+				// Now do the overlay!!!
+				Configs.Singleton.Overlay(roomControl, SubRoom(new coords(x,y)), sconf);
 			}
 		}
 	}
@@ -145,9 +194,6 @@ public class CubeGen : MonoBehaviour {
 	
 		// :o How selfish!!!
 		Singleton = this;
-	}
-	
-	void Awake() {
 		
 		TextAsset t = Resources.Load(textFile) as TextAsset;
 				
@@ -160,35 +206,60 @@ public class CubeGen : MonoBehaviour {
 		//Room r = Room.ChambersGen0(width, height, numRooms);
 		
 		coords start = new coords();
+		coords end = new coords();
 		
-		Maze m = Maze.GrowingTree(width, height, branchRate, noDiagonals, out start);
+		Maze m = Maze.GrowingTree(width, height, branchRate, noDiagonals, out start, out end);
 		
-		Room r = Room.ChambersFromMaze(m, new System.Random());
-		
-		gameMap = r;
+		gameChambers = new ChamberMap(m.Width, m.Height);
 		
 		gameMaze = m;
 		
-		player.transform.position = new Vector3(
+		Room r = Room.ChambersFromMaze(m, gameChambers, new System.Random(), start, end);
+		
+		gameMap = r;
+		
+		MakeRoom(r, new System.Random());
+		
+		if (roomControls[start.X, start.Y].PlayerStart != null){
+			player.transform.position = roomControls[start.X, start.Y].PlayerStart.transform.position;
+		}
+		else{
+			player.transform.position = new Vector3(
 		                                        BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
 		                                        BottomLeft.y + ((start.Y + 0.5f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
 		                                        0);
+		}
+		if (firstEnemy != null){
+			firstEnemy.transform.position = new Vector3(
+		    	                                    BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
+		    	                                    BottomLeft.y + ((start.Y + 0.2f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
+		    	                                    0);
+		}
 		
-		firstEnemy.transform.position = new Vector3(
-		                                        BottomLeft.x + ((start.X + 0.5f) * Chambers.CHAMBER_WIDTH * cubeSize),
-		                                        BottomLeft.y + ((start.Y + 0.2f) * Chambers.CHAMBER_HEIGHT * cubeSize), 
-		                                        0);
 		
 		
-		MakeRoom(r);
 		
-		
+		// OK SO!
+		// Before the game starts, turn off all rooms
+		for (int x = 0; x < roomControls.GetLength(0); x++){
+			for (int y = 0; y < roomControls.GetLength(1); y++){
+				if (roomControls[x,y] != null){
+					roomControls[x,y].FreezeRoom();
+				}
+			}
+		}
 		
 		// Temporary!
 		// Output the maze and the room to files
 		
 		/*System.IO.File.WriteAllText("mazeText.txt", m.ToString());
 		System.IO.File.WriteAllText("levelText.txt", r.ToString());*/
+		
+	}
+	
+	void Awake() {
+		
+		
 	}
 	
 	// Update is called once per frame
@@ -252,6 +323,25 @@ public class CubeGen : MonoBehaviour {
 	
 	public Room SubRoom(coords position){
 		return gameMap.Slice(SubRoomRect(position));
+	}
+	
+	public Vector3 PositionFromIdx(coords tileIndex){
+		return new Vector3
+			( BottomLeft.x + cubeSize * (tileIndex.X + 0.5f),
+				BottomLeft.y + cubeSize * (tileIndex.X + 0.5f),
+				0f);
+	}
+	
+	public Vector3 PositionFromIdx(coords subRoomIndex, coords tileIndex){
+		
+		Vector2 offset = new Vector2(
+			BottomLeft.x + subRoomIndex.X * Chambers.CHAMBER_WIDTH * cubeSize,
+			BottomLeft.y + subRoomIndex.Y * Chambers.CHAMBER_HEIGHT * cubeSize);
+		
+		return new Vector3(
+			offset.x + cubeSize * (tileIndex.X + 0.5f),
+			offset.y + cubeSize * (tileIndex.Y + 0.5f),
+			0f);	
 	}
 	
 	#endregion

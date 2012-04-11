@@ -57,7 +57,12 @@ public class EntityControl : MonoBehaviour {
 	
 	public Stats stats;
 	
-	public EntityState currentState;
+	public EntityState currentState = EntityState.STILL;
+	
+	/// <summary>
+	/// The default non-still state.
+	/// </summary>
+	public EntityState defaultState = EntityState.WANDER;
 	
 	public DethmurderControl player;
 	
@@ -111,6 +116,8 @@ public class EntityControl : MonoBehaviour {
 	}
 	
 	public void RunStateFunc(EntityState s){
+		
+		lockPosition();
 		
 		Head();
 		
@@ -212,8 +219,6 @@ public class EntityControl : MonoBehaviour {
 	/// </param>
 	public virtual void SetChildTags(GameObject targ, string tag){
 		
-		print("Setting tags for "+targ.name);
-		
 		if (transform == null){
 			return;
 		}
@@ -223,8 +228,6 @@ public class EntityControl : MonoBehaviour {
 			if (t.gameObject == null){
 				continue;
 			}
-			
-			print("Setting tags in loop for: "+t.gameObject.name);
 			
 			// Always set t's tag first, since we don't necessarily want
 			// this game object to have the tag!
@@ -266,6 +269,61 @@ public class EntityControl : MonoBehaviour {
 		float w2 = 1 - w1;
 		
 		return ((v1 * w2 + v2 * w1) / 2f).normalized;
+	}
+	
+	public void lockPosition(){
+		
+		var v = transform.position;
+		
+		transform.position = new Vector3(v.x, v.y, 0f);
+	}
+	
+	public void turnOnMeshes(){
+		setMeshes(this.transform, true);
+	}
+	
+	public void turnOffMeshes(){
+		setMeshes(this.transform, false);
+	}
+	
+	public void setMeshes(Transform t, bool onOff){
+		
+		var r = t.gameObject.GetComponent(typeof(MeshRenderer)) as MeshRenderer;
+		
+		if (r != null){
+			r.enabled = onOff;
+		}
+		
+		var s = t.gameObject.GetComponent(typeof(SkinnedMeshRenderer)) as SkinnedMeshRenderer;
+		
+		if (s != null){
+			s.enabled = onOff;
+		}
+		
+		foreach(Transform tr in t){
+			setMeshes(tr, onOff);
+		}
+		
+	}
+	
+	public void turnOnScript(){
+		setScript(true);
+	}
+	
+	public void turnOffScript(){
+		setScript(false);
+	}
+	
+	public virtual void setScript(bool onOff){
+		enabled = onOff;
+	}
+	
+	public virtual void OnBecameVisible(){
+		turnOnMeshes();
+	}
+	
+	public virtual void OnBecameInvisible(){
+		turnOffMeshes();
 	}
 	
 	#endregion

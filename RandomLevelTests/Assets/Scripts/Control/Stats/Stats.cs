@@ -11,6 +11,8 @@ public class Stats : MonoBehaviour{
 	public float defense;
 	public float speed;
 	public float attack;
+	public int HPUnit = 20;
+	public int MPUnit = 20;
 	
 	GUIStyle style;
 	
@@ -57,6 +59,8 @@ public class Stats : MonoBehaviour{
 			dmg -= defense;
 		}
 		
+		dmg = Mathf.Clamp(dmg, 1.0f, float.PositiveInfinity);
+		
 		notifications.Add(new TimedNotification(""+dmg, Color.white));
 		HP -= dmg;
 	}
@@ -66,7 +70,6 @@ public class Stats : MonoBehaviour{
 		Transform t = rootTransform == null ? transform : rootTransform;
 		
 		Vector3 screenPos = Camera.main.WorldToScreenPoint(t.position);
-		//Vector3 screenPos = Camera.main.WorldToViewportPoint(transform.position);
 		
 		List<TimedNotification> removals = new List<TimedNotification>();
 		
@@ -89,8 +92,6 @@ public class Stats : MonoBehaviour{
 		foreach (TimedNotification n in removals){
 			notifications.Remove(n);
 		}
-		
-		//GUI.TextField(new Rect(0,70,100,20), "Dmg:"+lastDamage);
 	}
 }
 

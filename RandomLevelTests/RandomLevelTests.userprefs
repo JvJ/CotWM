@@ -1,26 +1,38 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\LevelStart\CubeGen.cs">
+    <Files>
+      <File FileName="Assets\Scripts\LevelStart\CubeGen.cs" Line="116" Column="6" />
+      <File FileName="Assets\Scripts\Control\EntityControl.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Rooms\RoomControl.cs" Line="156" Column="5" />
+      <File FileName="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XTentacleControl.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XlGrhthbtrgControl.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Rooms\Invisiblizer.cs" Line="21" Column="28" />
+      <File FileName="Assets\Scripts\Collision\CollideHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GUI\TestGUIs.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Control\Stats\Stats.cs" Line="1" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Algorithms" expanded="True">
-                  <Node name="Misc.cs" selected="True" />
-                </Node>
                 <Node name="Control" expanded="True">
                   <Node name="Dethmurder" expanded="True" />
                   <Node name="Enemy" expanded="True">
                     <Node name="Shoggoth" expanded="True" />
-                    <Node name="Wyrm" expanded="True" />
                     <Node name="XlGrhthbtrg" expanded="True" />
                   </Node>
                   <Node name="Stats" expanded="True" />
                 </Node>
                 <Node name="GUI" expanded="True" />
-                <Node name="LevelStart" expanded="True" />
+                <Node name="LevelStart" expanded="True">
+                  <Node name="CubeGen.cs" selected="True" />
+                </Node>
+                <Node name="Rooms" expanded="True" />
               </Node>
             </Node>
           </Node>

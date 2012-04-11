@@ -42,8 +42,8 @@ namespace LevelGen
 		/// <returns>
 		/// A <see cref="Room"/>
 		/// </returns>
-		public static Maze GrowingTree(int width, int height, int branchRate, bool nDiag, out coords StartLocation){
-			return GrowingTree(width, height, branchRate, nDiag, new System.Random(), out StartLocation);
+		public static Maze GrowingTree(int width, int height, int branchRate, bool nDiag, out coords StartLocation, out coords EndLocation){
+			return GrowingTree(width, height, branchRate, nDiag, new System.Random(), out StartLocation, out EndLocation);
 		}
 		
 		/// <summary>
@@ -55,8 +55,8 @@ namespace LevelGen
 		/// <returns>
 		/// A <see cref="Room"/>
 		/// </returns>
-		public static Maze GrowingTree(int width, int height, int branchRate, bool nDiag, int seed, out coords StartLocation){
-			return GrowingTree(width, height, branchRate, nDiag, new System.Random(seed), out StartLocation);
+		public static Maze GrowingTree(int width, int height, int branchRate, bool nDiag, int seed, out coords StartLocation, out coords EndLocation){
+			return GrowingTree(width, height, branchRate, nDiag, new System.Random(seed), out StartLocation, out EndLocation);
 		}
 		
 		/// <summary>
@@ -75,7 +75,7 @@ namespace LevelGen
 		/// <returns>
 		/// A <see cref="Room"/>
 		/// </returns>
-		public static Maze GrowingTree(int width, int height, int branchRate, bool nDiag, System.Random rand, out coords StartLocation){
+		public static Maze GrowingTree(int width, int height, int branchRate, bool nDiag, System.Random rand, out coords StartLocation, out coords EndLocation){
 			
 			// The return value
 			Maze ret = new Maze(width, height);
@@ -91,6 +91,8 @@ namespace LevelGen
 			var frontier = new List<coords>();
 			
 			// Functions
+			
+			#region Carve
 			
 			// This one makes the cell at (x,y) a space
 			Action<int, int> carve
@@ -129,13 +131,18 @@ namespace LevelGen
 				frontier.AddRange(Misc.ShuffleList<coords>(extra, rand));
 			};
 			
+			#endregion
+			
+			#region Harden
 			Action<int,int> harden = 
 				(int x, int y)=>
 			{
 				ret[x,y] = MazeTileType.WALL;
 			};
 			
+			#endregion
 			
+			#region Check
 			// Test cell at (x,y) : can this become a space?
 			// True indicates it should become a space, false indicates
 			// it should become a wall
@@ -239,12 +246,15 @@ namespace LevelGen
 				
 			};
 			
+			#endregion
+			
 			// Now that the function definitions are over, the algorithm starts
 			
 			// Choose an original point at random and carve it out
 			int xChoice = rand.Next(0, width);
 			int yChoice = rand.Next(0, height);
-			StartLocation = new coords(xChoice, yChoice);
+			coords tempEnd;
+			StartLocation = tempEnd = new coords(xChoice, yChoice);
 			carve(xChoice, yChoice);
 			
 			while (frontier.Count > 0){
@@ -257,6 +267,7 @@ namespace LevelGen
 				
 				if (check(choice.X, choice.Y, nDiag)){
 					carve(choice.X, choice.Y);
+					tempEnd = choice;
 				}
 				else{
 					harden(choice.X, choice.Y);
@@ -273,6 +284,8 @@ namespace LevelGen
 					}
 				}
 			}
+			
+			EndLocation = tempEnd;
 			
 			return ret;
 		}

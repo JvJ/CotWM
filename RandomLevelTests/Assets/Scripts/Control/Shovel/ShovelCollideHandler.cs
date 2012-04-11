@@ -24,8 +24,6 @@ public class ShovelCollideHandler : CollideHandler {
 		
 		ec = owner.GetComponent(typeof(EntityControl)) as EntityControl;
 		
-		print("The ec is : "+ec);
-		
 		print (characterControl.stats.speed);
 	}
 	
@@ -48,9 +46,15 @@ public class ShovelCollideHandler : CollideHandler {
 	
 	protected override void hitCollider (Collider c)
 	{
+		if (c == null || c.gameObject == null){
+			return;
+		}
+		
 		if (shovelAudio != null){
 			shovelAudio.Play();
 		}
+		
+		
 		
 		// If it is snow, destroy it
 		if (c.gameObject.CompareTag("SNOW")){			

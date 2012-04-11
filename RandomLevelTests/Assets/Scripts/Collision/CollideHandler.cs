@@ -14,10 +14,14 @@ public class CollideHandler : MonoBehaviour {
 	protected HashSet<Collider> enteredList;
 	protected HashSet<Collider> hitList;
 	
-	// Use this for initialization
-	protected virtual void Start () {
+	protected virtual void Awake(){
 		enteredList = new  HashSet<Collider>();
 		hitList = new HashSet<Collider>();
+	}
+	
+	// Use this for initialization
+	protected virtual void Start () {
+		
 	}
 	
 	// Update is called once per frame

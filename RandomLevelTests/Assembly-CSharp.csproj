@@ -1,92 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.20506</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FF9A9ED1-74F7-E153-1EEF-087635B314FB}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AssemblyCSharp</RootNamespace>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{FF9A9ED1-74F7-E153-1EEF-087635B314FB}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_3_5_0;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_WEBPLAYER;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0169</NoWarn>
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_3_5_0;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>Temp\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0169</NoWarn>
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="UnityEngine">
-      <HintPath>C:\Program Files %28x86%29\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>C:\Program Files %28x86%29\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml" />
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="UnityEngine">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	</Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Algorithms\Chambers.cs" />
-    <Compile Include="Assets\Scripts\Algorithms\Level.cs" />
-    <Compile Include="Assets\Scripts\Algorithms\Maze.cs" />
-    <Compile Include="Assets\Scripts\Algorithms\Misc.cs" />
-    <Compile Include="Assets\Scripts\Algorithms\Room.cs" />
-    <Compile Include="Assets\Scripts\Algorithms\Sector.cs" />
-    <Compile Include="Assets\Scripts\Algorithms\Tile.cs" />
-    <Compile Include="Assets\Scripts\Collision\CollideHandler.cs" />
-    <Compile Include="Assets\Scripts\Control\Camera\FollowPlayer.cs" />
-    <Compile Include="Assets\Scripts\Control\CharacterControl.cs" />
-    <Compile Include="Assets\Scripts\Control\ChildCallbacks\ChildCallback.cs" />
-    <Compile Include="Assets\Scripts\Control\CursorHit.cs" />
-    <Compile Include="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\F_Headman\FHeadmanControl.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\Shaddowman\ShadowmanControl.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\BigTentacleInit.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothCollisionCallback.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\TentacleInit.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\Wyrm\WyrmControl.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XTentacleCollideHandler.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XTentacleControl.cs" />
-    <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XlGrhthbtrgControl.cs" />
-    <Compile Include="Assets\Scripts\Control\EntityControl.cs" />
-    <Compile Include="Assets\Scripts\Control\Extra\Attractor.cs" />
-    <Compile Include="Assets\Scripts\Control\Extra\PhysControl.cs" />
-    <Compile Include="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" />
-    <Compile Include="Assets\Scripts\Control\Stats\EnemyStats.cs" />
-    <Compile Include="Assets\Scripts\Control\Stats\Stats.cs" />
-    <Compile Include="Assets\Scripts\Control\cuebTest.cs" />
-    <Compile Include="Assets\Scripts\Effects\LightningBolt.cs" />
-    <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />
-    <Compile Include="Assets\Scripts\GUI\GUIVars.cs" />
-    <Compile Include="Assets\Scripts\GUI\TestGUIs.cs" />
-    <Compile Include="Assets\Scripts\LevelStart\CubeGen.cs" />
-    <Compile Include="Assets\Scripts\MetaBall\MCBlob.cs" />
-    <Compile Include="Assets\Scripts\Plugins\MeshExtrusion.cs" />
-    <Compile Include="Assets\Scripts\Plugins\Perlin.cs" />
-    <Compile Include="Assets\Scripts\TestScript.cs" />
-    <None Include="Assets\Resources\TestLevelBig.txt" />
-    <None Include="Assets\Resources\TestLevel1.txt" />
-    <Compile Include="Assets\Scripts\LevelStart\Configs.cs" />
+     <Compile Include="Assets\Scripts\Algorithms\Chambers.cs" />
+     <Compile Include="Assets\Scripts\Algorithms\Level.cs" />
+     <Compile Include="Assets\Scripts\Algorithms\Maze.cs" />
+     <Compile Include="Assets\Scripts\Algorithms\Misc.cs" />
+     <Compile Include="Assets\Scripts\Algorithms\Room.cs" />
+     <Compile Include="Assets\Scripts\Algorithms\Sector.cs" />
+     <Compile Include="Assets\Scripts\Algorithms\Tile.cs" />
+     <Compile Include="Assets\Scripts\Collision\CollideHandler.cs" />
+     <Compile Include="Assets\Scripts\Control\Camera\FollowPlayer.cs" />
+     <Compile Include="Assets\Scripts\Control\CharacterControl.cs" />
+     <Compile Include="Assets\Scripts\Control\ChildCallbacks\ChildCallback.cs" />
+     <Compile Include="Assets\Scripts\Control\CursorHit.cs" />
+     <Compile Include="Assets\Scripts\Control\Dethmurder\DethmurderControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\F_Headman\FHeadmanControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Shaddowman\ShadowmanControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\BigTentacleInit.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothCollisionCallback.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\ShoggothControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\TentacleInit.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Shoggoth\TentacleWhackHandler.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\Wyrm\WyrmControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XTentacleCollideHandler.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XTentacleControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Enemy\XlGrhthbtrg\XlGrhthbtrgControl.cs" />
+     <Compile Include="Assets\Scripts\Control\EntityControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Extra\Attractor.cs" />
+     <Compile Include="Assets\Scripts\Control\Extra\PhysControl.cs" />
+     <Compile Include="Assets\Scripts\Control\Shovel\ShovelCollideHandler.cs" />
+     <Compile Include="Assets\Scripts\Control\Stats\EnemyStats.cs" />
+     <Compile Include="Assets\Scripts\Control\Stats\Stats.cs" />
+     <Compile Include="Assets\Scripts\Control\cuebTest.cs" />
+     <Compile Include="Assets\Scripts\Effects\LightningBolt.cs" />
+     <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />
+     <Compile Include="Assets\Scripts\GUI\GUIVars.cs" />
+     <Compile Include="Assets\Scripts\GUI\TestGUIs.cs" />
+     <Compile Include="Assets\Scripts\LevelStart\Configs.cs" />
+     <Compile Include="Assets\Scripts\LevelStart\CubeGen.cs" />
+     <Compile Include="Assets\Scripts\MetaBall\MCBlob.cs" />
+     <Compile Include="Assets\Scripts\Plugins\MeshExtrusion.cs" />
+     <Compile Include="Assets\Scripts\Plugins\Perlin.cs" />
+     <Compile Include="Assets\Scripts\Rooms\Invisiblizer.cs" />
+     <Compile Include="Assets\Scripts\Rooms\RoomControl.cs" />
+     <Compile Include="Assets\Scripts\TestScript.cs" />
+     <None Include="Assets\Resources\TestLevelBig.txt" />
+     <None Include="Assets\Resources\TestLevel1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -96,4 +98,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  
 </Project>

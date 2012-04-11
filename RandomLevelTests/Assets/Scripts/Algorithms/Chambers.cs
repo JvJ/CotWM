@@ -11,6 +11,7 @@ namespace LevelGen
 		TYPE_3,
 		TYPE_4,
 		TYPE_5,
+		TYPE_BOSS,
 		NumElements
 	}
 	
@@ -18,6 +19,28 @@ namespace LevelGen
 	/// Exception thrown if any chamber is the wrong size. 
 	/// </summary>
 	public class ChamberSizeException : Exception{
+	}
+	
+	public class ChamberMap{
+		
+		private ChamberType[,] chambers;
+		
+		public ChamberType this[int x, int y]{
+			get{return chambers[x,y];}
+			set{chambers[x,y] = value;}
+		}
+		
+		public int Width{
+			get {return chambers.GetLength(0);}
+		}
+		
+		public int Height{
+			get {return chambers.GetLength(1);}
+		}
+		
+		public ChamberMap(int width, int height){
+			chambers = new ChamberType[width,height];
+		}
 	}
 	
 	public class Chambers
@@ -192,6 +215,28 @@ namespace LevelGen
 				 );
 			
 			rooms[(int)ChamberType.TYPE_5] = Room.FromString
+
+				(
+
+				 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"+
+				 "@@@@@@@@@             @@@@@@@@"+"\n"+
+				 "@@@@@@                  @@@@@@"+"\n"+
+				 "@@@@                      @@@@"+"\n"+
+				 "@@@                        @@@"+"\n"+
+				 "@@                          @@"+"\n"+
+				 "@                            @"+"\n"+
+				 "@                            @"+"\n"+
+				 "@                            @"+"\n"+
+				 "@@                          @@"+"\n"+
+				 "@@@                        @@@"+"\n"+
+				 "@@@@                      @@@@"+"\n"+
+				 "@@@@@@                  @@@@@@"+"\n"+
+				 "@@@@@@@@@             @@@@@@@@"+"\n"+
+				 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+"\n"
+
+				 );
+			
+			rooms[(int)ChamberType.TYPE_BOSS] = Room.FromString
 
 				(
 

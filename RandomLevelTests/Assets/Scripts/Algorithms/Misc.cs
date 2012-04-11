@@ -14,6 +14,14 @@ namespace LevelGen{
 			X = x;
 			Y = y;
 		}
+		
+		public static bool operator==(coords a, coords b){
+			return a.X == b.X && a.Y == b.Y;
+		}
+		
+		public static bool operator!=(coords a, coords b){
+			return a.X != b.X || a.Y != b.Y;
+		}
 	}
 	
 	public struct intRect

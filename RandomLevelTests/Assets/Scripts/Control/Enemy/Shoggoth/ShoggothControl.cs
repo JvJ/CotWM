@@ -10,6 +10,8 @@ public class ShoggothControl : EntityControl{
 	
 	public GameObject leftTentacle, rightTentacle;
 	
+	public TentacleWhackHandler leftWhackHandler, rightWhackHandler;
+	
 	public float attackRadius;
 	
 	public Vector3 playerWhackNormal;
@@ -179,4 +181,12 @@ public class ShoggothControl : EntityControl{
 	}
 	
 	#endregion
+	
+	public override void setScript (bool onOff)
+	{
+		base.setScript (onOff);
+		
+		leftWhackHandler.enabled = onOff;
+		rightWhackHandler.enabled = onOff;
+	}
 }

@@ -36,9 +36,19 @@ public class TentacleWhackHandler : CollideHandler {
 		v.z = 0;
 			
 		v.x *= shoggoth.wanderDirection;
-			
+		
+		// Make him go flying!
 		shoggoth.player.setForce( v.normalized * shoggoth.playerWhackIntensity );
-			
+		
+		// ATTACK!
+		shoggoth.player.TakeDamage(new Attack
+		{
+			damageValue = shoggoth.stats.attack,
+			element = ElementType.NONE,
+			isContact = false
+		});
+		
+		// Now REALLY make him go flying!
 		shoggoth.player.SwitchState(EntityState.GO_FLYING);
 	}
 	
