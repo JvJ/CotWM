@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using AssemblyCSharp;
+using LevelGen;
 
 public class DethmurderControl : EntityControl {
 	
@@ -67,6 +68,10 @@ public class DethmurderControl : EntityControl {
 	
 	private List<Attractor> attractors;
 	
+	public coords CurrentRoom{
+		get;
+		set;
+	}
 	
 	// Use this for initialization
 	void Start () {
@@ -177,6 +182,13 @@ public class DethmurderControl : EntityControl {
 		}
 		
 		controller.Move(moveDirection * Time.deltaTime);
+	}
+	
+	public override void Dead ()
+	{
+		Application.LoadLevel("losing");
+		
+		base.Dead ();
 	}
 	
 	#endregion
@@ -514,6 +526,7 @@ public class DethmurderControl : EntityControl {
 	
 	float max = 0f;
 	float tMax = 0f;
+	/*
 	void OnGUI(){
 		GUI.Box(new Rect(0,0, 200, 20), "Norm: "+animation["Crouch_m"].normalizedTime);
 		GUI.Box(new Rect(0,20, 200, 20), "Time: "+animation["Crouch_m"].time);
@@ -529,7 +542,7 @@ public class DethmurderControl : EntityControl {
 		GUI.Box(new Rect(0,40, 200, 20), "Max: "+max);
 		GUI.Box(new Rect(0,60, 200, 20), "tMax: "+tMax);
 		GUI.Box(new Rect(0,80, 200, 20), "Length: "+animation["Crouch_m"].length);
-	}
+	}*/
 	
 	#endregion
 	

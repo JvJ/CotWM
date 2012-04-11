@@ -58,7 +58,9 @@ public class ShovelCollideHandler : CollideHandler {
 		
 		// If it is snow, destroy it
 		if (c.gameObject.CompareTag("SNOW")){			
-				GameObject.Destroy(c.gameObject);
+			GameObject.Destroy(c.gameObject);
+			var idx = CubeGen.Singleton.RoomIndex(new Vector2(c.gameObject.transform.position.x, c.gameObject.transform.position.y));
+			CubeGen.Singleton.gameMap[idx.X, idx.Y] = new LevelGen.Tile(LevelGen.TileType.BLANK);
 		}
 		// Otherwise, try to get an entityControl and send an attack to it.
 		else{

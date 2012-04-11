@@ -156,7 +156,7 @@ public class CubeGen : MonoBehaviour {
 				
 				collider.isTrigger = true;
 				
-				collider.size = new Vector3(r.width, r.height, cubeSize);
+				collider.size = new Vector3(r.width +  cubeSize * 2, r.height + cubeSize * 2, cubeSize);
 				
 				// Adding the room control
 				var roomControl = g.AddComponent(typeof(RoomControl)) as RoomControl;
@@ -312,6 +312,14 @@ public class CubeGen : MonoBehaviour {
 		int windex = (int)((position.x - BottomLeft.x) / (Chambers.CHAMBER_WIDTH * cubeSize));
 		
 		int hindex = (int)((position.y - BottomLeft.y) / (Chambers.CHAMBER_HEIGHT * cubeSize));
+		
+		return new coords(windex, hindex);
+	}
+	
+	public coords TileIndex(Vector2 position){
+		int windex = (int)((position.x - BottomLeft.x) / (cubeSize));
+		
+		int hindex = (int)((position.y - BottomLeft.y) / (cubeSize));
 		
 		return new coords(windex, hindex);
 	}

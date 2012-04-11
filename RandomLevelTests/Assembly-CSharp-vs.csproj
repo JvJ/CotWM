@@ -78,7 +78,11 @@
      <Compile Include="Assets\Scripts\Effects\LightningBolt.cs" />
      <Compile Include="Assets\Scripts\GUI\DethmurderGUI.cs" />
      <Compile Include="Assets\Scripts\GUI\GUIVars.cs" />
+     <Compile Include="Assets\Scripts\GUI\HUD.cs" />
+     <Compile Include="Assets\Scripts\GUI\LosingScreen.cs" />
+     <Compile Include="Assets\Scripts\GUI\SwitchLevels.cs" />
      <Compile Include="Assets\Scripts\GUI\TestGUIs.cs" />
+     <Compile Include="Assets\Scripts\GUI\WinningScreen.cs" />
      <Compile Include="Assets\Scripts\LevelStart\Configs.cs" />
      <Compile Include="Assets\Scripts\LevelStart\CubeGen.cs" />
      <Compile Include="Assets\Scripts\MetaBall\MCBlob.cs" />
@@ -87,6 +91,11 @@
      <Compile Include="Assets\Scripts\Rooms\Invisiblizer.cs" />
      <Compile Include="Assets\Scripts\Rooms\RoomControl.cs" />
      <Compile Include="Assets\Scripts\TestScript.cs" />
+     <Compile Include="Assets\gui\intro.cs" />
+     <Compile Include="Assets\gui\keyIntro.cs" />
+     <Compile Include="Assets\gui\mainmenu.cs" />
+     <Compile Include="Assets\gui\pausemenu.cs" />
+     <Compile Include="Assets\gui\winning.cs" />
      <None Include="Assets\Resources\TestLevelBig.txt" />
      <None Include="Assets\Resources\TestLevel1.txt" />
   </ItemGroup>

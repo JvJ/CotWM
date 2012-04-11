@@ -328,6 +328,13 @@ public class XlGrhthbtrgControl : EntityControl {
 		currentAttackTime += Time.deltaTime;
 	}
 	
+	public override void Dead ()
+	{
+		Application.LoadLevel("winning");
+		
+		base.Dead ();
+	}
+	
 	#endregion
 	
 	public override void setScript (bool onOff)

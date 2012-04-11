@@ -7,7 +7,11 @@ using System.Collections.Generic;
 public class Stats : MonoBehaviour{
 	
 	public float HP;
+	public float MaxHP;
+	
 	public float MP;
+	public float MaxMP;
+	
 	public float defense;
 	public float speed;
 	public float attack;

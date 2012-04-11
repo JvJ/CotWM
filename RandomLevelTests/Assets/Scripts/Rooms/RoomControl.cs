@@ -74,12 +74,15 @@ public class RoomControl : MonoBehaviour {
 	public void WakeUpRoom(){
 		
 		foreach (var o in Enemies){
+			if (o == null){continue;}
 			o.SwitchState(o.defaultState);
 			o.gameObject.SetActiveRecursively(true);
 		}
 		
 		foreach (var o in TerrainObjs){
-			o.SetActiveRecursively(true);
+			if (o != null){
+				o.SetActiveRecursively(true);
+			}
 		}
 		/*
 		foreach(EntityControl e in Enemies){
@@ -99,12 +102,15 @@ public class RoomControl : MonoBehaviour {
 	public void FreezeRoom(){
 		
 		foreach (var o in Enemies){
+			if (o == null){continue;}
 			o.SwitchState(EntityState.STILL);
 			o.gameObject.SetActiveRecursively(false);
 		}
 		
 		foreach (var o in TerrainObjs){
-			o.SetActiveRecursively(false);
+			if (o != null){
+				o.SetActiveRecursively(false);
+			}
 		}
 		
 		/*foreach(GameObject g in TerrainObjs){
@@ -128,6 +134,7 @@ public class RoomControl : MonoBehaviour {
 	void OnTriggerEnter (Collider other){
 		
 		if (other.gameObject.CompareTag("PLAYER")){
+			player.CurrentRoom = this.Position;
 			WakeUpRoom();
 		}
 		else{
